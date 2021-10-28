@@ -5,17 +5,14 @@
  */
 package poorty;
 
-/**
- *
- * @author josa
- */
-public class POOrty {
 
-    /**
-     * @param args the command line arguments
-     */
+public class POOrty {
+    
+    
     public static void main(String[] args) {
-        // TODO code application logic here
+        Player myPlayer = new Player();
+        
+        System.out.println("Soy el jugador numero " + myPlayer.getPlayerId());
     }
     
 }
