@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class Server {
     
-    public final static int SERVERPORT = 8081;
+    public final static int SERVER_PORT = 8081;
     
     
     private ArrayList<ServerThread> players;
@@ -26,23 +26,22 @@ public class Server {
     private boolean startGame = false;
    
    public Server(){
-       
+       players = new ArrayList<ServerThread>();
    }
    
    public void runServer(){
        
        try {
-            ServerSocket server = new ServerSocket(SERVERPORT);
-           
+            ServerSocket server = new ServerSocket(SERVER_PORT);
+            System.out.println("Esperando host...");
             this.player = server.accept(); // el primero en conectarse es host
             this.players.add(new ServerThread(player, this, players.size(), players, true)); // se agrega a lista de jugadores
             this.players.get(0).start();
-            
+            System.out.println("Esperando otros jugadores");
             while(!startGame){
-                
-                if(players.size() < 6){
+                this.player = server.accept();
+                if(players.size() < 6 && !startGame){
                     // hay espacio para otro jugador
-                    this.player = server.accept();
                     this.players.add(new ServerThread(player, this, players.size() + 1, players, false)); // se agrega a lista de jugadores
                     this.players.get(players.size() - 1).start();
                 }else{
@@ -63,4 +62,11 @@ public class Server {
            System.out.println("Error en el servidor");
        }
    }
+   
+   
+   public static void main(String[] args) {
+        Server server = new Server();
+        server.runServer(); // inicia el servidor
+    }
+    
 }

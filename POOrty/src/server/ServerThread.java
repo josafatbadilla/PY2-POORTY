@@ -17,18 +17,18 @@ import java.util.logging.Logger;
 
 
 public class ServerThread  extends Thread{
-     Socket player = null;//referencia a socket de comunicacion de cliente
+     Socket socketPlayer = null;//referencia a socket de comunicacion de cliente
      DataInputStream inputStream = null;//Para leer comunicacion
      DataOutputStream outputStream = null;//Para enviar comunicacion	
      Server server;// referencia al servidor
 
-     ArrayList<ServerThread> players;
+     ArrayList<ServerThread> players; // saber cuales son los jugadores
      // identificar el numero de jugador
      int playerId;
      boolean host;
      
-    public ServerThread(Socket player, Server server, int playerId, ArrayList<ServerThread> players, boolean host){
-        this.player = player;
+    public ServerThread(Socket socketPlayer, Server server, int playerId, ArrayList<ServerThread> players, boolean host){
+        this.socketPlayer = socketPlayer;
         this.server = server;
         this.playerId = playerId;
         this.players = players;
@@ -39,10 +39,11 @@ public class ServerThread  extends Thread{
     @Override
     public void run(){
         try {
-            inputStream = new DataInputStream(player.getInputStream());
-            outputStream = new DataOutputStream(player.getOutputStream());
+            inputStream = new DataInputStream(socketPlayer.getInputStream());
+            outputStream = new DataOutputStream(socketPlayer.getOutputStream());
         
-            // le avisa al jugador si es el host o no
+            //configuracion inicial del jugador
+            outputStream.writeInt(playerId);
             outputStream.writeBoolean(host);
 
             //variables necesarias
