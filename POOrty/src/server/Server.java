@@ -35,15 +35,13 @@ public class Server {
             ServerSocket server = new ServerSocket(SERVER_PORT);
             System.out.println("Esperando host...");
             this.player = server.accept(); // el primero en conectarse es host
-            this.players.add(new ServerThread(player, this, players.size(), players, true)); // se agrega a lista de jugadores
-            this.players.get(0).start();
+            new ServerThread(player, this, players.size() + 1, players, true);
             System.out.println("Esperando otros jugadores");
             while(!startGame){
                 this.player = server.accept();
                 if(players.size() < 6 && !startGame){
                     // hay espacio para otro jugador
-                    this.players.add(new ServerThread(player, this, players.size() + 1, players, false)); // se agrega a lista de jugadores
-                    this.players.get(players.size() - 1).start();
+                    new ServerThread(player, this, players.size() + 1, players, false); // se agrega a lista de jugadores
                 }else{
                     System.out.println("No hay mas espacio");
                     break;

@@ -1,5 +1,5 @@
 
-package poorty;
+package poorty.model;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import poorty.controller.MainController;
 
 
 
@@ -24,7 +25,7 @@ public class Player {
     // referencia a la ventana del cliente para realizar y llamar las funciones necesarias
     
     
-   public Player(/*recibir la ventana*/){
+   public Player(MainController mainController){
        
       // conexion con el servidor
       try {
@@ -38,7 +39,7 @@ public class Player {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        new PlayerThread(inputStream, this).start();
+        new PlayerThread(inputStream, this, mainController).start();
    }
    
    
@@ -60,6 +61,12 @@ public class Player {
     public void setHost(boolean host) {
         this.host = host;
     }
+
+    public DataOutputStream getOutputStream() {
+        return outputStream;
+    }
+    
+    
    
 
     

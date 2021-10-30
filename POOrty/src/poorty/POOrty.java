@@ -5,14 +5,14 @@
  */
 package poorty;
 
+import poorty.controller.MainController;
+
 
 public class POOrty {
     
     
     public static void main(String[] args) {
-        Player myPlayer = new Player();
-        
-        System.out.println("Soy el jugador numero " + myPlayer.getPlayerId());
+        MainController mainController = new MainController();
     }
     
 }
