@@ -33,8 +33,9 @@ public class PlayerThread extends Thread{
             // lee lo que el servidor ServerThread
             while(true){
                     // espera ordenes del servidor
+                    System.out.println("Espero opcion...");
                     option = inputStream.readInt();
-
+                    System.out.println("Recibe la opcion" + option);
                     switch(option){
                         case 1: // lobby
                             lobby(inputStream.readInt());
@@ -61,12 +62,15 @@ public class PlayerThread extends Thread{
     public void lobby(int option){
         try {
             switch(option){
+                case 0: // se pasa a la seleccion de personajes
+                    mainController.characterSelectWindow();
+                    System.out.println("Se cambia de ventana");
+                    break;
                 case 1: // imprimir la agregacion del nuevo jugador
                     // se imprime el nombre
                     int playerId = inputStream.readInt();
                     boolean host = inputStream.readBoolean();
                     mainController.getLobbyController().addLobbyPlayer(playerId, host);
-                    
                     break;
 
             }

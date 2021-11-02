@@ -33,19 +33,19 @@ public class Server {
        
        try {
             ServerSocket server = new ServerSocket(SERVER_PORT);
-            System.out.println("Esperando host...");
-            this.player = server.accept(); // el primero en conectarse es host
-            new ServerThread(player, this, players.size() + 1, players, true);
-            System.out.println("Esperando otros jugadores");
+            boolean playerHost;
+            
             while(!startGame){
+                System.out.println("Esperando jugador...");
                 this.player = server.accept();
-                if(players.size() < 6 && !startGame){
-                    // hay espacio para otro jugador
-                    new ServerThread(player, this, players.size() + 1, players, false); // se agrega a lista de jugadores
+                if(!startGame && players.size() + 1 <= 6){
+                    playerHost = players.isEmpty(); // el primero en llegar es el host
+                    new ServerThread(player, this, players.size() + 1, players, playerHost); // se agrega a lista de jugadores
                 }else{
-                    System.out.println("No hay mas espacio");
+                    hostStartGame();
                     break;
                 }
+                
             }
             
             System.out.println("A jugar");
@@ -59,6 +59,10 @@ public class Server {
            
            System.out.println("Error en el servidor");
        }
+   }
+   
+   public void hostStartGame(){
+       this.startGame = true; // se inicia con el juego
    }
    
    
