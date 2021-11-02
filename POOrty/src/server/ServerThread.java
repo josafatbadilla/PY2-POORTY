@@ -54,11 +54,7 @@ public class ServerThread  extends Thread{
             while(true){
                 option = inputStream.readInt();
                 switch(option){
-                case 0: // el host comienza el juego
-
-                    break;
                 case 1: // opciones del lobby
-                    System.out.println("opcion del lobby");
                     lobby(inputStream.readInt());
                     break;
                 case 2: // todas las acciones del gato
@@ -88,16 +84,22 @@ public class ServerThread  extends Thread{
     private void lobby(int option) throws IOException{
         //accion para el juego del gato
         switch(option){
-            case 0: // se avisa la conexion de este jugador a todos los demas
+            case 0: // el host inicia el juego desde el lobby
+                server.hostStartGame();
+                // pasa a todos los jugadores de ventana
+                for(int i = 0; i < players.size(); i++){
+                    players.get(i).outputStream.writeInt(1);
+                    players.get(i).outputStream.writeInt(0);
+                }
+                System.out.println("Hora de seleccion");
+                break;
+            case 1: // se avisa la conexion de este jugador a todos los demas
                 for(int i = 0; i < players.size(); i++){
                     players.get(i).outputStream.writeInt(1);
                     players.get(i).outputStream.writeInt(1);
                     players.get(i).outputStream.writeInt(this.playerId);
                     players.get(i).outputStream.writeBoolean(this.host);
                 }
-
-                break;
-            case 1: 
 
                 break;
             case 2:

@@ -31,15 +31,18 @@ public class LobbyController implements ActionListener {
         lobbyWindow.getBtnPlay().addActionListener(this);
         
         serverConnection(1); // avisa que un nuevo jugador se conecto
-        
+        lobbyWindow.getBtnPlay().setEnabled(game.getPlayer().isHost()); // solo el host puede iniciar la partida
+
         mainController.showWindow(lobbyWindow); // muestra la pantalla de window
     }
     
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         if(e.getSource().equals(lobbyWindow.getBtnPlay())){
-            System.out.println("Se presiona el boton de jugar");
+            serverConnection(0);
+            
         }
     }
     
@@ -64,17 +67,20 @@ public class LobbyController implements ActionListener {
     private void serverConnection(int option){
         
         try {
+            outputStream.writeInt(1); // opcion del lobby
             switch(option){
+                case 0:
+                    // para inciar con el juego y pasar a la seleccion de personajes
+                    outputStream.writeInt(0); 
+                    break;
                 case 1:
                     // se comunica que se conecto con exito el jugador
-                    outputStream.writeInt(1); // opcion del lobby
-                    outputStream.writeInt(0); // opcion de avisar conexion 
+                    outputStream.writeInt(1); // opcion de avisar conexion 
                     
                     break;
-
-                case 2:
-                    break;
-
+                    
+                default:
+                    System.out.println("Opcion" + option + "inexistente");
             }
         } catch (IOException ex) {
                     Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
