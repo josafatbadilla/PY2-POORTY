@@ -57,8 +57,8 @@ public class ServerThread  extends Thread{
                 case 1: // opciones del lobby
                     lobby(inputStream.readInt());
                     break;
-                case 2: // todas las acciones del gato
-                    runCatGame();
+                case 2: // opciones de la seleccion de personajes
+                    characterSelection(inputStream.readInt());
                     break;
                 }
                 
@@ -91,7 +91,6 @@ public class ServerThread  extends Thread{
                     players.get(i).outputStream.writeInt(1);
                     players.get(i).outputStream.writeInt(0);
                 }
-                System.out.println("Hora de seleccion");
                 break;
             case 1: // se avisa la conexion de este jugador a todos los demas
                 for(int i = 0; i < players.size(); i++){
@@ -108,6 +107,32 @@ public class ServerThread  extends Thread{
         }
     }
     
+    
+    private void characterSelection(int option) throws IOException{
+        
+        switch(option){
+            case 1: // se selecciona un personaje
+                String unselectedCharacter = inputStream.readUTF();
+                String selectedCharacter = inputStream.readUTF();
+
+                for(int i = 0; i < players.size(); i++){
+                    players.get(i).outputStream.writeInt(2); // opcion para la seleccion de personaje
+                    players.get(i).outputStream.writeInt(1); // seleccion de personaje
+                    players.get(i).outputStream.writeUTF(unselectedCharacter);
+                    players.get(i).outputStream.writeUTF(selectedCharacter);
+                }
+                break;
+            case 2:
+                // se pasa a todos los jugadores de pantalla
+                for(int i = 0; i < players.size(); i++){
+                    players.get(i).outputStream.writeInt(2);
+                    players.get(i).outputStream.writeInt(2);
+                }
+                break;
+            default:
+                System.out.println("Opcion inexistente");
+        }
+    }
     
     // Metodos para correr los juegos
     private void runCatGame(){

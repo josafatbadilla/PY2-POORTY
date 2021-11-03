@@ -33,15 +33,13 @@ public class PlayerThread extends Thread{
             // lee lo que el servidor ServerThread
             while(true){
                     // espera ordenes del servidor
-                    System.out.println("Espero opcion...");
                     option = inputStream.readInt();
-                    System.out.println("Recibe la opcion" + option);
                     switch(option){
                         case 1: // lobby
                             lobby(inputStream.readInt());
                             break;
-                        case 2:
-                            //llamar a funciones de la ventana para actualizar el jframe
+                        case 2: // seleccion de personaje
+                            characterSelection(inputStream.readInt());
                             break;
 
                     }
@@ -59,12 +57,12 @@ public class PlayerThread extends Thread{
         
     }
     
+    // acciones para el lobby
     public void lobby(int option){
         try {
             switch(option){
                 case 0: // se pasa a la seleccion de personajes
                     mainController.characterSelectWindow();
-                    System.out.println("Se cambia de ventana");
                     break;
                 case 1: // imprimir la agregacion del nuevo jugador
                     // se imprime el nombre
@@ -75,8 +73,29 @@ public class PlayerThread extends Thread{
 
             }
         } catch (IOException ex) {
-                    Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    // acciones para la seleccion de personajes
+    public void characterSelection(int option){
+        try {
+            switch(option){
+                case 1: // se selecciona un personaje
+                    String unselectedCharacter = inputStream.readUTF();
+                    String selectedCharacter = inputStream.readUTF();
+                    
+                    mainController.getSelectionController().updateCharacterButtons(unselectedCharacter, selectedCharacter);
+                    break;
+                case 2:
+                    mainController.startGame();
+                    break;
+
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

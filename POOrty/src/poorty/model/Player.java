@@ -22,6 +22,7 @@ public class Player {
     
     private int playerId;
     private boolean host;
+    private String characterName;
     // referencia a la ventana del cliente para realizar y llamar las funciones necesarias
     
     
@@ -38,6 +39,9 @@ public class Player {
         } catch (IOException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        // inicializacion de variables
+        this.characterName = "";
         
         new PlayerThread(inputStream, this, mainController).start();
    }
@@ -65,6 +69,15 @@ public class Player {
     public DataOutputStream getOutputStream() {
         return outputStream;
     }
+
+    public String getCharacterName() {
+        return characterName;
+    }
+
+    public void setCharacterName(String characterName) {
+        this.characterName = characterName;
+    }
+    
     
     
    

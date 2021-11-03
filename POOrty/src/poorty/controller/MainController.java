@@ -12,6 +12,7 @@ public class MainController {
     // pantallas
     private Lobby lobbyView;
     private Selection charSelectView;
+    private BoardWindow boardView; // ventana del tablero
     
     // modelo principal
     private Game game;
@@ -19,6 +20,7 @@ public class MainController {
     // subcontroladores
     private LobbyController lobbyController;
     private SelectionController selectionController;
+    private BoardController boardController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -56,11 +58,19 @@ public class MainController {
         changeWindow(this.lobbyView, this.charSelectView);
     }
     
+    // creacion del tablero y pasar de la ventana
+    public void startGame(){
+        this.boardView = new BoardWindow();
+        this.boardController = new BoardController(boardView, game, this);
+        boardController._init_();
+        changeWindow(this.charSelectView, this.boardView);
+    }
+    
     
     // metodos varios
     
     // metodo para cambiar de tamano un icono dado a los valores dados
-    public ImageIcon resizeIcon(ImageIcon icon, int width, int height){
+    public static ImageIcon resizeIcon(ImageIcon icon, int width, int height){
         Image iconImage = icon.getImage();
         Image resizedIconImage = iconImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(resizedIconImage);
