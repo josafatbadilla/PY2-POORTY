@@ -24,7 +24,7 @@ public class Lobby extends javax.swing.JFrame implements iWindow {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnPlay.setText("Jugar");
+        btnPlay.setText("Continuar");
 
         txaPlayers.setEditable(false);
         txaPlayers.setColumns(20);

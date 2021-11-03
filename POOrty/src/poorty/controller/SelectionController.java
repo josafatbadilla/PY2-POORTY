@@ -4,8 +4,14 @@ package poorty.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import poorty.model.CharacterBtn;
+import poorty.model.Character;
 import poorty.model.Game;
 import poorty.view.Selection;
 
@@ -27,40 +33,114 @@ public class SelectionController implements ActionListener{
     // se inicializan los compponentes de la pantalla
     public void _init_(){
         // agregar los listeners
-        
+        charSelectWindow.getBtnStartPlay().addActionListener(this);
+        charSelectWindow.getBtnStartPlay().setEnabled(game.getPlayer().isHost());
         // inicializacion de componentes graficos de la ventana
         initCharacterBtns();
-        
+       
     }
     
     private void initCharacterBtns(){
         int x = 10, y = 10;
         for(int i = 0; i < game.getCharacters().size(); i++){
-            JButton characterBtn = createCharacterButton(game.getCharacters().get(i).getIcon(), x, y);
-            charSelectWindow.getCharactersBtn().add(characterBtn); // se agrea a la lista
+   
+            CharacterBtn characterBtn = createCharacterButton(game.getCharacters().get(i), x, y);
+            charSelectWindow.getCharacterBtns().add(characterBtn); // se agrea a la lista
             charSelectWindow.getPnlCharacters().add(characterBtn);
             
-            x += charSelectWindow.CHARWIDTH + 10;
+            x += Selection.CHARWIDTH + 10;
             
             if(i == 3 || i == 7){
                 x = 10;
-                y += charSelectWindow.CHARHEIGH + 10;
+                y += Selection.CHARHEIGH + 10;
             }
         }
+        
+        printCharacterButtons();
     
     }
     
-    private JButton createCharacterButton(ImageIcon icon, int x, int y){
-        JButton newButton = new JButton(mainController.resizeIcon(icon, charSelectWindow.CHARWIDTH - 5, charSelectWindow.CHARHEIGH - 5));
-        newButton.setBounds(x, y, charSelectWindow.CHARWIDTH, charSelectWindow.CHARHEIGH);
+    private CharacterBtn createCharacterButton(Character character, int x, int y){
+        CharacterBtn newButton = new CharacterBtn(character);
+        newButton.setBounds(x, y, Selection.CHARWIDTH, Selection.CHARHEIGH);
+        newButton.addActionListener(this);
         return newButton;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         
+        int charBtnIndex = charSelectWindow.getCharacterBtns().indexOf(e.getSource());
+        if(charBtnIndex != -1){
+            // se presiona uno de los bootnes de personajes
+            selectCharacter(charSelectWindow.getCharacterBtns().get(charBtnIndex).getCharacterName());
+        }else if(e.getSource().equals(charSelectWindow.getBtnStartPlay())){
+            // se presiona el boton para comenzar el juego
+            startGame();
+        }
     }
     
     
+    // funcion para actualizar el estado de seleccion de los botones
+    public void updateCharacterButtons(String unselectedCharacter, String selectedCharacter){
+        for(CharacterBtn characterBtn: charSelectWindow.getCharacterBtns()){
+            if(characterBtn.getCharacterName().equals(unselectedCharacter)){
+                characterBtn.setSelected(false);
+            }else if(characterBtn.getCharacterName().equals(selectedCharacter)){
+                characterBtn.setSelected(true);
+            }
+        }
+        printCharacterButtons();
+    }
+    
+    private void printCharacterButtons(){
+        for(CharacterBtn characterBtn: charSelectWindow.getCharacterBtns()){
+            if(characterBtn.isSelected()){
+                if(characterBtn.getCharacterName().equals(game.getPlayer().getCharacterName())){
+                    characterBtn.setBackground(Selection.BTN_COLORS[1]); // fondo gris
+                    characterBtn.setBorder(BorderFactory.createLineBorder(Selection.BTN_COLORS[1], 1));
+                }else{
+                    characterBtn.setBackground(Selection.BTN_COLORS[2]); // fondo gris
+                    characterBtn.setBorder(BorderFactory.createLineBorder(Selection.BTN_COLORS[2], 1));
+                }
+            }else{
+                characterBtn.setBackground(Selection.BTN_COLORS[0]); // fondo blanco
+                characterBtn.setBorder(BorderFactory.createLineBorder(Selection.BTN_COLORS[0], 1));
+            }
+        }
+    }
+    
+    
+    // funciones para la conexion con el servidor
+    
+    // comunica al servidor que se selecciono al personaje
+    private void selectCharacter(String characterName){
+       try {
+            outputStream.writeInt(2); // opcion de la seleccion de personajes
+            outputStream.writeInt(1); // para la seleccion de personaje
+            
+            // se comunica el personaje que se deselecciono
+            outputStream.writeUTF(game.getPlayer().getCharacterName());
+            // envia el personaje seleccionado
+            outputStream.writeUTF(characterName);
+            // se le actualiza al jugador
+            game.getPlayer().setCharacterName(characterName);
+            
+        } catch (IOException ex) {
+                    Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+    
+    // inicia el juego en el tablero
+    private void startGame(){
+        try {
+            outputStream.writeInt(2); // opcion de la seleccion de personajes
+            outputStream.writeInt(2); // para la iniciar a jugar
+            
+        } catch (IOException ex) {
+            Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
     
 }

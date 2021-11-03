@@ -73,7 +73,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnPlay">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Jugar"/>
+            <Property name="text" type="java.lang.String" value="Continuar"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
