@@ -33,8 +33,12 @@ public class SelectionController implements ActionListener{
     // se inicializan los compponentes de la pantalla
     public void _init_(){
         // agregar los listeners
-        charSelectWindow.getBtnStartPlay().addActionListener(this);
-        charSelectWindow.getBtnStartPlay().setEnabled(game.getPlayer().isHost());
+        charSelectWindow.getBtnRandomTurn().addActionListener(this);
+        charSelectWindow.getBtnRandomTurn().setEnabled(game.getPlayer().isHost());
+        
+        charSelectWindow.getBtnDicesTurn().addActionListener(this);
+        charSelectWindow.getBtnDicesTurn().setEnabled(game.getPlayer().isHost());
+        
         // inicializacion de componentes graficos de la ventana
         initCharacterBtns();
        
@@ -74,9 +78,12 @@ public class SelectionController implements ActionListener{
         if(charBtnIndex != -1){
             // se presiona uno de los bootnes de personajes
             selectCharacter(charSelectWindow.getCharacterBtns().get(charBtnIndex).getCharacterName());
-        }else if(e.getSource().equals(charSelectWindow.getBtnStartPlay())){
-            // se presiona el boton para comenzar el juego
-            startGame();
+            
+        }else if(e.getSource().equals(charSelectWindow.getBtnRandomTurn())){
+            // se presiona el boton para los turnos aleatorios por numero
+            turnSelection(1);
+        }else if(e.getSource().equals(charSelectWindow.getBtnDicesTurn())){
+             turnSelection(2);
         }
     }
     
@@ -132,11 +139,12 @@ public class SelectionController implements ActionListener{
     }
     
     
-    // inicia el juego en el tablero
-    private void startGame(){
+    // se cambia para la pantalla para determinar los turnos
+    private void turnSelection(int option){
         try {
             outputStream.writeInt(2); // opcion de la seleccion de personajes
-            outputStream.writeInt(2); // para la iniciar a jugar
+            outputStream.writeInt(2); // para la pasar a la seleccion del turno
+            outputStream.writeInt(option); // determina a la pantalla a la que se envia
             
         } catch (IOException ex) {
             Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);

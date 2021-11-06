@@ -41,6 +41,9 @@ public class PlayerThread extends Thread{
                         case 2: // seleccion de personaje
                             characterSelection(inputStream.readInt());
                             break;
+                        case 3: // seleccion del turno
+                            turnSelection(inputStream.readInt());
+                            break;
 
                     }
 
@@ -89,7 +92,28 @@ public class PlayerThread extends Thread{
                     mainController.getSelectionController().updateCharacterButtons(unselectedCharacter, selectedCharacter);
                     break;
                 case 2:
-                    mainController.startGame();
+                    // cambio de pantalla para la seleccion de los turnos 
+                    mainController.selectTurnWindow(inputStream.readInt());
+
+                    break;
+
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    // acciones para la selecicon del turno
+    public void turnSelection(int option){
+        try {
+            switch(option){
+                case 1: // se recibe el numero random que salio
+                    mainController.getRandomTurnController().printTheRandomNumber(inputStream.readInt());
+                    break;
+                case 2: // el jugador tira los dados
+
+
                     break;
 
             }

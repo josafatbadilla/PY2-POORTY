@@ -60,6 +60,9 @@ public class ServerThread  extends Thread{
                 case 2: // opciones de la seleccion de personajes
                     characterSelection(inputStream.readInt());
                     break;
+                case 3: // opciones para la seleccion del turno
+                    turnSelection(inputStream.readInt());
+                    break;
                 }
                 
             }
@@ -123,10 +126,12 @@ public class ServerThread  extends Thread{
                 }
                 break;
             case 2:
-                // se pasa a todos los jugadores de pantalla
+                // se pasa a todos los jugadores de pantalla a la seleccion de turno
+                int turnWindow  = inputStream.readInt();
                 for(int i = 0; i < players.size(); i++){
                     players.get(i).outputStream.writeInt(2);
                     players.get(i).outputStream.writeInt(2);
+                    players.get(i).outputStream.writeInt(turnWindow);
                 }
                 break;
             default:
@@ -134,7 +139,29 @@ public class ServerThread  extends Thread{
         }
     }
     
-    // Metodos para correr los juegos
+    
+    private void turnSelection(int option) throws IOException{
+        switch(option){
+            case 1: // se recibe un numero aleatorio del jugador
+                int playerNum = inputStream.readInt();
+                // ingresa el turno de este jugador en el arreglo de turnos con la diferencia
+                server.insertPlayerTurn(new Turn(this.playerId, Math.abs(server.RANDOM_TURN_NUM - playerNum)), 1);
+                
+                // SE ENVIA CUAL ERA EL NUMERO
+                outputStream.writeInt(3); // seleccion de turno
+                outputStream.writeInt(1); // muestra el numero que salio
+                outputStream.writeInt(server.RANDOM_TURN_NUM);
+                break;
+            case 2: // el jugador tiro los dados
+                break;
+            default:
+                System.out.println("Opcion inexistente");
+        }
+    }
+
+
+
+// Metodos para correr los juegos
     private void runCatGame(){
         
         try {

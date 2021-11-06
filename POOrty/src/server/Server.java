@@ -9,13 +9,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author John
- */
+
 public class Server {
     
     public final static int SERVER_PORT = 8081;
@@ -24,9 +23,12 @@ public class Server {
     private ArrayList<ServerThread> players;
     private Socket player;
     private boolean startGame = false;
+    private ArrayList<Turn> playersTurn;
+    public static final int RANDOM_TURN_NUM = (int)(Math.random()*1000+1); // numero aleatorio del 1 al 1000;
    
    public Server(){
        players = new ArrayList<ServerThread>();
+       playersTurn = new ArrayList<Turn>();
    }
    
    public void runServer(){
@@ -65,10 +67,28 @@ public class Server {
        this.startGame = true; // se inicia con el juego
    }
    
+   public void insertPlayerTurn(Turn playerTurn, int turnSelection){
+       playersTurn.add(playerTurn);
+       if(turnSelection == 1){
+            // numero aleatorio se ordena de menor a mayor
+           playersTurn.sort(Comparator.comparing(Turn::getTurnResult));
+       }else{
+           // dados se ordena de mayor a menor
+           playersTurn.sort(Comparator.comparing(Turn::getTurnResult).reversed());
+       }
+   }
+   
+   // getters and setters
+
+    public ArrayList<Turn> getPlayersTurn() {
+        return playersTurn;
+    }
+   
+   
    
    public static void main(String[] args) {
         Server server = new Server();
         server.runServer(); // inicia el servidor
-    }
+   }
     
 }

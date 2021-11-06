@@ -12,6 +12,8 @@ public class MainController {
     // pantallas
     private Lobby lobbyView;
     private Selection charSelectView;
+    private RandomTurnWindow randomTurnView;
+    private DicesTurnWindow dicesTurnView; // ventana para lanzar dados para el turno
     private BoardWindow boardView; // ventana del tablero
     
     // modelo principal
@@ -20,6 +22,8 @@ public class MainController {
     // subcontroladores
     private LobbyController lobbyController;
     private SelectionController selectionController;
+    private RandomTurnController randomTurnController;
+    private DicesTurnController dicesTurnController;
     private BoardController boardController;
     
     // constructor
@@ -58,6 +62,24 @@ public class MainController {
         changeWindow(this.lobbyView, this.charSelectView);
     }
     
+    // creacion y cambio de hacia la ventan que determina el turno
+    public void selectTurnWindow(int window){
+        if(window == 1){
+            // se pasara a la ventana del numero random
+            this.randomTurnView = new RandomTurnWindow();
+            this.randomTurnController = new RandomTurnController(randomTurnView, game, this);
+            this.randomTurnController._init_();
+            changeWindow(this.charSelectView, this.randomTurnView);
+        }else{
+            // se pasa a la ventana de tirar los dados
+            this.dicesTurnView = new DicesTurnWindow();
+            this.dicesTurnController = new DicesTurnController(dicesTurnView, game, this);
+            this.dicesTurnController._init_();
+            changeWindow(this.charSelectView, this.dicesTurnView);  
+        }
+    }
+    
+    
     // creacion del tablero y pasar de la ventana
     public void startGame(){
         this.boardView = new BoardWindow();
@@ -89,5 +111,9 @@ public class MainController {
         return selectionController;
     }
     
+    
+    public RandomTurnController getRandomTurnController(){
+        return randomTurnController;
+    }
     
 }
