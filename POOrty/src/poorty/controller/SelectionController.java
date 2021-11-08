@@ -83,6 +83,7 @@ public class SelectionController implements ActionListener{
             // se presiona el boton para los turnos aleatorios por numero
             turnSelection(1);
         }else if(e.getSource().equals(charSelectWindow.getBtnDicesTurn())){
+            // para pasar a la seleccion del turno por dados
              turnSelection(2);
         }
     }

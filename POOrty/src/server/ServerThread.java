@@ -153,13 +153,26 @@ public class ServerThread  extends Thread{
                 outputStream.writeInt(server.RANDOM_TURN_NUM);
                 break;
             case 2: // el jugador tiro los dados
+                int dicesResult = inputStream.readInt(); // lee el resultado de los dados
+                server.insertPlayerTurn(new Turn(this.playerId, Math.abs(dicesResult)), 2);
                 break;
+            case 3: //el host pasa al tablero desde el seleccion mediante numero random
+                // se pasa a todos los jugadores de pantalla a la seleccion de turno
+                for(int i = 0; i < players.size(); i++){
+                    players.get(i).outputStream.writeInt(3);
+                    players.get(i).outputStream.writeInt(3);
+                }
+            case 4:
+                // se pasa al tablero desde la seleccion de turno de lanzar dados
+                // se pasa a todos los jugadores de pantalla a la seleccion de turno
+                for(int i = 0; i < players.size(); i++){
+                    players.get(i).outputStream.writeInt(3);
+                    players.get(i).outputStream.writeInt(4);
+                }
             default:
                 System.out.println("Opcion inexistente");
         }
     }
-
-
 
 // Metodos para correr los juegos
     private void runCatGame(){
