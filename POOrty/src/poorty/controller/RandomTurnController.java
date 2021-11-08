@@ -58,16 +58,32 @@ public class RandomTurnController implements ActionListener{
             
         }
         
+        if(e.getSource().equals(randomTurnView.getBtnStartGame())){
+            // se pasa al tablero
+            startGame();
+        }
+        
     }
     
     
     // metodos para la conexion con el servidor
-     // se cambia para la pantalla para determinar los turnos
+     // se envia el numero escogido por el jugador
     private void sendPlayerNumber(int playerNum){
         try {
             outputStream.writeInt(3); // opcion del turn selection
             outputStream.writeInt(1); // para la pasar a la seleccion del turno
             outputStream.writeInt(playerNum); // determina a la pantalla a la que se envia
+            
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(LobbyController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+    }
+    
+    // se pasa para el tablero principal para que empiece el juego
+    public void startGame(){
+        try {
+            outputStream.writeInt(3); // opcion de la seleccion de turno
+            outputStream.writeInt(3); // para la pasar al tablero
             
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(LobbyController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);

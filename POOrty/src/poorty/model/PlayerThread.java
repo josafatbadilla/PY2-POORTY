@@ -112,9 +112,15 @@ public class PlayerThread extends Thread{
                     mainController.getRandomTurnController().printTheRandomNumber(inputStream.readInt());
                     break;
                 case 2: // el jugador tira los dados
-
+                       // no se hace nada en consecuencia
 
                     break;
+                case 3: // se pasa al tablero desde la seleccion de turno por numero random
+                    mainController.startBoardWindow(1);
+                    
+                case 4:
+                    // se pasa al tablero desde la seleccion de turno por tira de dadoss
+                    mainController.startBoardWindow(2);
 
             }
         } catch (IOException ex) {

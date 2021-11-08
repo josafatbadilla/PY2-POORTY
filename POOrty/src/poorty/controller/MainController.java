@@ -81,11 +81,19 @@ public class MainController {
     
     
     // creacion del tablero y pasar de la ventana
-    public void startGame(){
+    public void startBoardWindow(int fromWindowSelecction){
+        
         this.boardView = new BoardWindow();
         this.boardController = new BoardController(boardView, game, this);
         boardController._init_();
-        changeWindow(this.charSelectView, this.boardView);
+        
+        if(fromWindowSelecction == 1){
+            // se pasa desde la seleccion de turno por numero aleatorio
+            changeWindow(this.randomTurnView, this.boardView);
+        }else{
+            // se pasa desde la seleccion de turno por tirar dados
+            changeWindow(this.dicesTurnView, this.boardView);
+        }
     }
     
     
