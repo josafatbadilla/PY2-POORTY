@@ -5,17 +5,14 @@
  */
 package poorty;
 
-/**
- *
- * @author josa
- */
-public class POOrty {
+import poorty.controller.MainController;
 
-    /**
-     * @param args the command line arguments
-     */
+
+public class POOrty {
+    
+    
     public static void main(String[] args) {
-        // TODO code application logic here
+        MainController mainController = new MainController();
     }
     
 }
