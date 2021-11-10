@@ -15,6 +15,7 @@ public class MainController {
     private RandomTurnWindow randomTurnView;
     private DicesTurnWindow dicesTurnView; // ventana para lanzar dados para el turno
     private BoardWindow boardView; // ventana del tablero
+    private CatGameWindow catGameView;
     
     // modelo principal
     private Game game;
@@ -25,6 +26,7 @@ public class MainController {
     private RandomTurnController randomTurnController;
     private DicesTurnController dicesTurnController;
     private BoardController boardController;
+    private CatGameController catGameController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -81,13 +83,13 @@ public class MainController {
     
     
     // creacion del tablero y pasar de la ventana
-    public void startBoardWindow(int fromWindowSelecction){
+    public void startBoardWindow(int fromWindowTurn){
         
         this.boardView = new BoardWindow();
         this.boardController = new BoardController(boardView, game, this);
         boardController._init_();
         
-        if(fromWindowSelecction == 1){
+        if(fromWindowTurn == 1){
             // se pasa desde la seleccion de turno por numero aleatorio
             changeWindow(this.randomTurnView, this.boardView);
         }else{
@@ -96,6 +98,14 @@ public class MainController {
         }
     }
     
+    
+    // creacion del juego del gato y pasada de pantalla desde el tablero
+    public void startCatMiniGame(){
+        this.catGameView = new CatGameWindow();
+        this.catGameController = new CatGameController(catGameView, game, this);
+        this.catGameController._init_();
+        changeWindow(this.boardView, this.catGameView);
+    }
     
     // metodos varios
     

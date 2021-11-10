@@ -13,6 +13,8 @@ public class BoardController {
     private Game game;
     private MainController mainController;
     private DataOutputStream outputStream;
+    
+    // tablero para el juego
 
     public BoardController(BoardWindow boardView, Game game, MainController mainController) {
         this.boardView = boardView;
