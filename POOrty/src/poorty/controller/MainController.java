@@ -84,7 +84,7 @@ public class MainController {
     public void startBoardWindow(int fromWindowSelecction){
         
         this.boardView = new BoardWindow();
-        this.boardController = new BoardController(boardView, game, this);
+        this.boardController = new BoardController( game, boardView , this);
         boardController._init_();
         
         if(fromWindowSelecction == 1){
