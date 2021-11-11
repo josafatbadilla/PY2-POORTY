@@ -58,6 +58,10 @@ public class MainController {
         window.visibility(true);
     }
     
+    public void closeWindow(iWindow window){
+        window.visibility(false);
+    }
+    
     // metodos para el cambio de ventanas 
     // creacion de la ventana para la seleccion de personajes
     public void characterSelectWindow(){
@@ -101,6 +105,28 @@ public class MainController {
         }
     }
     
+    
+    // creacion del juego del gato y pasada de pantalla desde el tablero
+    public void startCatMiniGame(int enemyId){
+        this.catGameView = new CatGameWindow();
+        this.catGameController = new CatGameController(catGameView, game, this, enemyId);
+        this.catGameController._init_();
+        //changeWindow(this.boardView, this.catGameView);
+        changeWindow(this.boardView, this.catGameView); // muestra la pantalla del juego del gato
+    }
+    
+    // se cierra las ventanas de los minijuegos
+    public void closeMiniGame(int miniGame){
+        switch(miniGame){
+            case 4: // se cierra el juego del gato
+                changeWindow(this.catGameView, this.boardView);
+                System.out.println("Se cambia al tablero");
+                break;
+            default:
+                System.out.println("Opcion inexistente para cerrar el minijuego");
+                break;
+        }
+    }
     
     // metodos varios
     

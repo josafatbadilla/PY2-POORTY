@@ -90,6 +90,51 @@ public class ServerThread  extends Thread{
 
     }
     
+    // opciones del servidor y varias
+    private void serverHelper(int option) throws IOException{
+        switch(option){
+            case 1: // designar un enemigo al jugador e iniciar el juego para el enemigo
+                int opc1 = inputStream.readInt(); // opcion del juego
+                int opc2 = inputStream.readInt(); // opcion dentro de las opciones del juego
+                ArrayList<Integer> enemiesId = new ArrayList();
+                for(int i = 0; i < players.size(); i++){
+                    if(players.get(i).playerId != this.playerId){
+                        enemiesId.add(players.get(i).playerId);
+                    }
+                }
+                
+                if(enemiesId.size() > 0){
+                    int randomEnemy = (int)(Math.random()*enemiesId.size());
+                    // enviamos el enemigo a este jugador que lo pidio
+                    outputStream.writeInt(opc1); // opc del juego
+                    outputStream.writeInt(opc2); // subopcion del juego
+                    outputStream.writeInt(enemiesId.get(randomEnemy)); // id del enemigo
+                    
+                    // se le avisa al enemigo
+                    for(int i = 0; i < players.size(); i++){
+                        if(players.get(i).playerId == enemiesId.get(randomEnemy)){
+                            players.get(i).outputStream.writeInt(opc1); // opcion del juego
+                            players.get(i).outputStream.writeInt(2); // inicializacion del juego
+                            players.get(i).outputStream.writeInt(this.playerId); // aviso que soy su enemigo
+                        }
+                    }
+
+                }else{
+                    System.out.println("No hay enemigos disposibles");
+                }
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+        }
+    
+    }
+    
+    
     private void lobby(int option) throws IOException{
         switch(option){
             case 0: // el host inicia el juego desde el lobby
@@ -187,25 +232,35 @@ public class ServerThread  extends Thread{
         switch(option){
         case 0: //
 
-            while(true){
-                option = inputStream.readInt();
-                switch(option){
-                case 0: // comenzar el gato
-
-                    break;
-                case 1: 
-                    
-                    break;
-                case 2:
-                    
-                    break;
+            break;
+        case 1: // enviar una jugada a mi enemigo
+            int enemyId = inputStream.readInt(); // el id del contrincante a enviar la jugada
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).playerId == enemyId){
+                    players.get(i).outputStream.writeInt(4); // opc del gato
+                    players.get(i).outputStream.writeInt(3); // opc de recibir jugada
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // se envia la fila
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // se envia la columna
                 }
+
+            } 
                 
-            }
+            break;
+        case 2: // cerrar el juego de todos
+            int vsPlayerId = inputStream.readInt(); // el id del contrincante para cerrar el juego 
+            // se cierra el juego de este jugador (minigamehost)
+            outputStream.writeInt(4);
+            outputStream.writeInt(4); // opc de cerrar juego
             
-        } catch (IOException e) {
-            System.out.println("Error en el switch del gato");
-             e.printStackTrace();
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).playerId == vsPlayerId){
+                    players.get(i).outputStream.writeInt(4); // opc del gato
+                    players.get(i).outputStream.writeInt(4); // opc de cerrar juego
+                }
+
+            } 
+
+            break;
         }
         
     }

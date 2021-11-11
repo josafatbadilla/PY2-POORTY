@@ -130,4 +130,29 @@ public class PlayerThread extends Thread{
         }
     }
     
+    
+    // acciones para el minijuego del gato
+    public void miniGameCat(int option) throws IOException{
+        switch(option){
+            case 1: // se le asigna el enemigo a este jugador en el minijuego del gato
+                mainController.getCatGameController().setEnemyId(inputStream.readInt());
+
+                break;
+            case 2: // me avisan que soy su enemigo para el juego del gato
+                mainController.startCatMiniGame(inputStream.readInt());
+
+                break;
+            case 3: // se recibe una jugada de mi enemigo 
+                int playedRow = inputStream.readInt();
+                int playedColumn = inputStream.readInt();
+                mainController.getCatGameController().recievePlay(playedRow, playedColumn); // se actualiza la jugada
+               
+                break;
+            case 4:
+                // cerrar el juego y volver al tablero
+                mainController.closeMiniGame(4); // cerrar el juego del gato
+                break;
+        }
+    }
+    
 }
