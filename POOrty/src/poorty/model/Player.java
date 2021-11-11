@@ -23,7 +23,6 @@ public class Player {
     private int playerId;
     private boolean host;
     private String characterName;
-    private boolean throwDices; // indica si puede tirar los dados en su turno del tablero principal
     // referencia a la ventana del cliente para realizar y llamar las funciones necesarias
     
     
@@ -43,7 +42,6 @@ public class Player {
         
         // inicializacion de variables
         this.characterName = "";
-        this.throwDices = true;
         
         new PlayerThread(inputStream, this, mainController).start();
    }
@@ -80,15 +78,6 @@ public class Player {
         this.characterName = characterName;
     }
 
-    public boolean isThrowDices() {
-        return throwDices;
-    }
-
-    public void setThrowDices(boolean throwDices) {
-        this.throwDices = throwDices;
-    }
-
-    
     
     
     
