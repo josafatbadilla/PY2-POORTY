@@ -96,7 +96,7 @@ public class ServerThread  extends Thread{
             case 1: // designar un enemigo al jugador e iniciar el juego para el enemigo
                 int opc1 = inputStream.readInt(); // opcion del juego
                 int opc2 = inputStream.readInt(); // opcion dentro de las opciones del juego
-                ArrayList<Integer> enemiesId = new ArrayList();  
+                ArrayList<Integer> enemiesId = new ArrayList();
                 for(int i = 0; i < players.size(); i++){
                     if(players.get(i).playerId != this.playerId){
                         enemiesId.add(players.get(i).playerId);
@@ -111,9 +111,16 @@ public class ServerThread  extends Thread{
                     outputStream.writeInt(enemiesId.get(randomEnemy)); // id del enemigo
                     
                     // se le avisa al enemigo
-                    outputStream.writeInt(opc1); // opcion del juego
-                    outputStream.writeInt(2); // inicializacion del juego
-                    outputStream.writeInt(this.playerId); // aviso que soy su enemigo
+                    for(int i = 0; i < players.size(); i++){
+                        if(players.get(i).playerId == enemiesId.get(randomEnemy)){
+                            players.get(i).outputStream.writeInt(opc1); // opcion del juego
+                            players.get(i).outputStream.writeInt(2); // inicializacion del juego
+                            players.get(i).outputStream.writeInt(this.playerId); // aviso que soy su enemigo
+                        }
+                    }
+
+                }else{
+                    System.out.println("No hay enemigos disposibles");
                 }
 
                 break;
@@ -226,10 +233,32 @@ public class ServerThread  extends Thread{
         case 0: //
 
             break;
-        case 1: 
+        case 1: // enviar una jugada a mi enemigo
+            int enemyId = inputStream.readInt(); // el id del contrincante a enviar la jugada
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).playerId == enemyId){
+                    players.get(i).outputStream.writeInt(4); // opc del gato
+                    players.get(i).outputStream.writeInt(3); // opc de recibir jugada
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // se envia la fila
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // se envia la columna
+                }
 
+            } 
+                
             break;
-        case 2:
+        case 2: // cerrar el juego de todos
+            int vsPlayerId = inputStream.readInt(); // el id del contrincante para cerrar el juego 
+            // se cierra el juego de este jugador (minigamehost)
+            outputStream.writeInt(4);
+            outputStream.writeInt(4); // opc de cerrar juego
+            
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).playerId == vsPlayerId){
+                    players.get(i).outputStream.writeInt(4); // opc del gato
+                    players.get(i).outputStream.writeInt(4); // opc de cerrar juego
+                }
+
+            } 
 
             break;
         }

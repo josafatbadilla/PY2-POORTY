@@ -142,12 +142,15 @@ public class PlayerThread extends Thread{
                 mainController.startCatMiniGame(inputStream.readInt());
 
                 break;
-            case 3: // 
-
+            case 3: // se recibe una jugada de mi enemigo 
+                int playedRow = inputStream.readInt();
+                int playedColumn = inputStream.readInt();
+                mainController.getCatGameController().recievePlay(playedRow, playedColumn); // se actualiza la jugada
+               
                 break;
             case 4:
-                // 
-                
+                // cerrar el juego y volver al tablero
+                mainController.closeMiniGame(4); // cerrar el juego del gato
                 break;
         }
     }
