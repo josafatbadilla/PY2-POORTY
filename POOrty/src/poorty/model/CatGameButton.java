@@ -38,7 +38,24 @@ public class CatGameButton extends JButton {
             return new ImageIcon("./src/media/catgame/Circule.png");
         }
     }
-        
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+    
+    
     
     
 }

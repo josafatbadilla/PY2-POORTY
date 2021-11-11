@@ -5,6 +5,8 @@ package poorty.controller;
 
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
 import javax.swing.JLabel;
@@ -16,7 +18,7 @@ import poorty.model.Character;
 import poorty.view.BoardWindow;
 
 
-public class BoardController {
+public class BoardController implements ActionListener{
     private BoardWindow boardView;
     private Game game;
     private MainController mainController;
@@ -41,8 +43,8 @@ public class BoardController {
     
     // se inicializan los compponentes de la pantalla
     public void _init_(){
-        initplayerCharacter();
-        initBoard();
+        
+        boardView.getPlayMiniGame().addActionListener(this);
         
         //mainController.showWindow(boardView);
         //movePlayerCharacter();
@@ -50,6 +52,18 @@ public class BoardController {
         
         
         // inicializacion de componentes graficos de la ventana  
+        initplayerCharacter();
+        initBoard();
+    }
+    
+    // funcion para el listener de los botones y demas
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        if(e.getSource().equals(boardView.getPlayMiniGame())){
+            // se presiona el btn de jugar el minijuego
+            mainController.startCatMiniGame(-1);
+        }
     }
     
     private void initBoard(){
@@ -98,6 +112,7 @@ public class BoardController {
     public void movePlayerCharacter(){
         playerIcon.getPlayerButton().setBounds(15, game.getPlayer().getPlayerId() - 1*PLAYER_HEIGH + 55, playerIcon.getPlayerIcon().getIconWidth(),  playerIcon.getPlayerIcon().getIconHeight());
     }
+    
     // funciones para la conexion con el servidor
     
     

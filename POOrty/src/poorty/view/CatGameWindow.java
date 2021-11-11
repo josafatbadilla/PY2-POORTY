@@ -2,14 +2,18 @@
 package poorty.view;
 
 import javax.swing.JPanel;
+import poorty.model.CatGameButton;
 
 
 public class CatGameWindow extends javax.swing.JFrame implements iWindow{
     
     public static int BOARD_BTN_SIZE = 120;
+    public static int PROPORTION = 3;
+    private CatGameButton[][] board;
     
     public CatGameWindow() {
-        initComponents();
+       initComponents();
+       this.board = new CatGameButton[PROPORTION][PROPORTION]; 
     }
 
     
@@ -63,7 +67,7 @@ public class CatGameWindow extends javax.swing.JFrame implements iWindow{
                     .addGroup(layout.createSequentialGroup()
                         .addGap(163, 163, 163)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -88,6 +92,12 @@ public class CatGameWindow extends javax.swing.JFrame implements iWindow{
         return pnlBoard;
     }
 
+    public CatGameButton[][] getBoard() {
+        return board;
+    }
+    
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -99,4 +109,6 @@ public class CatGameWindow extends javax.swing.JFrame implements iWindow{
     public void visibility(boolean setVisible) {
         this.setVisible(setVisible);
     }
+    
+    
 }

@@ -2,6 +2,9 @@
 package poorty.controller;
 
 import java.awt.Image;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import poorty.model.*; // importa todos los modelos
 import poorty.view.*; // importa todas las vistas
@@ -100,11 +103,12 @@ public class MainController {
     
     
     // creacion del juego del gato y pasada de pantalla desde el tablero
-    public void startCatMiniGame(){
+    public void startCatMiniGame(int enemyId){
         this.catGameView = new CatGameWindow();
-        this.catGameController = new CatGameController(catGameView, game, this);
+        this.catGameController = new CatGameController(catGameView, game, this, enemyId);
         this.catGameController._init_();
-        changeWindow(this.boardView, this.catGameView);
+        //changeWindow(this.boardView, this.catGameView);
+        showWindow(catGameView); // muestra la pantalla del juego del gato
     }
     
     // metodos varios
@@ -116,7 +120,22 @@ public class MainController {
         return new ImageIcon(resizedIconImage);
     }
     
-    // getters and setters
+    // metodo envia al servidor una peticion de asignarle el enemigo del minijuego que se esta jugando
+    public void getEnemyMiniGame(int gameThreadOpc, int gameOpc){
+        try {
+            game.getPlayer().getOutputStream().writeInt(0); // helper
+            game.getPlayer().getOutputStream().writeInt(1); // designar enemigo
+            game.getPlayer().getOutputStream().writeInt(gameThreadOpc);
+            game.getPlayer().getOutputStream().writeInt(gameOpc); // subopcion del minijuego
+            
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+
+// getters and setters
     public Game getGame() {
         return game;
     }
@@ -132,6 +151,10 @@ public class MainController {
     
     public RandomTurnController getRandomTurnController(){
         return randomTurnController;
+    }
+    
+    public CatGameController getCatGameController(){
+        return catGameController;
     }
     
 }

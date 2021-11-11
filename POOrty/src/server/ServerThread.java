@@ -54,6 +54,9 @@ public class ServerThread  extends Thread{
             while(true){
                 option = inputStream.readInt();
                 switch(option){
+                case 0: // opciones generales o varias (no pertenecen a ningun juego o pantalla)
+                    serverHelper(inputStream.readInt());
+                    break;
                 case 1: // opciones del lobby
                     lobby(inputStream.readInt());
                     break;
@@ -62,6 +65,9 @@ public class ServerThread  extends Thread{
                     break;
                 case 3: // opciones para la seleccion del turno
                     turnSelection(inputStream.readInt());
+                    break;
+                case 4: // opciones para el minijuego del gato
+                    miniGameCat(inputStream.readInt());
                     break;
                 }
                 
@@ -84,8 +90,45 @@ public class ServerThread  extends Thread{
 
     }
     
+    // opciones del servidor y varias
+    private void serverHelper(int option) throws IOException{
+        switch(option){
+            case 1: // designar un enemigo al jugador e iniciar el juego para el enemigo
+                int opc1 = inputStream.readInt(); // opcion del juego
+                int opc2 = inputStream.readInt(); // opcion dentro de las opciones del juego
+                ArrayList<Integer> enemiesId = new ArrayList();  
+                for(int i = 0; i < players.size(); i++){
+                    if(players.get(i).playerId != this.playerId){
+                        enemiesId.add(players.get(i).playerId);
+                    }
+                }
+                
+                if(enemiesId.size() > 0){
+                    int randomEnemy = (int)(Math.random()*enemiesId.size());
+                    // enviamos el enemigo a este jugador que lo pidio
+                    outputStream.writeInt(opc1); // opc del juego
+                    outputStream.writeInt(opc2); // subopcion del juego
+                    outputStream.writeInt(enemiesId.get(randomEnemy)); // id del enemigo
+                    
+                    // se le avisa al enemigo
+                    outputStream.writeInt(opc1); // opcion del juego
+                    outputStream.writeInt(2); // inicializacion del juego
+                    outputStream.writeInt(this.playerId); // aviso que soy su enemigo
+                }
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+        }
+    
+    }
+    
+    
     private void lobby(int option) throws IOException{
-        //accion para el juego del gato
         switch(option){
             case 0: // el host inicia el juego desde el lobby
                 server.hostStartGame();
@@ -162,6 +205,7 @@ public class ServerThread  extends Thread{
                     players.get(i).outputStream.writeInt(3);
                     players.get(i).outputStream.writeInt(3);
                 }
+                break;
             case 4:
                 // se pasa al tablero desde la seleccion de turno de lanzar dados
                 // se pasa a todos los jugadores de pantalla a la seleccion de turno
@@ -169,37 +213,25 @@ public class ServerThread  extends Thread{
                     players.get(i).outputStream.writeInt(3);
                     players.get(i).outputStream.writeInt(4);
                 }
+                break;
             default:
                 System.out.println("Opcion inexistente");
         }
     }
 
 // Metodos para correr los juegos
-    private void runCatGame(){
+    private void miniGameCat(int option) throws IOException{
         
-        try {
-            //accion para el juego del gato
-            int option = 0;
+        switch(option){
+        case 0: //
 
-            while(true){
-                option = inputStream.readInt();
-                switch(option){
-                case 0: // comenzar el gato
+            break;
+        case 1: 
 
-                    break;
-                case 1: 
-                    
-                    break;
-                case 2:
-                    
-                    break;
-                }
-                
-            }
-            
-        } catch (IOException e) {
-            System.out.println("Error en el switch del gato");
-             e.printStackTrace();
+            break;
+        case 2:
+
+            break;
         }
         
     }
