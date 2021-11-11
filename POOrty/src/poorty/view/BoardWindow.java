@@ -2,6 +2,7 @@
 package poorty.view;
 
 import java.awt.TextField;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
@@ -17,18 +18,27 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
     private void initComponents() {
 
         BoardPanel = new javax.swing.JPanel();
+        playMiniGame = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        playMiniGame.setText("Jugar Gato");
 
         javax.swing.GroupLayout BoardPanelLayout = new javax.swing.GroupLayout(BoardPanel);
         BoardPanel.setLayout(BoardPanelLayout);
         BoardPanelLayout.setHorizontalGroup(
             BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 804, Short.MAX_VALUE)
+            .addGroup(BoardPanelLayout.createSequentialGroup()
+                .addGap(340, 340, 340)
+                .addComponent(playMiniGame)
+                .addContainerGap(379, Short.MAX_VALUE))
         );
         BoardPanelLayout.setVerticalGroup(
             BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 537, Short.MAX_VALUE)
+            .addGroup(BoardPanelLayout.createSequentialGroup()
+                .addGap(244, 244, 244)
+                .addComponent(playMiniGame)
+                .addContainerGap(270, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -49,6 +59,7 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BoardPanel;
+    private javax.swing.JButton playMiniGame;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -58,6 +69,11 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
 
     public JPanel getBoardPanel() {
         return BoardPanel;
+    }
+
+    
+    public JButton getPlayMiniGame() {
+        return playMiniGame;
     }
 
     
