@@ -15,34 +15,40 @@ import poorty.controller.MainController;
  *
  * @author josa
  */
-public class PlayerCharacter {
+public class PlayerCharacter extends JButton {
+    
     private String nombre;
     private Character playerCharacter;
-    private JLabel playerButton;
-    private ImageIcon playerIcon;
+    private int x;
+    private int y;
+    private int[] bounds = new int[4];
 
     public PlayerCharacter(int width, int height, Character playerCharacter) {
+        super(MainController.resizeIcon(playerCharacter.getIcon(), width, height));
         this.playerCharacter = playerCharacter;
-        this.playerIcon = MainController.resizeIcon(playerCharacter.getIcon(), width, height);
         this.nombre = playerCharacter.getName();
-        this.playerButton = new JLabel(playerIcon);
-    }
-
-    public JLabel getPlayerButton() {
-        return playerButton;
-    }
-
-    public void setPlayerButton(JLabel playerButton) {
-        this.playerButton = playerButton;
     }
     
-    public void setPlayerButtonBounds(int x, int y, int width, int heigth) {
-        this.playerButton.setBounds(x, y, width, heigth);
+    public void updateBounds(int x, int y, int widht, int height){
+        bounds[0] = x;
+        bounds[1] = y;
+        bounds[2] = widht;
+        bounds[3] = height;
+        this.x = x;
+        this.y = y;
+    }
+    
+    public int[] getButtonBounds(){
+        return bounds;
     }
 
-    public ImageIcon getPlayerIcon() {
-        return playerIcon;
+    public String getCharacterName() {
+        return playerCharacter.getName();
     }
+    
+    
+    
+
     
     
     

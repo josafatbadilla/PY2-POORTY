@@ -10,7 +10,7 @@ import poorty.model.CharacterBtn;
 
 public class Selection extends javax.swing.JFrame implements iWindow {
     
-    private ArrayList<CharacterBtn> characterBtns;
+    public static ArrayList<CharacterBtn> characterBtns;
     public static final int CHARHEIGH = 110; // ALTURA DE PERSONAJE
     public static final int CHARWIDTH = 90; // ANCHO DE PERSONAJE
     public static final Color[] BTN_COLORS = {new Color(255,255,255), new Color(51,153,255), new Color(153,153,153)};

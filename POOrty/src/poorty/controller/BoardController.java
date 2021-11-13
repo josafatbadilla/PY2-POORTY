@@ -9,12 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import poorty.view.Selection;
 import poorty.model.Game;
 import poorty.model.Box;
 import poorty.model.PlayerCharacter;
 import poorty.model.Character;
+import poorty.model.CharacterBtn;
 import poorty.view.BoardWindow;
 
 
@@ -23,7 +27,7 @@ public class BoardController implements ActionListener{
     private Game game;
     private MainController mainController;
     private DataOutputStream outputStream;
-    private PlayerCharacter playerIcon; 
+    private ArrayList<PlayerCharacter> playerIcon; 
     
     
     public static final int BUTTON_SIZE = 100;
@@ -45,12 +49,9 @@ public class BoardController implements ActionListener{
     public void _init_(){
         
         boardView.getPlayMiniGame().addActionListener(this);
-        
+        boardView.getBtnThrowDices().addActionListener(this);
         //mainController.showWindow(boardView);
         //movePlayerCharacter();
-        
-        
-        
         // inicializacion de componentes graficos de la ventana  
         initplayerCharacter();
         initBoard();
@@ -62,7 +63,13 @@ public class BoardController implements ActionListener{
         
         if(e.getSource().equals(boardView.getPlayMiniGame())){
             // se presiona el btn de jugar el minijuego
-            mainController.startCatMiniGame(-1);
+            mainController.startCatMiniGame(-1); }
+            
+        if(e.getSource().equals(boardView.getBtnThrowDices())){
+            // se lanzan los dados
+            //boardView.getBtnThrowDices().setEnabled(false);
+            sendDicesResult();
+            
         }
     }
     
@@ -90,28 +97,77 @@ public class BoardController implements ActionListener{
     }
     
     private void initplayerCharacter(){
-        ArrayList<Character> charactersIcons = game.getCharactersIcons();
-        Character pCharacter = charactersIcons.get(0);
-        for (int i = 0; i < charactersIcons.size(); i++) {
-            if (game.getPlayer().getCharacterName().equals(charactersIcons.get(i).getName())){
-                pCharacter = charactersIcons.get(i);
-                break;
+        ArrayList<CharacterBtn> charactersbtns = Selection.characterBtns;
+        ArrayList<Character> charactersIcons = game.getCharactersIcons(); // figura de los jugadores
+        playerIcon = new ArrayList<>();
+        for (int i = 0; i < charactersbtns.size(); i++) {
+            if (charactersbtns.get(i).isSelected()){
+                for (Character charactersIcon : charactersIcons) {
+                    if(charactersbtns.get(i).getCharacterName().equals(charactersIcon.getName())){
+                        System.out.println("Se añade el caracter");
+                        playerIcon.add(new PlayerCharacter(PLAYER_WIDTH, PLAYER_HEIGH, charactersIcons.get(i)));
+                        
+                    }
+                }
+                
             }
-            
         }
-        playerIcon = new PlayerCharacter(PLAYER_WIDTH, PLAYER_HEIGH, pCharacter);
-        boardView.getBoardPanel().add(playerIcon.getPlayerButton()).setVisible(true);
-        // game.getPlayer().getPlayerId() - 1*PLAYER_HEIGH + 55
         
-        playerIcon.getPlayerButton().setBounds( 0, game.getPlayer().getPlayerId() - 1*PLAYER_HEIGH + 55 , playerIcon.getPlayerIcon().getIconWidth(),  playerIcon.getPlayerIcon().getIconHeight());
-        
+        //dibujarlos
+        for (int i = 0; i < playerIcon.size(); i++) {
+            
+            playerIcon.get(i).setBounds( 0, i *PLAYER_HEIGH , PLAYER_WIDTH, PLAYER_HEIGH);
+            boardView.getBoardPanel().add(playerIcon.get(i));
+            playerIcon.get(i).updateBounds(0, i *PLAYER_HEIGH , PLAYER_WIDTH, PLAYER_HEIGH);
+            playerIcon.get(i).setVisible(true);
+        }
         //playerButton = boardView.getComponent(8);
     }
     
     
-    public void movePlayerCharacter(){
-        playerIcon.getPlayerButton().setBounds(15, game.getPlayer().getPlayerId() - 1*PLAYER_HEIGH + 55, playerIcon.getPlayerIcon().getIconWidth(),  playerIcon.getPlayerIcon().getIconHeight());
+    public void movePlayerCharacter(int value){
+        for (int i = 0; i < playerIcon.size(); i++) {
+            if(game.getPlayer().getCharacterName().equals(playerIcon.get(i).getCharacterName())){
+                System.out.println("Se mueve el jugador");
+                int casilla = playerIcon.get(i).getCasillaActual() + value;
+                
+                int x = playerIcon.get(i).getX();
+                int y = playerIcon.get(i).getY();
+                if ((x+ BUTTON_SIZE) * value <= BUTTON_SIZE * 7 && y <= BUTTON_SIZE) //mueve hacia la derecha
+                    playerIcon.get(i).updateBounds((x + BUTTON_SIZE) * value, y, PLAYER_WIDTH, PLAYER_HEIGH);
+                
+                else if ((x >= BUTTON_SIZE * 7 && x <= BUTTON_SIZE * 7) && (y + BUTTON_SIZE)*value <= BUTTON_SIZE * 6) // mueve hacia abajo
+                    playerIcon.get(i).updateBounds(BUTTON_SIZE * 7 , (y + BUTTON_SIZE)*value, PLAYER_WIDTH, PLAYER_HEIGH);
+                
+                else if ((x - BUTTON_SIZE)*value >= 0 && (y >= BUTTON_SIZE * 6  && y <= BUTTON_SIZE * 7))
+                    playerIcon.get(i).updateBounds((x - BUTTON_SIZE)*value , (y + BUTTON_SIZE) * 5, PLAYER_WIDTH, PLAYER_HEIGH);
+                
+                else if(x >= 0 && ((y - BUTTON_SIZE)*value >= 0 && y <= BUTTON_SIZE * 6) )
+                    playerIcon.get(i).updateBounds(0 , (y - BUTTON_SIZE)*value, PLAYER_WIDTH, PLAYER_HEIGH);
+                break;
+            }
+        }
     }
+    
+    public void updateCharacters(){
+        for (int i = 0; i < playerIcon.size(); i++) {
+            int bounds[] = playerIcon.get(i).getButtonBounds();
+            playerIcon.get(i).setBounds( bounds[0], bounds[1] , PLAYER_WIDTH, PLAYER_HEIGH);
+            }
+    }
+    
+    private void sendDicesResult(){
+        
+        try{
+                int dices =game.throwDices(boardView.getLblDice1(), boardView.getLblDice2());
+                movePlayerCharacter(dices);
+                updateCharacters();
+            } 
+            catch (InterruptedException ex) {
+            Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     // funciones para la conexion con el servidor
     
