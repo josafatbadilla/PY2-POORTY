@@ -22,6 +22,7 @@ public class Game {
     // tablero
     
     // minijuegos
+    private AlphSoup alphSoup; // sopa de letras
     
     
     public Game(MainController mainController){
