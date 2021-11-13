@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,9 +32,9 @@ public class BoardController implements ActionListener{
     
     
     public static final int BUTTON_SIZE = 100;
-    public static final int BOARD_SIZE = 26;
-    public static final int PLAYER_HEIGH = 25;
-    public static final int PLAYER_WIDTH = 18;
+    public static final int BOARD_SIZE = 27;
+    public static final int PLAYER_HEIGH = 50;
+    public static final int PLAYER_WIDTH = 38;
     private Box[] boxArray= new Box[BOARD_SIZE];
 
     public BoardController(Game game, BoardWindow boardView ,  MainController mainController) {
@@ -47,7 +48,7 @@ public class BoardController implements ActionListener{
     
     // se inicializan los compponentes de la pantalla
     public void _init_(){
-        
+        boardView.getjLabel1().setText(game.getPlayer().getCharacterName());
         boardView.getPlayMiniGame().addActionListener(this);
         boardView.getBtnThrowDices().addActionListener(this);
         //mainController.showWindow(boardView);
@@ -76,21 +77,21 @@ public class BoardController implements ActionListener{
     private void initBoard(){
         
         for (int i = 0; i < boxArray.length; i++) {
-            boxArray[i] = new Box("Juego",(i+1) + "");
-            boardView.setSize(820, 750);
+            boxArray[i] = new Box("Juego",i + "");
+            boardView.setSize(920, 750);
             boardView.getBoardPanel().add(boxArray[i].getBoxButton());
             boxArray[i].getBoxButton().setBackground(Color.green);
-            
+            boxArray[i].getBoxButton().setEnabled(false);
             if (i < 8)
                 boxArray[i].setBounds(i*BUTTON_SIZE, 0, BUTTON_SIZE, BUTTON_SIZE);
-            else if (i >= 8 && i <= 13){
-                boxArray[i].setBounds(7*BUTTON_SIZE, (i-7) * BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE);
+            else if (i >= 8 && i <= 14){
+                boxArray[i].setBounds(8*BUTTON_SIZE, (i-8) * BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE);
             }
-            else if (i > 13  && i < 21){
-                boxArray[i].setBounds(7*BUTTON_SIZE-(i-13)*BUTTON_SIZE,6*BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE);
+            else if (i > 14  && i < 22){
+                boxArray[i].setBounds(8*BUTTON_SIZE-(i-14)*BUTTON_SIZE,6*BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE);
             }
-            else if(i >= 21){
-                boxArray[i].setBounds(0,5*BUTTON_SIZE -(i-21)*BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE);
+            else if(i >= 22){
+                boxArray[i].setBounds(0,6*BUTTON_SIZE -(i-22)*BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE);
             }
             //System.out.println((i+1) + ".\t " + buttonArray[i].getBounds().x + "," + buttonArray[i].getBounds().y );
         }
@@ -118,7 +119,7 @@ public class BoardController implements ActionListener{
             
             playerIcon.get(i).setBounds( 0, i *PLAYER_HEIGH , PLAYER_WIDTH, PLAYER_HEIGH);
             boardView.getBoardPanel().add(playerIcon.get(i));
-            playerIcon.get(i).updateBounds(0, i *PLAYER_HEIGH , PLAYER_WIDTH, PLAYER_HEIGH);
+            playerIcon.get(i).updateBounds(0, i *PLAYER_HEIGH);
             playerIcon.get(i).setVisible(true);
         }
         //playerButton = boardView.getComponent(8);
@@ -128,48 +129,83 @@ public class BoardController implements ActionListener{
     public void movePlayerCharacter(int value){
         for (int i = 0; i < playerIcon.size(); i++) {
             if(game.getPlayer().getCharacterName().equals(playerIcon.get(i).getCharacterName())){
-                System.out.println("Se mueve el jugador");
+                
                 int casilla = playerIcon.get(i).getCasillaActual() + value;
+                
+                if (casilla == BOARD_SIZE)
+                    continue;
+                else if (casilla > BOARD_SIZE)
+                    casilla = (BOARD_SIZE -1) - (casilla%(BOARD_SIZE -1));
+                
+                playerIcon.get(i).setCasillaActual(casilla);
                 
                 int x = playerIcon.get(i).getX();
                 int y = playerIcon.get(i).getY();
-                if ((x+ BUTTON_SIZE) * value <= BUTTON_SIZE * 7 && y <= BUTTON_SIZE) //mueve hacia la derecha
-                    playerIcon.get(i).updateBounds((x + BUTTON_SIZE) * value, y, PLAYER_WIDTH, PLAYER_HEIGH);
-                
-                else if ((x >= BUTTON_SIZE * 7 && x <= BUTTON_SIZE * 7) && (y + BUTTON_SIZE)*value <= BUTTON_SIZE * 6) // mueve hacia abajo
-                    playerIcon.get(i).updateBounds(BUTTON_SIZE * 7 , (y + BUTTON_SIZE)*value, PLAYER_WIDTH, PLAYER_HEIGH);
-                
-                else if ((x - BUTTON_SIZE)*value >= 0 && (y >= BUTTON_SIZE * 6  && y <= BUTTON_SIZE * 7))
-                    playerIcon.get(i).updateBounds((x - BUTTON_SIZE)*value , (y + BUTTON_SIZE) * 5, PLAYER_WIDTH, PLAYER_HEIGH);
-                
-                else if(x >= 0 && ((y - BUTTON_SIZE)*value >= 0 && y <= BUTTON_SIZE * 6) )
-                    playerIcon.get(i).updateBounds(0 , (y - BUTTON_SIZE)*value, PLAYER_WIDTH, PLAYER_HEIGH);
+                System.out.println("Se mueve el jugador  Casilla: " + casilla + " Value:" + value);
+                System.out.println("x= " + x + " y= " + y);
+                if (casilla <= 8){
+                    playerIcon.get(i).updateBounds(BUTTON_SIZE * casilla, y % BUTTON_SIZE);
+                }
+                else if (casilla > 8 && casilla < 14 ){
+                    playerIcon.get(i).updateBounds(BUTTON_SIZE * 8 , BUTTON_SIZE * (casilla - 8));
+                }
+                else if (casilla >= 14 && casilla < 22 ){
+                    x = BUTTON_SIZE * 8; 
+                    playerIcon.get(i).updateBounds(x - (BUTTON_SIZE * (casilla - 14)) , BUTTON_SIZE * 6);
+                }
+                else if (casilla >= 22){
+                    y = BUTTON_SIZE * 6; 
+                    playerIcon.get(i).updateBounds(0 , y - (BUTTON_SIZE*(casilla - 22)));
+                }
+                characterMoved(i);
                 break;
             }
         }
-    }
+        
+    } 
     
     public void updateCharacters(){
         for (int i = 0; i < playerIcon.size(); i++) {
-            int bounds[] = playerIcon.get(i).getButtonBounds();
-            playerIcon.get(i).setBounds( bounds[0], bounds[1] , PLAYER_WIDTH, PLAYER_HEIGH);
+            int x = playerIcon.get(i).getx();
+            int y = playerIcon.get(i).gety();
+            playerIcon.get(i).setBounds( x, y , PLAYER_WIDTH, PLAYER_HEIGH);
             }
     }
     
     private void sendDicesResult(){
         
-        try{
-                int dices =game.throwDices(boardView.getLblDice1(), boardView.getLblDice2());
-                movePlayerCharacter(dices);
-                updateCharacters();
-            } 
-            catch (InterruptedException ex) {
+        try {
+            int dices = game.throwDices(boardView.getLblDice1(), boardView.getLblDice2());
+            System.out.println("Dices :" + dices);
+            movePlayerCharacter(dices);
+            
+        } catch (InterruptedException ex) {
             Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
+           
     }
     
+    public ArrayList<PlayerCharacter> getPlayerIcon() {
+        return playerIcon;
+    }
     
     // funciones para la conexion con el servidor
+    
+    
+    public void characterMoved(int i){
+        try {
+                outputStream.writeInt(5); // opcion de tablero 
+                outputStream.writeInt(1); // 1
+                outputStream.writeInt(i); // envía el indice del personaje
+                outputStream.writeInt(playerIcon.get(i).getX()); // envía la nueva coordenada x
+                outputStream.writeInt(playerIcon.get(i).getY()); // envía la nueva coordenada y 
+            } catch (IOException ex) {
+                        Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+    }
+
+    
     
     
 }

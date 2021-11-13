@@ -69,6 +69,9 @@ public class ServerThread  extends Thread{
                 case 4: // opciones para el minijuego del gato
                     miniGameCat(inputStream.readInt());
                     break;
+                case 5: // movimiento tablero
+                    boardMoves(inputStream.readInt());
+                    break;
                 }
                 
             }
@@ -263,6 +266,23 @@ public class ServerThread  extends Thread{
             break;
         }
         
+    }
+    
+    public void boardMoves (int option) throws IOException {
+           
+        switch(option){
+            case 1: // se envía el número del caracter (indice)
+                for(int i = 0; i < players.size(); i++){
+                    players.get(i).outputStream.writeInt(5);
+                    players.get(i).outputStream.writeInt(1);
+                    players.get(i).outputStream.writeInt(inputStream.readInt());
+                    players.get(i).outputStream.writeInt(inputStream.readInt());
+                    players.get(i).outputStream.writeInt(inputStream.readInt());
+                }
+                break;
+                
+        }
+         
     }
     
     
