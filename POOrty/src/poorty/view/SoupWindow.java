@@ -39,7 +39,7 @@ public class SoupWindow extends javax.swing.JFrame implements iWindow{
     }
     
     private AlphSoupLabel createSoupLabel(int x, int y){
-        AlphSoupLabel newLabel = new AlphSoupLabel("");
+        AlphSoupLabel newLabel = new AlphSoupLabel(' ');
         newLabel.setBounds(x, y, LABEL_SIZE, LABEL_SIZE);
         newLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         newLabel.setBackground(Color.WHITE);

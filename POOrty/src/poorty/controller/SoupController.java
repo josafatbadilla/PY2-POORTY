@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.DataOutputStream;
-import poorty.model.Game;
+import poorty.model.*;
 import poorty.view.SoupWindow;
 
 
@@ -19,6 +19,7 @@ public class SoupController implements MouseListener, ActionListener {
     public SoupController(SoupWindow soupView, Game game, MainController mainController) {
         this.soupView = soupView;
         this.game = game;
+        this.game.setAlphSoup(new AlphSoup(soupView.getAlphaSoupMatrix())); // creamos el minijuego de la sopa de letras
         this.mainController = mainController;
         this.outputStream = game.getPlayer().getOutputStream();
     }
@@ -47,27 +48,27 @@ public class SoupController implements MouseListener, ActionListener {
     // MOUSE LISTENER
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("clicked");
+//        System.out.println("clicked");
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("pressed");
+//        System.out.println("pressed");
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println("released");
+//        System.out.println("released");
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        System.out.println("entered");
+//        System.out.println("entered");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        System.out.println("exited");
+//        System.out.println("exited");
     }
     
     // ACTION LISTENER

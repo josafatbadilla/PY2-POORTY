@@ -19,6 +19,7 @@ public class MainController {
     private DicesTurnWindow dicesTurnView; // ventana para lanzar dados para el turno
     private BoardWindow boardView; // ventana del tablero
     private CatGameWindow catGameView;
+    private SoupWindow soupGameView;
     
     // modelo principal
     private Game game;
@@ -30,6 +31,7 @@ public class MainController {
     private DicesTurnController dicesTurnController;
     private BoardController boardController;
     private CatGameController catGameController;
+    private SoupController soupGameController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -115,12 +117,23 @@ public class MainController {
         changeWindow(this.boardView, this.catGameView); // muestra la pantalla del juego del gato
     }
     
+    public void startSoupMiniGame(){
+        this.soupGameView = new SoupWindow();
+        this.soupGameController = new SoupController(soupGameView, game, this);
+        this.soupGameController._init_();
+        changeWindow(this.boardView, this.soupGameView); // muestra la pantalla del juego del gato
+    }
+    
+    
     // se cierra las ventanas de los minijuegos
     public void closeMiniGame(int miniGame){
         switch(miniGame){
             case 4: // se cierra el juego del gato
                 changeWindow(this.catGameView, this.boardView);
                 System.out.println("Se cambia al tablero");
+                break;
+            case 5: // se cierra la sopa de letras
+                changeWindow(this.soupGameView, this.boardView);
                 break;
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");

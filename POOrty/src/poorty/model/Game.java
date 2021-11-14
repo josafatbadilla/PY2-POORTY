@@ -97,6 +97,15 @@ public class Game {
     public ArrayList<Character> getCharactersIcons() {
         return charactersIcons;
     }
+
+    public void setAlphSoup(AlphSoup alphSoup) {
+        this.alphSoup = alphSoup;
+    }
+    
+    public AlphSoup getAlphSoup() {
+        return alphSoup;
+    }
+    
     
     
     

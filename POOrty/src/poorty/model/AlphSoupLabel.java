@@ -10,8 +10,8 @@ public class AlphSoupLabel extends JLabel{
     
     boolean selected;
     
-    public AlphSoupLabel(String text) {
-        super(text);
+    public AlphSoupLabel(char text) {
+        super(text + "");
         setSelected(false);
     }
     
@@ -30,11 +30,12 @@ public class AlphSoupLabel extends JLabel{
         }
     }
     
-    public void setLetter(String letter){
-        this.setText(letter);
+    public void setLetter(char letter){
+        this.setText(letter + "");
     }
     
-    public String getLetter(){
-        return this.getText();
+    public char getLetter(){
+        char[] chars = this.getText().toCharArray();
+        return chars[0];
     }
 }

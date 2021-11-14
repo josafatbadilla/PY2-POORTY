@@ -22,7 +22,7 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        playMiniGame.setText("Jugar Gato");
+        playMiniGame.setText("Jugar Sopa");
 
         javax.swing.GroupLayout BoardPanelLayout = new javax.swing.GroupLayout(BoardPanel);
         BoardPanel.setLayout(BoardPanelLayout);
@@ -31,7 +31,7 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
             .addGroup(BoardPanelLayout.createSequentialGroup()
                 .addGap(340, 340, 340)
                 .addComponent(playMiniGame)
-                .addContainerGap(379, Short.MAX_VALUE))
+                .addContainerGap(377, Short.MAX_VALUE))
         );
         BoardPanelLayout.setVerticalGroup(
             BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
