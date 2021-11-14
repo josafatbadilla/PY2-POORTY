@@ -34,7 +34,7 @@ public class RandomTurnController implements ActionListener{
         // agregar los listeners
         randomTurnView.getBtnSendNum().addActionListener(this);
         randomTurnView.getBtnStartGame().addActionListener(this);
-        
+        randomTurnView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
         // se activan solo para el host
         randomTurnView.getBtnStartGame().setEnabled(game.getPlayer().isHost());
         initBackground();

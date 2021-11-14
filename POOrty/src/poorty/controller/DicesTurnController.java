@@ -37,7 +37,7 @@ public class DicesTurnController implements ActionListener{
         // agregar los listeners
        dicesTurnView.getBtnThrowDices().addActionListener(this);
        dicesTurnView.getBtnStartGame().addActionListener(this);
-       
+       dicesTurnView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
         // se activan solo para el host
         dicesTurnView.getBtnStartGame().setEnabled(game.getPlayer().isHost());
         initBackground();

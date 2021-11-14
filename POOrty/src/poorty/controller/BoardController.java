@@ -53,6 +53,7 @@ public class BoardController implements ActionListener{
         boardView.getNameLbl().setText(game.getPlayer().getCharacterName());
         boardView.getPlayMiniGame().addActionListener(this);
         boardView.getBtnThrowDices().addActionListener(this);
+        boardView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
         //mainController.showWindow(boardView);
         //movePlayerCharacter();
         // inicializacion de componentes graficos de la ventana  
@@ -159,18 +160,17 @@ public class BoardController implements ActionListener{
                 System.out.println("x= " + x + " y= " + y);
                 if (casilla <= 8){
                     int x1 = (x % BUTTON_SIZE);
-                    while(x1 != (x % BUTTON_SIZE) + BUTTON_SIZE * casilla){
-                        playerIcon.get(i).updateBounds(x1, y % BUTTON_SIZE);
-                        playerIcon.get(i).setBounds( x1, y % BUTTON_SIZE , PLAYER_WIDTH, PLAYER_HEIGH);
-                        x1 = x1 + BUTTON_SIZE;
+                    playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * casilla, y % BUTTON_SIZE); 
+                    /*while (x1 <= (x % BUTTON_SIZE) + BUTTON_SIZE * casilla){
                         try {
+                            x1 += BUTTON_SIZE;
+                            playerIcon.get(i).updateBounds(x1, y % BUTTON_SIZE); 
                             characterMoved(i);
-                            System.out.println(x1+ "");
                             sleep(1000);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    }
+                    }*/
                 }
                 else if (casilla > 8 && casilla < 14 ){
                     playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * 8 , (y % BUTTON_SIZE) + BUTTON_SIZE * (casilla - 8));
@@ -186,6 +186,7 @@ public class BoardController implements ActionListener{
                 
                 break;
             }
+            characterMoved(i);
         }
         
     } 
@@ -204,6 +205,11 @@ public class BoardController implements ActionListener{
             int dices = game.throwDices(boardView.getLblDice1(), boardView.getLblDice2());
             System.out.println("Dices :" + dices);
             movePlayerCharacter(dices);
+            /*while(true){
+                if (!game.getThrowDices().isRunning()){
+                    
+                    break; }
+            }*/
             
         } catch (InterruptedException ex) {
             Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
