@@ -39,7 +39,8 @@ public class PlayerCharacter extends JLabel {
     public void updateBounds(int x, int y){
         this.x = x;
         this.y = y;
-        setBounds( x, y , width, height);
+        System.out.println("ChatacterBounds  x: " + x + " y: " + y);
+        this.setBounds( x, y , width, height);
     }
     
     public int getx(){

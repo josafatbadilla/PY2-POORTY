@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -157,7 +158,19 @@ public class BoardController implements ActionListener{
                 System.out.println("Se mueve el jugador  Casilla: " + casilla + " Value:" + value);
                 System.out.println("x= " + x + " y= " + y);
                 if (casilla <= 8){
-                    playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * casilla, y % BUTTON_SIZE);
+                    int x1 = (x % BUTTON_SIZE);
+                    while(x1 != (x % BUTTON_SIZE) + BUTTON_SIZE * casilla){
+                        playerIcon.get(i).updateBounds(x1, y % BUTTON_SIZE);
+                        playerIcon.get(i).setBounds( x1, y % BUTTON_SIZE , PLAYER_WIDTH, PLAYER_HEIGH);
+                        x1 = x1 + BUTTON_SIZE;
+                        try {
+                            characterMoved(i);
+                            System.out.println(x1+ "");
+                            sleep(1000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
                 else if (casilla > 8 && casilla < 14 ){
                     playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * 8 , (y % BUTTON_SIZE) + BUTTON_SIZE * (casilla - 8));
@@ -170,7 +183,7 @@ public class BoardController implements ActionListener{
                     y = (y % BUTTON_SIZE) + BUTTON_SIZE * 6; 
                     playerIcon.get(i).updateBounds(x % BUTTON_SIZE , y - (BUTTON_SIZE*(casilla - 22)));
                 }
-                characterMoved(i);
+                
                 break;
             }
         }
