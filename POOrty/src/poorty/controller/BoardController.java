@@ -56,6 +56,7 @@ public class BoardController implements ActionListener{
         boardView.getNameLbl().setText(game.getPlayer().getCharacterName());
         boardView.getPlayMiniGame().addActionListener(this);
         boardView.getBtnThrowDices().addActionListener(this);
+        boardView.getBtnCarcel().addActionListener(this);
         boardView.getBtnThrowDices().setEnabled(false);
         boardView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
         //mainController.showWindow(boardView);
@@ -85,6 +86,12 @@ public class BoardController implements ActionListener{
             continuarTurno();
             
         }
+        
+        if(e.getSource().equals(boardView.getBtnCarcel())){
+            System.out.println("Estoy en la carcel");
+            turnWait = 2;
+            
+        }
     }
     
     public void playerTurn(int turn){
@@ -94,7 +101,10 @@ public class BoardController implements ActionListener{
             continuar = false;
         }
         else{
+            System.out.println("Espero" + turnWait);
+            //boardView.getBtnThrowDices().setEnabled(false);
             continuar = true;
+            //actualTurn = turn + 1; // se salta el turno
             turnWait--;
         }
         continuarTurno();
