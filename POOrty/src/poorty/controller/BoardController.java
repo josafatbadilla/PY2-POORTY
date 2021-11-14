@@ -159,7 +159,6 @@ public class BoardController implements ActionListener{
                 System.out.println("Se mueve el jugador  Casilla: " + casilla + " Value:" + value);
                 System.out.println("x= " + x + " y= " + y);
                 if (casilla <= 8){
-                    int x1 = (x % BUTTON_SIZE);
                     playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * casilla, y % BUTTON_SIZE); 
                     /*while (x1 <= (x % BUTTON_SIZE) + BUTTON_SIZE * casilla){
                         try {
@@ -184,9 +183,10 @@ public class BoardController implements ActionListener{
                     playerIcon.get(i).updateBounds(x % BUTTON_SIZE , y - (BUTTON_SIZE*(casilla - 22)));
                 }
                 
+                characterMoved(i);
                 break;
             }
-            characterMoved(i);
+            
         }
         
     } 
