@@ -2,10 +2,16 @@
 package poorty.view;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import poorty.model.AlphSoupLabel;
+import poorty.model.AlphSoupWord;
 
 
 public class SoupWindow extends javax.swing.JFrame implements iWindow{
@@ -38,12 +44,30 @@ public class SoupWindow extends javax.swing.JFrame implements iWindow{
         
     }
     
+    // las palabras generadas se imprimen
+    public void generateWordList(ArrayList<AlphSoupWord> soupWords){
+        int x = 0, y = 50;
+        for(int i = 0; i < soupWords.size(); i++){
+            JLabel label = createWordLabel(x, y, soupWords.get(i).getWord());
+            pnlWordList.add(label);
+            y += 50;
+        }
+    }
+    
     private AlphSoupLabel createSoupLabel(int x, int y){
         AlphSoupLabel newLabel = new AlphSoupLabel(' ');
         newLabel.setBounds(x, y, LABEL_SIZE, LABEL_SIZE);
         newLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         newLabel.setBackground(Color.WHITE);
         newLabel.setFont(newLabel.getFont ().deriveFont (12.0f));
+        newLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return newLabel;
+    }
+    
+    private JLabel createWordLabel(int x, int y, String word){
+        JLabel newLabel = new JLabel(word);
+        newLabel.setBounds(x, y, pnlWordList.getWidth(), 50);
+        newLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
         newLabel.setHorizontalAlignment(SwingConstants.CENTER);
         return newLabel;
     }
@@ -54,6 +78,11 @@ public class SoupWindow extends javax.swing.JFrame implements iWindow{
 
         jLabel1 = new javax.swing.JLabel();
         pnlSoup = new javax.swing.JPanel();
+        pnlWordList = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblTimer = new javax.swing.JLabel();
+        btnCheckSoup = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,18 +103,67 @@ public class SoupWindow extends javax.swing.JFrame implements iWindow{
             .addGap(0, 500, Short.MAX_VALUE)
         );
 
+        pnlWordList.setBackground(new java.awt.Color(255, 255, 255));
+        pnlWordList.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Palabras");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Tiempo");
+
+        lblTimer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblTimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTimer.setText("00:00");
+
+        btnCheckSoup.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnCheckSoup.setText("Finalizar");
+
+        javax.swing.GroupLayout pnlWordListLayout = new javax.swing.GroupLayout(pnlWordList);
+        pnlWordList.setLayout(pnlWordListLayout);
+        pnlWordListLayout.setHorizontalGroup(
+            pnlWordListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlWordListLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTimer, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(pnlWordListLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(btnCheckSoup, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlWordListLayout.setVerticalGroup(
+            pnlWordListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlWordListLayout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 342, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblTimer)
+                .addGap(18, 18, 18)
+                .addComponent(btnCheckSoup, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(pnlSoup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pnlWordList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(pnlSoup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,7 +171,9 @@ public class SoupWindow extends javax.swing.JFrame implements iWindow{
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlSoup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlSoup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlWordList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
@@ -111,19 +191,26 @@ public class SoupWindow extends javax.swing.JFrame implements iWindow{
         return alphaSoupMatrix;
     }
     
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new SoupWindow().setVisible(true);
-//            }
-//        });
-//    }
+    
+    public JPanel getPnlSoup() {
+        return pnlSoup;
+    }
 
+    public JButton getBtnCheckSoup() {
+        return btnCheckSoup;
+    }
+
+    public JLabel getLblTimer() {
+        return lblTimer;
+    }
+  
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCheckSoup;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblTimer;
     private javax.swing.JPanel pnlSoup;
+    private javax.swing.JPanel pnlWordList;
     // End of variables declaration//GEN-END:variables
 }

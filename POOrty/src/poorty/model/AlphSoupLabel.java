@@ -12,6 +12,7 @@ public class AlphSoupLabel extends JLabel{
     
     public AlphSoupLabel(char text) {
         super(text + "");
+        this.setOpaque(true); // para que se vea el fondo
         setSelected(false);
     }
     

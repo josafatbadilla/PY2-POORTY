@@ -1,6 +1,7 @@
 
 package poorty.controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -26,14 +27,14 @@ public class SoupController implements MouseListener, ActionListener {
     
     // inicializacion de la pantalla
     public void _init_(){
-      
-        
-        // generar sopa de letras
-        
-        // iniciar el contador de 2 min
-        
         // listeners para labels
         addSoupLabelMouseListener();
+        
+        // generacion de las palabras y se imprimen en la pantalla
+        soupView.generateWordList(game.getAlphSoup().getSoupWords());
+        
+        // iniciar el contador de 2 min
+        new Chronometer(soupView.getLblTimer()).start();
     }
     
     // se agrega el action listener para los labelss
@@ -48,7 +49,19 @@ public class SoupController implements MouseListener, ActionListener {
     // MOUSE LISTENER
     @Override
     public void mouseClicked(MouseEvent e) {
-//        System.out.println("clicked");
+        if(e.getSource().getClass().equals(AlphSoupLabel.class)){
+            // se presiona un label de la sopa de letras
+            AlphSoupLabel clickedLabel = (AlphSoupLabel) e.getSource();
+            
+            if(clickedLabel.isSelected()){
+                clickedLabel.setSelected(false);
+            }else{
+                clickedLabel.setSelected(true);
+            }
+            //this.soupView.getPnlSoup().repaint();
+            // verificar si completo todas las palabras
+        }
+            
     }
 
     @Override
