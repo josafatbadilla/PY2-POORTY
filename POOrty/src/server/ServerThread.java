@@ -272,12 +272,15 @@ public class ServerThread  extends Thread{
            
         switch(option){
             case 1: // se envía el número del caracter (indice)
+                int p = inputStream.readInt();
+                int x = inputStream.readInt();
+                int y = inputStream.readInt();
                 for(int i = 0; i < players.size(); i++){
                     players.get(i).outputStream.writeInt(5);
                     players.get(i).outputStream.writeInt(1);
-                    players.get(i).outputStream.writeInt(inputStream.readInt());
-                    players.get(i).outputStream.writeInt(inputStream.readInt());
-                    players.get(i).outputStream.writeInt(inputStream.readInt());
+                    players.get(i).outputStream.writeInt(p);
+                    players.get(i).outputStream.writeInt(x);
+                    players.get(i).outputStream.writeInt(y);
                 }
                 break;
                 

@@ -25,7 +25,7 @@ public class Selection extends javax.swing.JFrame implements iWindow {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        PnlSelection = new javax.swing.JPanel();
         pnlCharacters = new javax.swing.JPanel();
         btnRandomTurn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -40,7 +40,7 @@ public class Selection extends javax.swing.JFrame implements iWindow {
         pnlCharacters.setLayout(pnlCharactersLayout);
         pnlCharactersLayout.setHorizontalGroup(
             pnlCharactersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         pnlCharactersLayout.setVerticalGroup(
             pnlCharactersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -58,25 +58,25 @@ public class Selection extends javax.swing.JFrame implements iWindow {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Selección de turno");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout PnlSelectionLayout = new javax.swing.GroupLayout(PnlSelection);
+        PnlSelection.setLayout(PnlSelectionLayout);
+        PnlSelectionLayout.setHorizontalGroup(
+            PnlSelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PnlSelectionLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(PnlSelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlCharacters, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(PnlSelectionLayout.createSequentialGroup()
                         .addComponent(btnRandomTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnDicesTurn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnDicesTurn, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 45, Short.MAX_VALUE))
+                .addGap(0, 55, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        PnlSelectionLayout.setVerticalGroup(
+            PnlSelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PnlSelectionLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
@@ -84,7 +84,7 @@ public class Selection extends javax.swing.JFrame implements iWindow {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(PnlSelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnDicesTurn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRandomTurn, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
@@ -94,13 +94,11 @@ public class Selection extends javax.swing.JFrame implements iWindow {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(PnlSelection, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(PnlSelection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -108,11 +106,11 @@ public class Selection extends javax.swing.JFrame implements iWindow {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel PnlSelection;
     private javax.swing.JButton btnDicesTurn;
     private javax.swing.JButton btnRandomTurn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel pnlCharacters;
     // End of variables declaration//GEN-END:variables
 
@@ -132,6 +130,11 @@ public class Selection extends javax.swing.JFrame implements iWindow {
     public JButton getBtnRandomTurn(){
         return btnRandomTurn;
     }
+
+    public JPanel getPnlSelection() {
+        return PnlSelection;
+    }
+    
 
     public JButton getBtnDicesTurn() {
         return btnDicesTurn;

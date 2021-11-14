@@ -33,8 +33,8 @@ public class BoardController implements ActionListener{
     
     public static final int BUTTON_SIZE = 100;
     public static final int BOARD_SIZE = 27;
-    public static final int PLAYER_HEIGH = 50;
-    public static final int PLAYER_WIDTH = 38;
+    public static final int PLAYER_HEIGH = 46;
+    public static final int PLAYER_WIDTH = 33;
     private Box[] boxArray= new Box[BOARD_SIZE];
 
     public BoardController(Game game, BoardWindow boardView ,  MainController mainController) {
@@ -48,7 +48,8 @@ public class BoardController implements ActionListener{
     
     // se inicializan los compponentes de la pantalla
     public void _init_(){
-        boardView.getjLabel1().setText(game.getPlayer().getCharacterName());
+        
+        boardView.getNameLbl().setText(game.getPlayer().getCharacterName());
         boardView.getPlayMiniGame().addActionListener(this);
         boardView.getBtnThrowDices().addActionListener(this);
         //mainController.showWindow(boardView);
@@ -56,6 +57,9 @@ public class BoardController implements ActionListener{
         // inicializacion de componentes graficos de la ventana  
         initplayerCharacter();
         initBoard();
+        initBackground();
+        
+        //boardView.getBackgroundlbl().setIcon(MainController.resizeIcon(game.getBackgrounds().get(0), boardView.getBoardPanel().getWidth(),boardView.getBoardPanel().getHeight()));
     }
     
     // funcion para el listener de los botones y demas
@@ -79,8 +83,9 @@ public class BoardController implements ActionListener{
         for (int i = 0; i < boxArray.length; i++) {
             boxArray[i] = new Box("Juego",i + "");
             boardView.setSize(920, 750);
+            boardView.getBoardPanel().setSize(920, 750);
             boardView.getBoardPanel().add(boxArray[i].getBoxButton());
-            boxArray[i].getBoxButton().setBackground(Color.green);
+            boxArray[i].getBoxButton().setBackground(Color.GRAY);
             boxArray[i].getBoxButton().setEnabled(false);
             if (i < 8)
                 boxArray[i].setBounds(i*BUTTON_SIZE, 0, BUTTON_SIZE, BUTTON_SIZE);
@@ -116,15 +121,23 @@ public class BoardController implements ActionListener{
         
         //dibujarlos
         for (int i = 0; i < playerIcon.size(); i++) {
-            
-            playerIcon.get(i).setBounds( 0, i *PLAYER_HEIGH , PLAYER_WIDTH, PLAYER_HEIGH);
-            boardView.getBoardPanel().add(playerIcon.get(i));
-            playerIcon.get(i).updateBounds(0, i *PLAYER_HEIGH);
-            playerIcon.get(i).setVisible(true);
+            if (i < 3){
+                boardView.getBoardPanel().add(playerIcon.get(i));
+                playerIcon.get(i).updateBounds(i *PLAYER_WIDTH, 0);
+            }
+            else{
+                boardView.getBoardPanel().add(playerIcon.get(i));
+                playerIcon.get(i).updateBounds((i%3) *PLAYER_WIDTH, PLAYER_HEIGH + 8 );
+            }
         }
         //playerButton = boardView.getComponent(8);
     }
     
+    public void initBackground(){
+        JLabel  background = new JLabel(MainController.resizeIcon(game.getBackgrounds().get(4), boardView.getBoardPanel().getWidth(),boardView.getBoardPanel().getHeight())); 
+        background.setBounds(0, 0,boardView.getBoardPanel().getWidth(),boardView.getBoardPanel().getHeight());
+        boardView.getBoardPanel().add(background);
+    }
     
     public void movePlayerCharacter(int value){
         for (int i = 0; i < playerIcon.size(); i++) {
@@ -144,18 +157,18 @@ public class BoardController implements ActionListener{
                 System.out.println("Se mueve el jugador  Casilla: " + casilla + " Value:" + value);
                 System.out.println("x= " + x + " y= " + y);
                 if (casilla <= 8){
-                    playerIcon.get(i).updateBounds(BUTTON_SIZE * casilla, y % BUTTON_SIZE);
+                    playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * casilla, y % BUTTON_SIZE);
                 }
                 else if (casilla > 8 && casilla < 14 ){
-                    playerIcon.get(i).updateBounds(BUTTON_SIZE * 8 , BUTTON_SIZE * (casilla - 8));
+                    playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * 8 , (y % BUTTON_SIZE) + BUTTON_SIZE * (casilla - 8));
                 }
                 else if (casilla >= 14 && casilla < 22 ){
-                    x = BUTTON_SIZE * 8; 
-                    playerIcon.get(i).updateBounds(x - (BUTTON_SIZE * (casilla - 14)) , BUTTON_SIZE * 6);
+                    x = (x % BUTTON_SIZE) + BUTTON_SIZE * 8; 
+                    playerIcon.get(i).updateBounds(x - (BUTTON_SIZE * (casilla - 14)) , (y % BUTTON_SIZE) + BUTTON_SIZE  * 6);
                 }
                 else if (casilla >= 22){
-                    y = BUTTON_SIZE * 6; 
-                    playerIcon.get(i).updateBounds(0 , y - (BUTTON_SIZE*(casilla - 22)));
+                    y = (y % BUTTON_SIZE) + BUTTON_SIZE * 6; 
+                    playerIcon.get(i).updateBounds(x % BUTTON_SIZE , y - (BUTTON_SIZE*(casilla - 22)));
                 }
                 characterMoved(i);
                 break;
