@@ -170,6 +170,13 @@ public class PlayerThread extends Thread{
                     mainController.getBoardController().getPlayerIcon().get(i).updateBounds(x, y);
                     
                 break;
+                case 2: // decirle que es el turno
+                    mainController.getBoardController().playerTurn(inputStream.readInt());
+                    System.out.println("Es mi turno");
+                break;
+                
+                case 3:
+                    mainController.getBoardController().setTextTurn(inputStream.readUTF());
             }
         } catch (IOException ex) {
             Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);

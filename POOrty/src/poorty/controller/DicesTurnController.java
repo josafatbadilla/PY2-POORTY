@@ -84,6 +84,15 @@ public class DicesTurnController implements ActionListener{
         } 
     }
     
+    public void initialTurn(){
+        try {
+                outputStream.writeInt(5); // opcion de tablero 
+                outputStream.writeInt(2); // 1
+            } catch (IOException ex) {
+                        Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+    }
+    
      // se pasa para el tablero principal para que empiece el juego
     public void startGame(){
         try {

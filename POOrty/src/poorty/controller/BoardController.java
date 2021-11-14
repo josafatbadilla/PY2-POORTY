@@ -30,6 +30,9 @@ public class BoardController implements ActionListener{
     private MainController mainController;
     private DataOutputStream outputStream;
     private ArrayList<PlayerCharacter> playerIcon; 
+    private int turnWait = 0;
+    private int actualTurn = 0;
+    private boolean continuar = true;
     
     
     public static final int BUTTON_SIZE = 100;
@@ -53,6 +56,7 @@ public class BoardController implements ActionListener{
         boardView.getNameLbl().setText(game.getPlayer().getCharacterName());
         boardView.getPlayMiniGame().addActionListener(this);
         boardView.getBtnThrowDices().addActionListener(this);
+        boardView.getBtnThrowDices().setEnabled(false);
         boardView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
         //mainController.showWindow(boardView);
         //movePlayerCharacter();
@@ -60,6 +64,7 @@ public class BoardController implements ActionListener{
         initplayerCharacter();
         initBoard();
         initBackground();
+        initialTurn();
         
         //boardView.getBackgroundlbl().setIcon(MainController.resizeIcon(game.getBackgrounds().get(0), boardView.getBoardPanel().getWidth(),boardView.getBoardPanel().getHeight()));
     }
@@ -74,10 +79,34 @@ public class BoardController implements ActionListener{
             
         if(e.getSource().equals(boardView.getBtnThrowDices())){
             // se lanzan los dados
-            //boardView.getBtnThrowDices().setEnabled(false);
+            boardView.getBtnThrowDices().setEnabled(false);
             sendDicesResult();
+            continuar = true;
+            continuarTurno();
             
         }
+    }
+    
+    public void playerTurn(int turn){
+        actualTurn = turn;
+        if (turnWait == 0){
+            boardView.getBtnThrowDices().setEnabled(true);
+            continuar = false;
+        }
+        else{
+            continuar = true;
+            turnWait--;
+        }
+        continuarTurno();
+    }
+    
+    public void setTextTurn(String text){
+        this.boardView.getTurnoLbl().setText(text);
+    }
+    
+    public void continuarTurno(){
+        if (continuar == true)
+            nextTurn(actualTurn);
     }
     
     private void initBoard(){
@@ -232,10 +261,31 @@ public class BoardController implements ActionListener{
                 outputStream.writeInt(i); // envía el indice del personaje
                 outputStream.writeInt(playerIcon.get(i).getX()); // envía la nueva coordenada x
                 outputStream.writeInt(playerIcon.get(i).getY()); // envía la nueva coordenada y 
+                
             } catch (IOException ex) {
                         Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
             } 
     }
+    
+    public void nextTurn(int turn){
+        try {
+                outputStream.writeInt(5); // opcion de tablero 
+                outputStream.writeInt(2); // 1
+                outputStream.writeInt(turn);
+            } catch (IOException ex) {
+                        Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+    }
+    
+    public void initialTurn(){
+        try {
+                outputStream.writeInt(5); // opcion de tablero 
+                outputStream.writeInt(3); // 1
+            } catch (IOException ex) {
+                        Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+    }
+    
 
     
     

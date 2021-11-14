@@ -26,6 +26,7 @@ public class ServerThread  extends Thread{
     // identificar el numero de jugador
     int playerId;
     boolean host;
+    //int turn;
      
     public ServerThread(Socket socketPlayer, Server server, int playerId, ArrayList<ServerThread> players, boolean host){
         this.socketPlayer = socketPlayer;
@@ -281,6 +282,44 @@ public class ServerThread  extends Thread{
                     players.get(i).outputStream.writeInt(p);
                     players.get(i).outputStream.writeInt(x);
                     players.get(i).outputStream.writeInt(y);
+                }
+                break;
+            case 2: // envía al jugador que es su turno
+                ArrayList<Turn> turns = server.getPlayersTurn();
+                for (Turn turno : turns) {
+                    System.out.println("Jugador: " + turno.getPlayerId() + " Resultado= " + turno .getTurnResult());
+                }
+                int turn = inputStream.readInt();
+                int playerID = turns.get(turn).getPlayerId();
+                
+                
+                for(int i = 0; i < players.size(); i++){
+                    if(players.get(i).playerId == playerID){
+                        System.out.println("TURNO DE JUGADOR " + playerID);
+                        players.get(i).outputStream.writeInt(5);
+                        players.get(i).outputStream.writeInt(2);
+                        players.get(i).outputStream.writeInt((turn + 1) % turns.size());
+                    }
+                    players.get(i).outputStream.writeInt(5);
+                    players.get(i).outputStream.writeInt(3);
+                    players.get(i).outputStream.writeUTF("TURNO DE JUGADOR " + playerID);
+                }
+                break;
+            case 3: //turno incial
+                ArrayList<Turn> turns1 = server.getPlayersTurn();
+                int playerID1 = turns1.get(0).getPlayerId();
+                
+                for(int i = 0; i < players.size(); i++){
+                    if(players.get(i).playerId == playerID1){
+                        System.out.println("TURNO DE JUGADOR " + playerID1);
+                        players.get(i).outputStream.writeInt(5);
+                        players.get(i).outputStream.writeInt(2);
+                        players.get(i).outputStream.writeInt(1);
+                        
+                    }
+                    players.get(i).outputStream.writeInt(5);
+                    players.get(i).outputStream.writeInt(3);
+                    players.get(i).outputStream.writeUTF("TURNO DE JUGADOR " + playerID1);
                 }
                 break;
                 
