@@ -8,6 +8,7 @@ import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import javax.swing.JLabel;
 import poorty.model.Game;
 import poorty.view.RandomTurnWindow;
 
@@ -36,7 +37,7 @@ public class RandomTurnController implements ActionListener{
         
         // se activan solo para el host
         randomTurnView.getBtnStartGame().setEnabled(game.getPlayer().isHost());
-        
+        initBackground();
         // inicializacion de componentes graficos de la ventana
     }
     
@@ -63,6 +64,12 @@ public class RandomTurnController implements ActionListener{
             startGame();
         }
         
+    }
+    
+    public void initBackground(){
+        JLabel  background = new JLabel(MainController.resizeIcon(game.getBackgrounds().get(1), randomTurnView.getWidth(),randomTurnView.getHeight())); 
+        background.setBounds(0, 0,randomTurnView.getWidth(),randomTurnView.getHeight());
+        randomTurnView.add(background);
     }
     
     

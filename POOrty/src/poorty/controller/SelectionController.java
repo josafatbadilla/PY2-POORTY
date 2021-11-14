@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import poorty.model.CharacterBtn;
 import poorty.model.Character;
 import poorty.model.Game;
@@ -41,6 +42,7 @@ public class SelectionController implements ActionListener{
         
         // inicializacion de componentes graficos de la ventana
         initCharacterBtns();
+        initBackground();
        
     }
     
@@ -62,6 +64,12 @@ public class SelectionController implements ActionListener{
         
         printCharacterButtons();
     
+    }
+    
+    public void initBackground(){
+        JLabel  background = new JLabel(MainController.resizeIcon(game.getBackgrounds().get(4), charSelectWindow.getPnlSelection().getWidth(),charSelectWindow.getPnlSelection().getHeight())); 
+        background.setBounds(0, 0,charSelectWindow.getPnlSelection().getWidth(),charSelectWindow.getPnlSelection().getHeight());
+        charSelectWindow.getPnlSelection().add(background);
     }
     
     private CharacterBtn createCharacterButton(Character character, int x, int y){

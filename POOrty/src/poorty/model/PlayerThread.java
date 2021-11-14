@@ -47,6 +47,9 @@ public class PlayerThread extends Thread{
                         case 4: // minijuego del gato
                             miniGameCat(inputStream.readInt());
                             break;
+                        case 5: // movimiento tablero
+                            boardMoves(inputStream.readInt());
+                            break;
                     }
 
 
@@ -152,6 +155,24 @@ public class PlayerThread extends Thread{
                 // cerrar el juego y volver al tablero
                 mainController.closeMiniGame(4); // cerrar el juego del gato
                 break;
+        }
+    }
+    
+    public void boardMoves (int option) {
+        try{    
+            switch(option){
+                case 1: // se envía el número del caracter (indice)
+                    System.out.println("Si llega");
+                    int i = inputStream.readInt();
+                    int x = inputStream.readInt();
+                    int y = inputStream.readInt();
+                    System.out.println("i : " + i + " x: " + x + " y: " + y);
+                    mainController.getBoardController().getPlayerIcon().get(i).updateBounds(x, y);
+                    
+                break;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
