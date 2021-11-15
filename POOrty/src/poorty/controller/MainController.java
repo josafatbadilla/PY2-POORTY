@@ -20,6 +20,7 @@ public class MainController {
     private BoardWindow boardView; // ventana del tablero
     private CatGameWindow catGameView;
     private SoupWindow soupGameView;
+    private MemoryWindow memoryView;
     
     // modelo principal
     private Game game;
@@ -32,6 +33,7 @@ public class MainController {
     private BoardController boardController;
     private CatGameController catGameController;
     private SoupController soupGameController;
+    private MemoryController memoryGameController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -124,6 +126,13 @@ public class MainController {
         changeWindow(this.boardView, this.soupGameView); // muestra la pantalla del juego del gato
     }
     
+    
+    public void startMemoryMiniGame(int enemyId){
+       this.memoryView = new MemoryWindow();
+       this.memoryGameController = new MemoryController(memoryView, game, this, enemyId);
+       this.memoryGameController._init_();
+       changeWindow(this.boardView, this.memoryView);
+    }
     
     // se cierra las ventanas de los minijuegos
     public void closeMiniGame(int miniGame){

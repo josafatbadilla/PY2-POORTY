@@ -98,7 +98,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="playMiniGame">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Jugar Gato"/>
+            <Property name="text" type="java.lang.String" value="Jugar MiniGame"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="pnlThrowDices">

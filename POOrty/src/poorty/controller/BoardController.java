@@ -94,8 +94,9 @@ public class BoardController implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         
         if(e.getSource().equals(boardView.getPlayMiniGame())){
-            // se presiona el btn de jugar el minijuego
-            mainController.startCatMiniGame(-1); }
+            // se presiona el btn de jugar el minijuego que se quiere probar
+            mainController.startMemoryMiniGame(-1); 
+        }
             
         if(e.getSource().equals(boardView.getBtnThrowDices())){
             // se lanzan los dados
@@ -108,7 +109,8 @@ public class BoardController implements ActionListener{
         
         if(e.getSource().equals(boardView.getPlaySopa())){
             // se presiona el btn de jugar el minijuego
-            mainController.startSoupMiniGame(); }
+            mainController.startSoupMiniGame(); 
+        }
         
         if(e.getSource().equals(boardView.getBtnCarcel())){
             System.out.println("Estoy en la carcel");
