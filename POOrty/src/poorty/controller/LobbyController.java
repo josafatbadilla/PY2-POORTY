@@ -53,6 +53,7 @@ public class LobbyController implements ActionListener {
         JLabel  background = new JLabel(MainController.resizeIcon(game.getBackgrounds().get(5), lobbyWindow.getLobbyPnl().getWidth(),lobbyWindow.getLobbyPnl().getHeight())); 
         background.setBounds(0, 0,lobbyWindow.getLobbyPnl().getWidth(),lobbyWindow.getLobbyPnl().getHeight());
         lobbyWindow.getLobbyPnl().add(background);
+        lobbyWindow.setTitle("Jugador " + game.getPlayer().getPlayerId());
     }
     
     

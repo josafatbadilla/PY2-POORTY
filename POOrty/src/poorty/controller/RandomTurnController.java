@@ -34,7 +34,7 @@ public class RandomTurnController implements ActionListener{
         // agregar los listeners
         randomTurnView.getBtnSendNum().addActionListener(this);
         randomTurnView.getBtnStartGame().addActionListener(this);
-        
+        randomTurnView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
         // se activan solo para el host
         randomTurnView.getBtnStartGame().setEnabled(game.getPlayer().isHost());
         initBackground();
@@ -84,6 +84,15 @@ public class RandomTurnController implements ActionListener{
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(LobbyController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } 
+    }
+    
+    public void initialTurn(){
+        try {
+                outputStream.writeInt(5); // opcion de tablero 
+                outputStream.writeInt(2); // 1
+            } catch (IOException ex) {
+                        java.util.logging.Logger.getLogger(LobbyController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } 
     }
     
     // se pasa para el tablero principal para que empiece el juego
