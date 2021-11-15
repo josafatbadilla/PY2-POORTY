@@ -232,12 +232,10 @@ public class CatGameController implements ActionListener {
     
     // ---------------------- funciones para la conexion con el servidor-------------------------
     private void closeMiniGame(){
-        System.out.println("Vamos a salirnos");
         try {
             outputStream.writeInt(4); // opc del juego
             outputStream.writeInt(2); // subopcion para enviar una jugada
             outputStream.writeInt(this.enemyId); // a mi enemigo
-            System.out.println("Se envia la carajada");
         } catch (IOException ex) {
             Logger.getLogger(CatGameController.class.getName()).log(Level.SEVERE, null, ex);
         }

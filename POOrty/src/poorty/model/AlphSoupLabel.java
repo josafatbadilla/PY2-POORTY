@@ -39,4 +39,9 @@ public class AlphSoupLabel extends JLabel{
         char[] chars = this.getText().toCharArray();
         return chars[0];
     }
+    
+    // se limpia el texto para colocarse como vacio
+    public void clearLabel(){
+        this.setText(" ");
+    }
 }

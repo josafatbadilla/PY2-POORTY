@@ -2,11 +2,14 @@
 // Va a representar una palabra que esta en la matriz de la sopa de letras
 package poorty.model;
 
+import java.util.ArrayList;
+
 
 public class AlphSoupWord {
     private String word;
     private int i; // fila de la matriz
     private int j; // columna de la matriz
+    private ArrayList<AlphSoupLabel> wordLabels; // referencias a los labels donde estan las letras de la palabra
     private WordPosition position;
     
     public enum WordPosition{
@@ -23,6 +26,7 @@ public class AlphSoupWord {
         this.marked = false;
         this.i = 0;
         this.j = 0;
+        this.wordLabels = new ArrayList<>();
     }
 
     public int getI() {
@@ -67,6 +71,20 @@ public class AlphSoupWord {
 
     public void setPlaced(boolean placed) {
         this.placed = placed;
+    }
+    
+    public ArrayList<AlphSoupLabel> getWordLabels() {
+        return wordLabels;
+    }
+    
+    // retorna true si toda la palabra esta marcada
+    public boolean isWordChecked(){
+        for(int i = 0; i < wordLabels.size(); i++){
+            if(!wordLabels.get(i).isSelected()){
+                return false;
+            }
+        }
+        return true;
     }
     
     

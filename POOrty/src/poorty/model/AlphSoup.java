@@ -27,8 +27,6 @@ public class AlphSoup {
         // obtener la la lista completa de palabras
         getFileWords();
         
-        // llenar la matriz de las palabras aleatorias
-        fillMatrix();
     }
     
     // carga las palabras del archivo al arreglo
@@ -36,8 +34,15 @@ public class AlphSoup {
         String fileStr = FileManager.readFile(WORDS_FILEPATH);
         if(!fileStr.equals("")){
                 this.words = gson.fromJson(fileStr, new TypeToken<ArrayList<String>>(){}.getType()); // se carga la lista de palabras
+        }else{
+            System.out.println("No se cargaron las palabras");
         }
-        
+        selectRandomWords(); // escoge 4 palabras
+    }
+    
+    // limpia el arraylist de de palabras y genera 4 nuevas
+    private void selectRandomWords(){
+        this.soupWords.clear(); // limplia las palabras anteriores
         // se seleccionan 4 palabras de forma aleatoria y se cargan en el arreglo de palabras
         for(int i = 0; i < 4; i++){
             int indexWord = new Random().nextInt(words.size() - 1);
@@ -55,12 +60,15 @@ public class AlphSoup {
         for(int i = 0; i < soupWords.size(); i++){
             System.out.println("Palabra : " + soupWords.get(i).getWord() + " - " + soupWords.get(i).getPosition().toString());
         }
-    
+        
+        fillMatrix(); // se llena la matriz con las palabras seleccionadas
     }
     
     
     // colocara las palabras seleccionadas en la matriz y luego rellenara 
     private void fillMatrix(){
+        
+        clearAlphSoup();
         
         for(int i = 0; i < soupWords.size(); i++){
             if(soupWords.get(i).getPosition() == WordPosition.HORIZONTAL){
@@ -76,6 +84,7 @@ public class AlphSoup {
             }
         }
         
+        // para rellenar por completo la sopa de letras con letras aleatorias
         for(int i = 0; i < alphSoupMatrix.length; i++){
             for(int j = 0; j < alphSoupMatrix[0].length; j++){
                 if(alphSoupMatrix[i][j].getLetter() == ' '){
@@ -87,11 +96,21 @@ public class AlphSoup {
         
     }
     
+    // limpiar toda la matriz de letras
+    private void clearAlphSoup(){
+        for(int i = 0; i < alphSoupMatrix.length; i++){
+            for(int j = 0; j < alphSoupMatrix[0].length; j++){
+                alphSoupMatrix[i][j].clearLabel();
+            }
+        }
+    }
+    
+    
     // posiciona la palabra de forma hozontal en la matriz
     private void posHorizontalWord(AlphSoupWord word){
         
         // mientras no este posicionada se intenta de nuevo
-        // puede llegar a enciclarse
+        int posCounter = 10; // cuantos chances hay de posicionar la palabra antes de generar otro conjunto de palabras nuevas
         int iMatrix, jMatrix;
         while(!word.isPlaced()){
             iMatrix = new Random().nextInt(alphSoupMatrix.length - 1);
@@ -103,11 +122,10 @@ public class AlphSoup {
                 // recorrido de la palabra
                 char[] wordChars = word.getWord().toCharArray();
                 for(int i = 0; i < word.getWord().length(); i++){
-                    if(alphSoupMatrix[iMatrix][jMatrix].getLetter() == ' ' || alphSoupMatrix[iMatrix][jMatrix].getLetter() == wordChars[i]){
-
-                        // si esta vacio o tiene una letra igual a la que sigue
-                        alphSoupMatrix[iMatrix][jMatrix].setLetter(wordChars[i]); // se setea la letra
-                    }
+                    
+                    // si esta vacio o tiene una letra igual a la que sigue
+                    alphSoupMatrix[iMatrix][jMatrix].setLetter(wordChars[i]); // se setea la letra
+                    word.getWordLabels().add(alphSoupMatrix[iMatrix][jMatrix]); // se agrega a la lista de labels
 
                     if(i + 1 >= word.getWord().length()){
                         word.setPlaced(true); // ya se coloco correctamente
@@ -116,9 +134,16 @@ public class AlphSoup {
                     jMatrix++;
             
                 } // for
-            } // if can be set
+            }else{
+                posCounter--;
+                if(posCounter == 0) break; // evitar que se encicle
+            }
         
         } // while
+        
+        if(!word.isPlaced()){
+            selectRandomWords(); // genera nuevas palabras y las vuelve a intentar setear
+        }
         
     }
     
@@ -140,7 +165,7 @@ public class AlphSoup {
     // posiciona la palabra de forma vertical en la matriz
     private void posVerticalWord(AlphSoupWord word){
         // mientras no este posicionada se intenta de nuevo
-        // puede llegar a enciclarse
+        int posCounter = 10;
         int iMatrix, jMatrix;
         while(!word.isPlaced()){
             iMatrix = new Random().nextInt((alphSoupMatrix.length - 1) - (word.getWord().length() - 1));
@@ -152,12 +177,11 @@ public class AlphSoup {
                 char[] wordChars = word.getWord().toCharArray();
                 // recorrido de la palabra
                 for(int i = 0; i < word.getWord().length(); i++){
+                    // si esta vacio o tiene una letra igual a la que sigue
+                    alphSoupMatrix[iMatrix][jMatrix].setLetter(wordChars[i]); // se setea la letra
                     
-                    if(alphSoupMatrix[iMatrix][jMatrix].getLetter() == ' ' || alphSoupMatrix[iMatrix][jMatrix].getLetter() == wordChars[i]){
+                    word.getWordLabels().add(alphSoupMatrix[iMatrix][jMatrix]); // se agrega a la lista de labels
 
-                        // si esta vacio o tiene una letra igual a la que sigue
-                        alphSoupMatrix[iMatrix][jMatrix].setLetter(wordChars[i]); // se setea la letra
-                    }
 
                     if(i + 1 >= word.getWord().length()){
                         word.setPlaced(true); // ya se coloco correctamente
@@ -166,8 +190,15 @@ public class AlphSoup {
                     iMatrix++;
 
                 } // for
-            } // if can be set
+            }else{
+                posCounter--;
+                if(posCounter == 0) break; // evitar que se encicle
+            }
         } // while
+        
+        if(!word.isPlaced()){
+            selectRandomWords(); // genera nuevas palabras y las vuelve a intentar setear
+        }
     }
     
     // metodo que valida que se pueda colocar la palabra en esa posicion
@@ -188,7 +219,7 @@ public class AlphSoup {
     // posiciona la palabra de forma diagonal en la matriz
     private void posDiagonalWord(AlphSoupWord word){
         // mientras no este posicionada se intenta de nuevo
-        // puede llegar a enciclarse
+        int posCounter = 10;
         int iMatrix, jMatrix;
         while(!word.isPlaced()){
             iMatrix = new Random().nextInt((alphSoupMatrix.length - 1) - (word.getWord().length() - 1));
@@ -202,11 +233,10 @@ public class AlphSoup {
                 // recorrido de la palabra
                 for(int i = 0; i < word.getWord().length(); i++){
 
-                    if(alphSoupMatrix[iMatrix][jMatrix].getLetter() == ' ' || alphSoupMatrix[iMatrix][jMatrix].getLetter() == wordChars[i]){
-
-                        // si esta vacio o tiene una letra igual a la que sigue
-                        alphSoupMatrix[iMatrix][jMatrix].setLetter(wordChars[i]); // se setea la letra
-                    }
+                    // si esta vacio o tiene una letra igual a la que sigue
+                    alphSoupMatrix[iMatrix][jMatrix].setLetter(wordChars[i]); // se setea la letra
+                    
+                    word.getWordLabels().add(alphSoupMatrix[iMatrix][jMatrix]); // se agrega a la lista de labels
 
                     if(i + 1 >= word.getWord().length()){
                         word.setPlaced(true); // ya se coloco correctamente
@@ -216,8 +246,16 @@ public class AlphSoup {
                     jMatrix++;
 
                 } // for
-            } // if can be set
+                
+            }else{
+                posCounter--;
+                if(posCounter == 0) break; // evitar que se encicle
+            }
         } // while
+        
+        if(!word.isPlaced()){
+            selectRandomWords(); // genera nuevas palabras y las vuelve a intentar setear
+        }
     }
     
     // metodo que valida que se pueda colocar la palabra en esa posicion
@@ -237,8 +275,18 @@ public class AlphSoup {
     }
     
     
+    
+    // validar que todas las palabras fueron seleccionadas correctamente
+    public boolean checkAlphSoup(){
+        for(int i = 0; i < soupWords.size(); i++){
+            if(!soupWords.get(i).isWordChecked()){
+                return false;
+            }
+        }
+        return true;
+    }
+    
     // GETTERS AND SETTER
-
     public ArrayList<AlphSoupWord> getSoupWords() {
         return soupWords;
     }

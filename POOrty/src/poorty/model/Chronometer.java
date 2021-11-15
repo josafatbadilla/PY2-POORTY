@@ -30,7 +30,7 @@ public class Chronometer extends Thread{
                 this.seconds++;
                 if (this.seconds > 59){
                     this.seconds = 0;
-                    this.minutes = 0;
+                    this.minutes++;
                     if(this.minutes > 59){
                         this.minutes = 0;
                     }
@@ -48,8 +48,18 @@ public class Chronometer extends Thread{
     
     
     private String setNiceTime(int number){
-    if (number < 10)
-        return "0"+number;
-    return ""+number;
+        if (number < 10)
+            return "0"+number;
+        return ""+number;
     }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+    
+    
 }
