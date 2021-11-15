@@ -8,15 +8,20 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import poorty.view.Selection;
 import poorty.model.Game;
+import poorty.model.BoxBtn;
 import poorty.model.Box;
 import poorty.model.PlayerCharacter;
 import poorty.model.Character;
@@ -30,16 +35,22 @@ public class BoardController implements ActionListener{
     private MainController mainController;
     private DataOutputStream outputStream;
     private ArrayList<PlayerCharacter> playerIcon; 
+    private ArrayList<Box> gameBoxes;
+    private ArrayList<Box> specialBoxes;
+    private ArrayList<Box> initialBoxes;
     private int turnWait = 0;
     private int actualTurn = 0;
     private boolean continuar = true;
+    private int totalGameBox = 18;
+    private int totalSpecialBox = 8;
     
     
     public static final int BUTTON_SIZE = 100;
-    public static final int BOARD_SIZE = 27;
+    public static final int BOARD_SIZE = 28;
     public static final int PLAYER_HEIGH = 46;
     public static final int PLAYER_WIDTH = 33;
-    private Box[] boxArray= new Box[BOARD_SIZE];
+    private BoxBtn[] boxArray= new BoxBtn[BOARD_SIZE];
+    
 
     public BoardController(Game game, BoardWindow boardView ,  MainController mainController) {
         this.boardView = boardView;
@@ -62,8 +73,15 @@ public class BoardController implements ActionListener{
         //mainController.showWindow(boardView);
         //movePlayerCharacter();
         // inicializacion de componentes graficos de la ventana  
+        loadGameBoxes();
+        loadSpecialBoxes();
+        
         initplayerCharacter();
         initBoard();
+        loadInitialBoxes();
+        if(game.getPlayer().isHost()){
+            setBoxOption();
+        }
         initBackground();
         initialTurn();
         
@@ -122,12 +140,12 @@ public class BoardController implements ActionListener{
     private void initBoard(){
         
         for (int i = 0; i < boxArray.length; i++) {
-            boxArray[i] = new Box("Juego",i + "");
+            boxArray[i] = new BoxBtn("Juego",i + "");
             boardView.setSize(920, 750);
             boardView.getBoardPanel().setSize(920, 750);
             boardView.getBoardPanel().add(boxArray[i].getBoxButton());
             boxArray[i].getBoxButton().setBackground(Color.GRAY);
-            boxArray[i].getBoxButton().setEnabled(false);
+            
             if (i < 8)
                 boxArray[i].setBounds(i*BUTTON_SIZE, 0, BUTTON_SIZE, BUTTON_SIZE);
             else if (i >= 8 && i <= 14){
@@ -139,9 +157,144 @@ public class BoardController implements ActionListener{
             else if(i >= 22){
                 boxArray[i].setBounds(0,6*BUTTON_SIZE -(i-22)*BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE);
             }
+            boxArray[i].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
             //System.out.println((i+1) + ".\t " + buttonArray[i].getBounds().x + "," + buttonArray[i].getBounds().y );
         }
     }
+    
+    // carga los personajes que esten en la carpeta de media/characters
+    private void loadGameBoxes(){
+        this.gameBoxes = new ArrayList<>();
+        ImageIcon charIcon;
+        File folder = new File("./src/media/gameBoxes");
+        for(File file: folder.listFiles()){
+            if(!file.isDirectory()){
+                try{
+                    charIcon = new ImageIcon(file.getCanonicalPath());
+                    charIcon = MainController.resizeIcon(charIcon, BUTTON_SIZE, BUTTON_SIZE);
+                    this.gameBoxes.add(new Box(file.getName().replaceFirst("[.][^.]+$", ""), charIcon,2));
+                    // el replaceFirst elimina la extension del archivo para obtener simplemente su nombre base
+                }catch(IOException e){
+                    System.out.println("Error al cargar personaje");
+                }
+ 
+            }
+        }
+    }
+    
+    private void loadSpecialBoxes(){
+        this.specialBoxes = new ArrayList<>();
+        ImageIcon charIcon;
+        File folder = new File("./src/media/specialBoxes");
+        for(File file: folder.listFiles()){
+            if(!file.isDirectory()){
+                try{
+                    charIcon = new ImageIcon(file.getCanonicalPath());
+                    charIcon = MainController.resizeIcon(charIcon, BUTTON_SIZE, BUTTON_SIZE);
+                    this.specialBoxes.add(new Box(file.getName().replaceFirst("[.][^.]+$", ""), charIcon,1));
+                    // el replaceFirst elimina la extension del archivo para obtener simplemente su nombre base
+                }catch(IOException e){
+                    System.out.println("Error al cargar personaje");
+                }
+ 
+            }
+        }
+        specialBoxes.get(specialBoxes.size() - 1).setFrequency(3); // el tubo tiene 3 de frecuencia
+    }
+    
+    private void loadInitialBoxes(){
+        this.initialBoxes = new ArrayList<>();
+        ImageIcon charIcon;
+        File folder = new File("./src/media/initialBox");
+        for(File file: folder.listFiles()){
+            if(!file.isDirectory()){
+                try{
+                    charIcon = new ImageIcon(file.getCanonicalPath());
+                    charIcon = MainController.resizeIcon(charIcon, BUTTON_SIZE, BUTTON_SIZE);
+                    this.initialBoxes.add(new Box(file.getName().replaceFirst("[.][^.]+$", ""), charIcon,1));
+                    // el replaceFirst elimina la extension del archivo para obtener simplemente su nombre base
+                }catch(IOException e){
+                    System.out.println("Error al cargar personaje");
+                }
+ 
+            }
+        }
+        this.boxArray[0].setBoxIcon(initialBoxes.get(1).getIcon());
+        this.boxArray[0].setBoxName(initialBoxes.get(1).getName());
+        this.boxArray[boxArray.length - 1].setBoxIcon(initialBoxes.get(0).getIcon());
+        this.boxArray[boxArray.length - 1].setBoxName(initialBoxes.get(0).getName());
+    }
+    
+    
+    private void setBoxOption(){
+        Random rand = new Random();
+        
+        for(int i = 1; i < boxArray.length - 1; i++){
+            int random = rand.nextInt(2);
+            if (random == 0){
+                setSpecialBox(i);   
+            }
+            else if(random == 1){
+                setGameBox(i);
+            }
+            sendBox(i);
+            System.out.println(i + " " + boxArray[i].getBoxName());
+        }
+    }
+    
+    private void setSpecialBox(int i){
+        Random rand = new Random();    
+        while(true){
+            int random1 = rand.nextInt(specialBoxes.size());
+            if (specialBoxes.get(random1).getFrequency() > 0){
+                boxArray[i].setBoxIcon(specialBoxes.get(random1).getIcon());
+                boxArray[i].setBoxName(specialBoxes.get(random1).getName());
+                specialBoxes.get(random1).decreaseFrequency();
+                totalSpecialBox--;
+                break;}
+            else if (totalSpecialBox == 0){
+                setGameBox(i);
+                break;
+            }
+        } 
+    }
+    
+    private void setGameBox(int i){
+        Random rand = new Random();
+        while(true){
+            int random1 = rand.nextInt(gameBoxes.size());
+            if (gameBoxes.get(random1).getFrequency() > 0){
+                boxArray[i].setBoxIcon(gameBoxes.get(random1).getIcon());
+                boxArray[i].setBoxName(gameBoxes.get(random1).getName());
+                gameBoxes.get(random1).decreaseFrequency();
+                totalGameBox--;
+                break;}
+            else if (totalGameBox == 0){
+                setSpecialBox(i);
+                break;
+            }
+        } 
+    }
+    
+    public void updateBox(int i, String boxName){
+        for (Box spebox : specialBoxes){
+            if(spebox.getName().equals(boxName)){
+                boxArray[i].setBoxIcon(spebox.getIcon());
+                boxArray[i].setBoxName(boxName);
+                break;
+            }
+        }
+        
+        for(Box gamebox : gameBoxes){
+            if(gamebox.getName().equals(boxName)){
+                boxArray[i].setBoxIcon(gamebox.getIcon());
+                boxArray[i].setBoxName(boxName);
+                break;
+            }
+        }
+    }
+    
+    
     
     private void initplayerCharacter(){
         ArrayList<CharacterBtn> charactersbtns = Selection.characterBtns;
@@ -181,15 +334,21 @@ public class BoardController implements ActionListener{
     }
     
     public void movePlayerCharacter(int value){
+        
         for (int i = 0; i < playerIcon.size(); i++) {
             if(game.getPlayer().getCharacterName().equals(playerIcon.get(i).getCharacterName())){
-                
+                boxArray[playerIcon.get(i).getCasillaActual()].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.RED, 4));
                 int casilla = playerIcon.get(i).getCasillaActual() + value;
-                
+                        
                 if (casilla == BOARD_SIZE)
                     continue;
                 else if (casilla > BOARD_SIZE)
                     casilla = (BOARD_SIZE -1) - (casilla%(BOARD_SIZE -1));
+                
+                for(int j = playerIcon.get(i).getCasillaActual() ; j < casilla; j++ ){
+                    boxArray[j].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.RED, 4));
+                }
+                boxArray[casilla].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.BLUE, 4));
                 
                 playerIcon.get(i).setCasillaActual(casilla);
                 
@@ -221,7 +380,7 @@ public class BoardController implements ActionListener{
                     y = (y % BUTTON_SIZE) + BUTTON_SIZE * 6; 
                     playerIcon.get(i).updateBounds(x % BUTTON_SIZE , y - (BUTTON_SIZE*(casilla - 22)));
                 }
-                
+                executeBoxOption(i);
                 characterMoved(i);
                 break;
             }
@@ -229,6 +388,15 @@ public class BoardController implements ActionListener{
         }
         
     } 
+    
+    public void executeBoxOption(int i){
+        int casilla = playerIcon.get(i).getCasillaActual();
+        switch(boxArray[casilla].getBoxName()){
+            case "Jail":
+                turnWait = 2;
+                break;
+        }
+    }
     
     public void updateCharacters(){
         for (int i = 0; i < playerIcon.size(); i++) {
@@ -294,6 +462,17 @@ public class BoardController implements ActionListener{
             } catch (IOException ex) {
                         Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
             } 
+    }
+    
+    public void sendBox(int i){
+        try {
+                outputStream.writeInt(5); // opcion de tablero 
+                outputStream.writeInt(4); // opcion de enviar casilla
+                outputStream.writeInt(i); // envía el indice de casilla
+                outputStream.writeUTF(boxArray[i].getBoxName()); //envía el nombre de la casilla
+            } catch (IOException ex) {
+                        Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     
 

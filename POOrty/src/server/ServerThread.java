@@ -322,7 +322,15 @@ public class ServerThread  extends Thread{
                     players.get(i).outputStream.writeUTF("TURNO DE JUGADOR " + playerID1);
                 }
                 break;
-                
+            case 4: //envía tablero
+                int box = inputStream.readInt();
+                String boxName = inputStream.readUTF();
+                for(int i = 1; i < players.size(); i++){
+                    players.get(i).outputStream.writeInt(5);
+                    players.get(i).outputStream.writeInt(4);
+                    players.get(i).outputStream.writeInt(box);
+                    players.get(i).outputStream.writeUTF(boxName);
+                }
         }
          
     }

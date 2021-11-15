@@ -177,6 +177,10 @@ public class PlayerThread extends Thread{
                 
                 case 3:
                     mainController.getBoardController().setTextTurn(inputStream.readUTF());
+                    break;
+                case 4:
+                    mainController.getBoardController().updateBox(inputStream.readInt(), inputStream.readUTF() );
+                    break;
             }
         } catch (IOException ex) {
             Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
