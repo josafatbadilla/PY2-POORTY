@@ -350,54 +350,48 @@ public class BoardController implements ActionListener{
                 else if (casilla > BOARD_SIZE)
                     casilla = (BOARD_SIZE -1) - (casilla%(BOARD_SIZE -1));
                 
-                for(int j = playerIcon.get(i).getCasillaActual() ; j < casilla; j++ ){
-                    boxArray[j].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.RED, 4));
-                }
-                boxArray[casilla].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.BLUE, 4));
-                
-                playerIcon.get(i).setCasillaActual(casilla);
-                
-                int x = playerIcon.get(i).getX();
-                int y = playerIcon.get(i).getY();
-                System.out.println("Se mueve el jugador  Casilla: " + casilla + " Value:" + value);
-                System.out.println("x= " + x + " y= " + y);
-                if (casilla <= 8){
-                    playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * casilla, y % BUTTON_SIZE); 
-                    /*while (x1 <= (x % BUTTON_SIZE) + BUTTON_SIZE * casilla){
-                        try {
-                            x1 += BUTTON_SIZE;
-                            playerIcon.get(i).updateBounds(x1, y % BUTTON_SIZE); 
-                            characterMoved(i);
-                            sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }*/
-                }
-                else if (casilla > 8 && casilla < 14 ){
-                    playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * 8 , (y % BUTTON_SIZE) + BUTTON_SIZE * (casilla - 8));
-                }
-                else if (casilla >= 14 && casilla < 22 ){
-                    x = (x % BUTTON_SIZE) + BUTTON_SIZE * 8; 
-                    playerIcon.get(i).updateBounds(x - (BUTTON_SIZE * (casilla - 14)) , (y % BUTTON_SIZE) + BUTTON_SIZE  * 6);
-                }
-                else if (casilla >= 22){
-                    y = (y % BUTTON_SIZE) + BUTTON_SIZE * 6; 
-                    playerIcon.get(i).updateBounds(x % BUTTON_SIZE , y - (BUTTON_SIZE*(casilla - 22)));
-                }
+                movePlayer(i,casilla);
                 executeBoxOption(i);
-                characterMoved(i);
                 break;
             }
             
-        }
-        
+        }   
     } 
+    
+    public void movePlayer(int i,int casilla){
+        for(int j = playerIcon.get(i).getCasillaActual() ; j < casilla; j++ ){
+            boxArray[j].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.RED, 4));
+        }
+        boxArray[casilla].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.BLUE, 4));
+
+        playerIcon.get(i).setCasillaActual(casilla);
+
+        int x = playerIcon.get(i).getX();
+        int y = playerIcon.get(i).getY();
+        System.out.println("Se mueve el jugador  Casilla: " + casilla );
+        //System.out.println("x= " + x + " y= " + y);
+        if (casilla <= 8){
+            playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * casilla, y % BUTTON_SIZE); 
+        }
+        else if (casilla > 8 && casilla < 14 ){
+            playerIcon.get(i).updateBounds((x % BUTTON_SIZE) + BUTTON_SIZE * 8 , (y % BUTTON_SIZE) + BUTTON_SIZE * (casilla - 8));
+        }
+        else if (casilla >= 14 && casilla < 22 ){
+            x = (x % BUTTON_SIZE) + BUTTON_SIZE * 8; 
+            playerIcon.get(i).updateBounds(x - (BUTTON_SIZE * (casilla - 14)) , (y % BUTTON_SIZE) + BUTTON_SIZE  * 6);
+        }
+        else if (casilla >= 22){
+            y = (y % BUTTON_SIZE) + BUTTON_SIZE * 6; 
+            playerIcon.get(i).updateBounds(x % BUTTON_SIZE , y - (BUTTON_SIZE*(casilla - 22)));
+        }
+        characterMoved(i);
+    }
     
     public void executeBoxOption(int i){
         int casilla = playerIcon.get(i).getCasillaActual();
         switch(boxArray[casilla].getBoxName()){
             case "Jail":
+                
                 turnWait = 2;
                 break;
             case "Gato":
@@ -406,6 +400,33 @@ public class BoardController implements ActionListener{
             case "LettersSoup":
                 mainController.startSoupMiniGame();
                 break;
+            case "Tube":
+                while(true){
+                    boxArray[casilla].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.RED, 4));
+                    casilla = (casilla+1) % BOARD_SIZE;
+                    if(boxArray[casilla].getBoxName().equals("Tube")){
+                        movePlayer(i,casilla);
+                        break;
+                    }
+                }
+                break;
+            case "Star": // puede volver a tirar
+                nextTurn((actualTurn-1) % playerIcon.size());
+                break;
+            case "FireFlower":
+                mainController.startSelectOpponent();
+                for (int j = 0; j < playerIcon.size() ; j++){
+                    if(playerIcon.get(i).getCharacterName().equals(game.getPlayer().getCharacterName())){
+                    
+                    }
+                    else{
+                        mainController.getOpponentController().addCharacter(playerIcon.get(j).getPlayerCharacter());
+                    }    
+                }
+                mainController.changeSelectOpponentW();
+                break;
+                
+                
         }
     }
     

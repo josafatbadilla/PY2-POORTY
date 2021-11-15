@@ -1,0 +1,80 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package poorty.controller;
+
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.DataOutputStream;
+import java.util.ArrayList;
+import poorty.model.Game;
+import poorty.model.Character;
+import poorty.model.CharacterBtn;
+import poorty.view.OpponentSelectionWindow;
+import poorty.view.Selection;
+/**
+ *
+ * @author josa
+ */
+public class OpponentSelectionController implements ActionListener{
+    
+    OpponentSelectionWindow opponentWindow;
+    private Game game;
+    private MainController mainController;
+    private DataOutputStream outputStream;
+    private ArrayList<CharacterBtn> characterBtns;
+    private int x = 0;
+    
+
+    public OpponentSelectionController(OpponentSelectionWindow opponentWindow, Game game, MainController mainController) {
+        this.opponentWindow = opponentWindow;
+        this.game = game;
+        this.mainController = mainController;
+        this.outputStream = game.getPlayer().getOutputStream();
+        this.characterBtns = new ArrayList<>();
+        opponentWindow.getBtnContinue().addActionListener(this);
+    }
+    
+    public void addCharacter(Character playerCharacter){
+        CharacterBtn btn = new CharacterBtn(playerCharacter);
+        characterBtns.add(btn);
+        opponentWindow.add(btn);
+        x += btn.getWidth() + 10;
+        btn.setBounds(x, 100, btn.getWidth(), btn.getHeight());
+        btn.addActionListener(this);
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        int charBtnIndex = characterBtns.indexOf(e.getSource());
+        if(charBtnIndex != -1){
+            // se presiona uno de los bootnes de personajes
+            updatecharacters(characterBtns.get(charBtnIndex).getCharacterName());
+            
+        }else if(e.getSource().equals(opponentWindow.getBtnContinue())){
+            // se presiona el boton de continuar
+            for(CharacterBtn btn : characterBtns){
+                if(btn.isSelected())
+                    continue;
+            }
+            mainController.closeMiniGame(6); // vuelve al tablero
+        }
+    }
+    
+    public void updatecharacters(String name){
+        for(CharacterBtn btn : characterBtns){
+            if (btn.getCharacterName().equals(name)){
+                btn.setSelected(true);
+            }
+            else{
+                btn.setSelected(false);
+            }
+        }
+    }
+    
+    
+}

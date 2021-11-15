@@ -20,11 +20,13 @@ public class MainController {
     private BoardWindow boardView; // ventana del tablero
     private CatGameWindow catGameView;
     private SoupWindow soupGameView;
+    private OpponentSelectionWindow opponentView;
     
     // modelo principal
     private Game game;
     
     // subcontroladores
+    private OpponentSelectionController opponentController;
     private LobbyController lobbyController;
     private SelectionController selectionController;
     private RandomTurnController randomTurnController;
@@ -124,6 +126,15 @@ public class MainController {
         changeWindow(this.boardView, this.soupGameView); // muestra la pantalla del juego del gato
     }
     
+    public void startSelectOpponent(){
+        this.opponentView = new OpponentSelectionWindow();
+        this.opponentController = new OpponentSelectionController(opponentView, game, this);
+    }
+    
+    public void changeSelectOpponentW(){
+        changeWindow(this.boardView, this.opponentView);
+    }
+    
     
     // se cierra las ventanas de los minijuegos
     public void closeMiniGame(int miniGame){
@@ -134,6 +145,9 @@ public class MainController {
                 break;
             case 5: // se cierra la sopa de letras
                 changeWindow(this.soupGameView, this.boardView);
+                break;
+            case 6:
+                changeWindow(this.opponentView, this.boardView);
                 break;
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");
@@ -190,6 +204,12 @@ public class MainController {
     public BoardController getBoardController() {
         return boardController;
     }
+
+    public OpponentSelectionController getOpponentController() {
+        return opponentController;
+    }
+    
+    
 
     
     
