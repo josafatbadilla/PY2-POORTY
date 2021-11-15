@@ -23,6 +23,7 @@ public class Game {
     // tablero
     
     // minijuegos
+    private AlphSoup alphSoup; // sopa de letras
     
     
     public Game(MainController mainController){
@@ -120,7 +121,14 @@ public class Game {
     public ArrayList<ImageIcon> getBackgrounds() {
         return backgrounds;
     }
+
+    public void setAlphSoup(AlphSoup alphSoup) {
+        this.alphSoup = alphSoup;
+    }
     
+    public AlphSoup getAlphSoup() {
+        return alphSoup;
+    }
     
     
     

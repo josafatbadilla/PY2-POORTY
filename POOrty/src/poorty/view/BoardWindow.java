@@ -28,7 +28,7 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        playMiniGame.setText("Jugar Gato");
+        playMiniGame.setText("Jugar Sopa");
 
         pnlThrowDices.setBackground(new java.awt.Color(255, 255, 255));
 
