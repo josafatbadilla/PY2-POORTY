@@ -126,13 +126,15 @@ public class MainController {
         changeWindow(this.boardView, this.soupGameView); // muestra la pantalla del juego del gato
     }
     
-    public void startSelectOpponent(){
+    public void startSelectOpponent(int option){
         this.opponentView = new OpponentSelectionWindow();
-        this.opponentController = new OpponentSelectionController(opponentView, game, this);
+        this.opponentController = new OpponentSelectionController(opponentView, game, this, option);
+        this.opponentController._init_();
     }
     
     public void changeSelectOpponentW(){
         changeWindow(this.boardView, this.opponentView);
+        this.opponentController.initBackground();
     }
     
     

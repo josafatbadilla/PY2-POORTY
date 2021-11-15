@@ -19,6 +19,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import poorty.view.Selection;
 import poorty.model.Game;
 import poorty.model.BoxBtn;
@@ -80,6 +81,7 @@ public class BoardController implements ActionListener{
         initplayerCharacter();
         initBoard();
         loadInitialBoxes();
+        sendNameServer();
         if(game.getPlayer().isHost()){
             setBoxOption();
         }
@@ -95,27 +97,46 @@ public class BoardController implements ActionListener{
         
         if(e.getSource().equals(boardView.getPlayMiniGame())){
             // se presiona el btn de jugar el minijuego
-            mainController.startCatMiniGame(-1); }
+            mainController.startSelectOpponent(2);
+                for (int j = 0; j < playerIcon.size() ; j++){
+                    if(playerIcon.get(j).getCharacterName().equals(game.getPlayer().getCharacterName())){
+                    
+                    }
+                    else{
+                        
+                        mainController.getOpponentController().addCharacter(playerIcon.get(j).getPlayerCharacter());
+                    }    
+                }
+            mainController.changeSelectOpponentW(); }
             
         if(e.getSource().equals(boardView.getBtnThrowDices())){
             // se lanzan los dados
+            continuar = true;
             boardView.getBtnThrowDices().setEnabled(false);
             sendDicesResult();
-            continuar = true;
-            continuarTurno();   
-            
+                
         }
         
         if(e.getSource().equals(boardView.getPlaySopa())){
             // se presiona el btn de jugar el minijuego
-            mainController.startSoupMiniGame(); }
+            mainController.startSelectOpponent(1);
+                for (int j = 0; j < playerIcon.size() ; j++){
+                    if(playerIcon.get(j).getCharacterName().equals(game.getPlayer().getCharacterName())){
+                    
+                    }
+                    else{
+                        mainController.getOpponentController().addCharacter(playerIcon.get(j).getPlayerCharacter());
+                    }    
+                }
+            mainController.changeSelectOpponentW();
+        }
         
         if(e.getSource().equals(boardView.getBtnCarcel())){
             System.out.println("Estoy en la carcel");
             turnWait = 2;
             
-        }
-    }
+        
+    } }
     
     public void playerTurn(int turn){
         actualTurn = turn;
@@ -138,7 +159,7 @@ public class BoardController implements ActionListener{
     }
     
     public void continuarTurno(){
-        if (continuar == true)
+        if (continuar)
             nextTurn(actualTurn);
     }
     
@@ -237,10 +258,10 @@ public class BoardController implements ActionListener{
         for(int i = 1; i < boxArray.length - 1; i++){
             int random = rand.nextInt(2);
             if (random == 0){
-                setSpecialBox(i);   
+                setGameBox(i);
             }
             else if(random == 1){
-                setGameBox(i);
+                setSpecialBox(i);
             }
             sendBox(i);
             System.out.println(i + " " + boxArray[i].getBoxName());
@@ -351,7 +372,15 @@ public class BoardController implements ActionListener{
                     casilla = (BOARD_SIZE -1) - (casilla%(BOARD_SIZE -1));
                 
                 movePlayer(i,casilla);
+                /*try {
+                    sleep(4000);
+                    //espera dos segundos y luego ejecuta el proceso de la casilla
+                    
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
+                }*/
                 executeBoxOption(i);
+                continuarTurno();
                 break;
             }
             
@@ -391,8 +420,8 @@ public class BoardController implements ActionListener{
         int casilla = playerIcon.get(i).getCasillaActual();
         switch(boxArray[casilla].getBoxName()){
             case "Jail":
-                
-                turnWait = 2;
+                JOptionPane.showMessageDialog(boardView, "Caíste en la carcel, pierdes 2 turnos", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
+                turnWait += 2;
                 break;
             case "Gato":
                 mainController.startCatMiniGame(-1);
@@ -402,24 +431,38 @@ public class BoardController implements ActionListener{
                 break;
             case "Tube":
                 while(true){
-                    boxArray[casilla].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.RED, 4));
                     casilla = (casilla+1) % BOARD_SIZE;
                     if(boxArray[casilla].getBoxName().equals("Tube")){
                         movePlayer(i,casilla);
                         break;
                     }
                 }
+                JOptionPane.showMessageDialog(boardView, "Caíste en tubo avanzas hasta la casilla " + casilla , "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
                 break;
             case "Star": // puede volver a tirar
-                nextTurn((actualTurn-1) % playerIcon.size());
+                JOptionPane.showMessageDialog(boardView, "Obtuviste una estrella, puedes volver a tirar los dados!", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
+                actualTurn = (actualTurn-1) % playerIcon.size();
+                continuarTurno();
                 break;
             case "FireFlower":
-                mainController.startSelectOpponent();
+                mainController.startSelectOpponent(1);
                 for (int j = 0; j < playerIcon.size() ; j++){
-                    if(playerIcon.get(i).getCharacterName().equals(game.getPlayer().getCharacterName())){
+                    if(playerIcon.get(j).getCharacterName().equals(game.getPlayer().getCharacterName())){
+                    }
+                    else{
+                        mainController.getOpponentController().addCharacter(playerIcon.get(j).getPlayerCharacter());
+                    }    
+                }
+                mainController.changeSelectOpponentW();
+                break;
+            case "IceFlower" :
+                mainController.startSelectOpponent(2);
+                for (int j = 0; j < playerIcon.size() ; j++){
+                    if(playerIcon.get(j).getCharacterName().equals(game.getPlayer().getCharacterName())){
                     
                     }
                     else{
+                        
                         mainController.getOpponentController().addCharacter(playerIcon.get(j).getPlayerCharacter());
                     }    
                 }
@@ -428,6 +471,24 @@ public class BoardController implements ActionListener{
                 
                 
         }
+        //continuarTurno();//continúa al siguiente turno
+    }
+    
+    public void fireFlower(String characterName){
+        JOptionPane.showMessageDialog(boardView, "Un jugador te envió una flor de fuego vuelves a la casilla 0", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
+        for (int i = 0; i < playerIcon.size() ; i++){
+                if(playerIcon.get(i).getCharacterName().equals(characterName)){
+                    playerIcon.get(i).setCasillaActual(0);
+                    movePlayer(i,playerIcon.get(i).getCasillaActual());
+                    break;
+                }
+        }
+    }
+    
+    public void iceFlower(String characterName){
+        turnWait += 2;
+        JOptionPane.showMessageDialog(boardView, "Un jugador te ha enviado una Flor congelante, no podrás tirar los dados por 2 turnos", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
+        
     }
     
     public void updateCharacters(){
@@ -443,6 +504,7 @@ public class BoardController implements ActionListener{
         try {
             int dices = game.throwDices(boardView.getLblDice1(), boardView.getLblDice2());
             System.out.println("Dices :" + dices);
+            //sleep(4000); // espera a que salga el resultado
             movePlayerCharacter(dices);
             /*while(true){
                 if (!game.getThrowDices().isRunning()){
@@ -507,8 +569,21 @@ public class BoardController implements ActionListener{
             }
     }
     
+    public void sendNameServer(){
+        try {
+                outputStream.writeInt(2); // opcion de seleccionar 
+                outputStream.writeInt(3); // opcion de enviar casilla
+                outputStream.writeInt(game.getPlayer().getPlayerId()); // envía el indice de casilla
+                outputStream.writeUTF(game.getPlayer().getCharacterName()); //envía el nombre de la casilla
+            } catch (IOException ex) {
+                        Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+    
+    }
+    
 
     
     
     
-}
+

@@ -9,7 +9,11 @@ package poorty.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
 import poorty.model.Game;
 import poorty.model.Character;
 import poorty.model.CharacterBtn;
@@ -26,25 +30,48 @@ public class OpponentSelectionController implements ActionListener{
     private MainController mainController;
     private DataOutputStream outputStream;
     private ArrayList<CharacterBtn> characterBtns;
-    private int x = 0;
+    private int x = 20;
+    private int option;
     
 
-    public OpponentSelectionController(OpponentSelectionWindow opponentWindow, Game game, MainController mainController) {
+    public OpponentSelectionController(OpponentSelectionWindow opponentWindow, Game game, MainController mainController, int option) {
         this.opponentWindow = opponentWindow;
         this.game = game;
         this.mainController = mainController;
         this.outputStream = game.getPlayer().getOutputStream();
         this.characterBtns = new ArrayList<>();
-        opponentWindow.getBtnContinue().addActionListener(this);
+        this.option = option;
+        
     }
+    
+    public void _init_(){
+        opponentWindow.getBtnContinue().addActionListener(this);
+        if (option == 1){
+            opponentWindow.getNameLbl().setText("Fire Flower");
+        } else{
+            opponentWindow.getNameLbl().setText("Ice Flower");
+        }
+        
+        
+    }
+    
     
     public void addCharacter(Character playerCharacter){
         CharacterBtn btn = new CharacterBtn(playerCharacter);
         characterBtns.add(btn);
-        opponentWindow.add(btn);
-        x += btn.getWidth() + 10;
-        btn.setBounds(x, 100, btn.getWidth(), btn.getHeight());
+        btn.setBounds(x, 90, Selection.CHARWIDTH, Selection.CHARHEIGH);
+        
+        this.x += Selection.CHARWIDTH + 10;
+        opponentWindow.getSelectionPanel().add(btn);
+        btn.setVisible(true);
+        System.out.println("Se agrega el botón " + btn.getCharacterName() + " en " + x + "," + 100);
         btn.addActionListener(this);
+    }
+    
+    public void initBackground(){
+        JLabel  background = new JLabel(MainController.resizeIcon(game.getBackgrounds().get(3), opponentWindow.getWidth(),opponentWindow.getHeight())); 
+        background.setBounds(0, 0,opponentWindow.getWidth(),opponentWindow.getHeight());
+        opponentWindow.getSelectionPanel().add(background);
     }
     
     @Override
@@ -58,8 +85,9 @@ public class OpponentSelectionController implements ActionListener{
         }else if(e.getSource().equals(opponentWindow.getBtnContinue())){
             // se presiona el boton de continuar
             for(CharacterBtn btn : characterBtns){
-                if(btn.isSelected())
-                    continue;
+                if(btn.isSelected()){
+                    sendOpponent(btn.getCharacterName());
+                    System.out.println("Se envía a " + btn.getCharacterName());}
             }
             mainController.closeMiniGame(6); // vuelve al tablero
         }
@@ -76,5 +104,16 @@ public class OpponentSelectionController implements ActionListener{
         }
     }
     
+    public void sendOpponent(String characterName){
+        try {
+            option += 4;
+            outputStream.writeInt(5); //opción tablero
+            outputStream.writeInt(option); //opción FireFlower o IceFlower
+            outputStream.writeUTF(characterName); //envía el nombre del jugador
+        } catch (IOException ex) {
+            Logger.getLogger(OpponentSelectionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
     
 }
