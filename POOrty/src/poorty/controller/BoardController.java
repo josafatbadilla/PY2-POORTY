@@ -68,6 +68,7 @@ public class BoardController implements ActionListener{
         boardView.getPlayMiniGame().addActionListener(this);
         boardView.getBtnThrowDices().addActionListener(this);
         boardView.getBtnCarcel().addActionListener(this);
+        boardView.getPlaySopa().addActionListener(this);
         boardView.getBtnThrowDices().setEnabled(false);
         boardView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
         //mainController.showWindow(boardView);
@@ -101,9 +102,13 @@ public class BoardController implements ActionListener{
             boardView.getBtnThrowDices().setEnabled(false);
             sendDicesResult();
             continuar = true;
-            continuarTurno();
+            continuarTurno();   
             
         }
+        
+        if(e.getSource().equals(boardView.getPlaySopa())){
+            // se presiona el btn de jugar el minijuego
+            mainController.startSoupMiniGame(); }
         
         if(e.getSource().equals(boardView.getBtnCarcel())){
             System.out.println("Estoy en la carcel");
@@ -394,6 +399,12 @@ public class BoardController implements ActionListener{
         switch(boxArray[casilla].getBoxName()){
             case "Jail":
                 turnWait = 2;
+                break;
+            case "Gato":
+                mainController.startCatMiniGame(-1);
+                break;
+            case "LettersSoup":
+                mainController.startSoupMiniGame();
                 break;
         }
     }

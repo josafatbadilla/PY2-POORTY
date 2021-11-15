@@ -50,7 +50,10 @@
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="466" max="-2" attributes="0"/>
-                                      <Component id="playMiniGame" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="playSopa" min="-2" max="-2" attributes="0"/>
+                                          <Component id="playMiniGame" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                               </Group>
                           </Group>
@@ -75,7 +78,9 @@
                   <Component id="playMiniGame" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="playSopa" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                           <Component id="pnlThrowDices" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -93,7 +98,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="playMiniGame">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Jugar Sopa"/>
+            <Property name="text" type="java.lang.String" value="Jugar Gato"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="pnlThrowDices">
@@ -192,6 +197,11 @@
         <Component class="javax.swing.JButton" name="btnCarcel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Carcel"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="playSopa">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Jugar Sopa"/>
           </Properties>
         </Component>
       </SubComponents>
