@@ -186,5 +186,13 @@ public class MainController {
     public CatGameController getCatGameController(){
         return catGameController;
     }
+
+    public BoardController getBoardController() {
+        return boardController;
+    }
+
+    
+    
+    
     
 }

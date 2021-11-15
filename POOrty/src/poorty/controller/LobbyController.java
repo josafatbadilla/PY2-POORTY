@@ -9,6 +9,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import poorty.model.Game;
 import poorty.view.Lobby;
 
@@ -28,11 +30,12 @@ public class LobbyController implements ActionListener {
 
     // se realiza una inicializacion de la pantalla
     public void _init_(){
+        
         lobbyWindow.getBtnPlay().addActionListener(this);
         
         serverConnection(1); // avisa que un nuevo jugador se conecto
         lobbyWindow.getBtnPlay().setEnabled(game.getPlayer().isHost()); // solo el host puede iniciar la partida
-
+        initBackground();
         mainController.showWindow(lobbyWindow); // muestra la pantalla de window
     }
     
@@ -44,6 +47,12 @@ public class LobbyController implements ActionListener {
             serverConnection(0);
             
         }
+    }
+    
+    public void initBackground(){
+        JLabel  background = new JLabel(MainController.resizeIcon(game.getBackgrounds().get(5), lobbyWindow.getLobbyPnl().getWidth(),lobbyWindow.getLobbyPnl().getHeight())); 
+        background.setBounds(0, 0,lobbyWindow.getLobbyPnl().getWidth(),lobbyWindow.getLobbyPnl().getHeight());
+        lobbyWindow.getLobbyPnl().add(background);
     }
     
     

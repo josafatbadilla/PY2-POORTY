@@ -40,7 +40,7 @@ public class DicesTurnController implements ActionListener{
        
         // se activan solo para el host
         dicesTurnView.getBtnStartGame().setEnabled(game.getPlayer().isHost());
-        
+        initBackground();
         // inicializacion de componentes graficos de la ventana
     }
     
@@ -58,6 +58,12 @@ public class DicesTurnController implements ActionListener{
             startGame();
         }
        
+    }
+    
+    public void initBackground(){
+        JLabel  background = new JLabel(MainController.resizeIcon(game.getBackgrounds().get(2), dicesTurnView.getWidth(),dicesTurnView.getHeight())); 
+        background.setBounds(0, 0,dicesTurnView.getWidth(),dicesTurnView.getHeight());
+        dicesTurnView.add(background);
     }
     
     // funciones para la conexion con el servidor

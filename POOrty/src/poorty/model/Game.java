@@ -17,6 +17,7 @@ public class Game {
     private MainController mainController;
     private ArrayList<Character> characters; // lista de los personajes del juego
     private ArrayList<Character> charactersIcons;
+    private ArrayList<ImageIcon> backgrounds;
     private ThreadThrowDices throwDices;
     
     // tablero
@@ -32,6 +33,7 @@ public class Game {
         // carga de los personajes
         loadCharacters();
         loadCharactersIcons();
+        loadBackgroudns();
     }
     
     // carga los personajes que esten en la carpeta de media/characters
@@ -72,6 +74,24 @@ public class Game {
         }
     }
     
+    private void loadBackgroudns(){
+        this.backgrounds = new ArrayList<>();
+        ImageIcon charIcon;
+        File folder = new File("./src/media/backgrounds");
+        for(File file: folder.listFiles()){
+            if(!file.isDirectory()){
+                try{
+                    charIcon = new ImageIcon(file.getCanonicalPath());
+                    this.backgrounds.add(charIcon);
+                }catch(IOException e){
+                    System.out.println("Error al cargar personaje");
+                }
+ 
+            }
+        }
+    }
+    
+    
     // funcion para tirar los dados
     public int throwDices(JLabel lblDice1, JLabel lblDice2) throws InterruptedException{
         int dice1Num = (int)(Math.random()*6+1);
@@ -96,6 +116,10 @@ public class Game {
 
     public ArrayList<Character> getCharactersIcons() {
         return charactersIcons;
+    }
+
+    public ArrayList<ImageIcon> getBackgrounds() {
+        return backgrounds;
     }
 
     public void setAlphSoup(AlphSoup alphSoup) {
