@@ -39,7 +39,7 @@ public class SelectionController implements ActionListener{
         
         charSelectWindow.getBtnDicesTurn().addActionListener(this);
         charSelectWindow.getBtnDicesTurn().setEnabled(game.getPlayer().isHost());
-        
+        charSelectWindow.setTitle("Jugador " + game.getPlayer().getPlayerId());
         // inicializacion de componentes graficos de la ventana
         initCharacterBtns();
         initBackground();

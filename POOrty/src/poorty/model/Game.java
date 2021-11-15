@@ -114,6 +114,10 @@ public class Game {
         return characters;
     }
 
+    public ThreadThrowDices getThrowDices() {
+        return throwDices;
+    }
+
     public ArrayList<Character> getCharactersIcons() {
         return charactersIcons;
     }

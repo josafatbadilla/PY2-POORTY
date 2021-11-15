@@ -5,6 +5,9 @@
  */
 package poorty.model;
 
+import static java.lang.Thread.sleep;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -37,9 +40,31 @@ public class PlayerCharacter extends JLabel {
     }
     
     public void updateBounds(int x, int y){
-        this.x = x;
+        /*while(x <= this.x){
+            try {
+                this.setBounds( x, y , width, height);
+                x+= 100;
+                sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PlayerCharacter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        while(y <= this.y){
+            try {
+                this.setBounds( x, y , width, height);
+                y+= 100;
+                sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PlayerCharacter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }*/
+        
+        this.x = x ;
         this.y = y;
+        System.out.println("ChatacterBounds  x: " + x + " y: " + y);
         setBounds( x, y , width, height);
+        
     }
     
     public int getx(){

@@ -37,7 +37,7 @@ public class DicesTurnController implements ActionListener{
         // agregar los listeners
        dicesTurnView.getBtnThrowDices().addActionListener(this);
        dicesTurnView.getBtnStartGame().addActionListener(this);
-       
+       dicesTurnView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
         // se activan solo para el host
         dicesTurnView.getBtnStartGame().setEnabled(game.getPlayer().isHost());
         initBackground();
@@ -82,6 +82,15 @@ public class DicesTurnController implements ActionListener{
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(LobbyController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } 
+    }
+    
+    public void initialTurn(){
+        try {
+                outputStream.writeInt(5); // opcion de tablero 
+                outputStream.writeInt(2); // 1
+            } catch (IOException ex) {
+                        Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+            } 
     }
     
      // se pasa para el tablero principal para que empiece el juego

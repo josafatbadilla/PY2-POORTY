@@ -28,7 +28,7 @@ public class Server {
    
    public Server(){
        players = new ArrayList<ServerThread>();
-       playersTurn = new ArrayList<Turn>();
+       playersTurn = new ArrayList<>();
    }
    
    public void runServer(){
