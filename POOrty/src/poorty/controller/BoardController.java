@@ -196,7 +196,7 @@ public class BoardController implements ActionListener{
         }
     }
     
-    // carga los personajes que esten en la carpeta de media/characters
+    // 
     private void loadGameBoxes(){
         this.gameBoxes = new ArrayList<>();
         ImageIcon charIcon;
@@ -387,7 +387,7 @@ public class BoardController implements ActionListener{
                 } catch (InterruptedException ex) {
                     Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
                 }*/
-                //executeBoxOption(i);
+                executeBoxOption(i);
                 continuarTurno();
                 break;
             }

@@ -135,7 +135,7 @@ public class MainController {
     }
     
     public void changeSelectOpponentW(){
-        changeWindow(this.boardView, this.opponentView);
+        this.opponentView.visibility(true);
         this.opponentController.initBackground();
     }
     
@@ -146,7 +146,7 @@ public class MainController {
     }
     
     public void changeSelectBoxW(){
-        changeWindow(this.boardView, this.selectBoxView);
+        this.selectBoxView.visibility(true);
         this.selectBoxController.initBackground();
     }
     
@@ -161,11 +161,11 @@ public class MainController {
             case 5: // se cierra la sopa de letras
                 changeWindow(this.soupGameView, this.boardView);
                 break;
-            case 6:
-                changeWindow(this.opponentView, this.boardView);
+            case 6:// se cierra ice flower o fire flower
+                this.opponentView.visibility(false);
                 break;
             case 7:
-                changeWindow(this.selectBoxView, this.boardView);
+                this.selectBoxView.visibility(false);
                 break;
                 
             default:
