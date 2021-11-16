@@ -12,17 +12,18 @@ public class MemoryCard extends JLabel{
     private boolean faceUp;
     private ImageIcon faceDownIcon;
     private IconMemoryCard cardIcon;
+    private int i;
+    private int j;
 
-    public MemoryCard(ImageIcon faceDownIcon) {
+    public MemoryCard(ImageIcon faceDownIcon, int i, int j) {
         super(faceDownIcon);
         this.faceUp = false;
         this.faceDownIcon = faceDownIcon;
         this.cardIcon = null;
+        // coordenadas en la matriz
+        this.i = i;
+        this.j = j;
     }
-
-    
-    
-    
     
     // ----------------------------- GETTERS AND SETTERS -----------------------------------------
     public boolean isFaceUp() {
@@ -47,4 +48,15 @@ public class MemoryCard extends JLabel{
     public void setCardIcon(IconMemoryCard cardIcon) {
         this.cardIcon = cardIcon;
     }
+
+    public int getI() {
+        return i;
+    }
+
+    public int getJ() {
+        return j;
+    }
+    
+    
+    
 }

@@ -144,6 +144,9 @@ public class MainController {
             case 5: // se cierra la sopa de letras
                 changeWindow(this.soupGameView, this.boardView);
                 break;
+            case 6: // se cierra el juego de memory
+                changeWindow(this.memoryView, this.boardView);
+                break;
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");
                 break;
@@ -200,6 +203,11 @@ public class MainController {
         return boardController;
     }
 
+    public MemoryController getMemoryGameController() {
+        return memoryGameController;
+    }
+    
+    
     
     
     

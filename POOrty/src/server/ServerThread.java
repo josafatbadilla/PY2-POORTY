@@ -73,6 +73,10 @@ public class ServerThread  extends Thread{
                 case 5: // movimiento tablero
                     boardMoves(inputStream.readInt());
                     break;
+                    
+                case 6: // juego de memoria y realizar parejas
+                    miniGameMemory(inputStream.readInt());
+                    break;
                 }
                 
             }
@@ -335,5 +339,28 @@ public class ServerThread  extends Thread{
          
     }
     
+    
+    private void miniGameMemory(int option) throws IOException{
+        switch(option){
+        case 0: //
+
+            break;
+        case 1: // enviar un movimiento a mi enemigo
+            int enemyId = inputStream.readInt(); // el id del contrincante a enviar la jugada
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).playerId == enemyId){
+                    players.get(i).outputStream.writeInt(6); // opc del gato
+                    players.get(i).outputStream.writeInt(3); // opc de recibir jugada
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // se envia la fila
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // se envia la columna
+                    players.get(i).outputStream.writeBoolean(inputStream.readBoolean()); // se envia si queda boca arriba (faceUp)
+                }
+
+            } 
+            break;
+        case 2: //
+            break;
+        }
+    }
     
 }

@@ -30,7 +30,7 @@ public class MemoryWindow extends javax.swing.JFrame implements iWindow{
         int x = 5, y = 5;
         for (int i = 0; i < MATRIX_ROW; i++) {
             for (int j = 0; j < MATRIX_COL; j++) {
-                memoryCardMatrix[i][j] = createMemoryCard(x, y);
+                memoryCardMatrix[i][j] = createMemoryCard(x, y, i, j);
                 pnlCards.add(memoryCardMatrix[i][j]);
                 
                 x += LABEL_WIDTH + 5;
@@ -41,9 +41,9 @@ public class MemoryWindow extends javax.swing.JFrame implements iWindow{
         }
     }
     
-    private MemoryCard createMemoryCard(int x, int y){
+    private MemoryCard createMemoryCard(int x, int y, int i, int j){
         ImageIcon hideIcon = new ImageIcon("./src/media/memoryCards/Hide.png");
-        MemoryCard newLabel = new MemoryCard(MainController.resizeIcon(hideIcon, LABEL_WIDTH, LABEL_HEIGHT));
+        MemoryCard newLabel = new MemoryCard(MainController.resizeIcon(hideIcon, LABEL_WIDTH, LABEL_HEIGHT), i, j);
         newLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         newLabel.setBounds(x, y, LABEL_WIDTH, LABEL_HEIGHT);
         return newLabel;

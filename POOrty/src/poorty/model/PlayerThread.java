@@ -50,6 +50,9 @@ public class PlayerThread extends Thread{
                         case 5: // movimiento tablero
                             boardMoves(inputStream.readInt());
                             break;
+                        case 6: // juego de memoria de cartas
+                            miniGameMemory(inputStream.readInt());
+                            break;
                     }
 
 
@@ -184,6 +187,28 @@ public class PlayerThread extends Thread{
             }
         } catch (IOException ex) {
             Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    private void miniGameMemory(int option) throws IOException{
+        switch(option){
+            case 1: // se setea el enemigo del host del mini juego
+                mainController.getMemoryGameController().setEnemyId(inputStream.readInt());
+                break;
+            case 2: // me avisan que soy su enemigo para el juego del memory
+                mainController.startMemoryMiniGame(inputStream.readInt());
+                break;
+            case 3: // se recibe una jugada de mi enemigo 
+                int playedI = inputStream.readInt();
+                int playedJ = inputStream.readInt();
+                boolean faceUp = inputStream.readBoolean();
+                mainController.getMemoryGameController().recieveMove(playedI, playedJ, faceUp);
+                break;
+            case 4:
+                // cerrar el juego y volver al tablero
+                mainController.closeMiniGame(6); // cerrar el juego de memory
+                break;
         }
     }
     

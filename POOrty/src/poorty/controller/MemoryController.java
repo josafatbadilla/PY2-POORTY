@@ -6,7 +6,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.DataOutputStream;
+import java.io.IOException;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import poorty.model.Game;
 import poorty.model.Memory;
 import poorty.model.MemoryCard;
@@ -26,6 +30,7 @@ public class MemoryController implements MouseListener, ActionListener{
     private ArrayList<MemoryCard> clickedCards;
     private boolean miniGameHost;
     private int enemyId;
+    private int score; // por cada pareja acertada se suma un punto
 
     public MemoryController(MemoryWindow memoryView, Game game, MainController mainController, int enemyId) {
         this.memoryView = memoryView;
@@ -39,8 +44,10 @@ public class MemoryController implements MouseListener, ActionListener{
         // determina si pide enemigo o es el enemigo solicitado
         // -1 indica que es el que inicio el juego
         this.miniGameHost = enemyId == -1;
-        this.playerTurn = miniGameHost; // el host siempre inicia con el turno
+        updatePlayerTurn(miniGameHost); // se establece el turno inicial como el minigamehost del juego
         this.clickedCards = new ArrayList<>();
+        
+        this.score = 0;
     }
     
     public void _init_(){
@@ -48,10 +55,10 @@ public class MemoryController implements MouseListener, ActionListener{
         // se asigna un enemigo aleatorio
         if(this.miniGameHost){
             // 4 representa el juego del gato
-//            mainController.getEnemyMiniGame(4, 1);
+            mainController.getEnemyMiniGame(6, 1);
         }
         
-        updatePlayerTurn(miniGameHost); // se establece el turno inicial como el minigamehost del juego
+        
         
         // agregar los listener de los labels
         addMemoryCardListeners();
@@ -70,23 +77,38 @@ public class MemoryController implements MouseListener, ActionListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Clicked");
        if(e.getSource().getClass().equals(MemoryCard.class)){
             // se presiona un label de la sopa de letras
-            System.out.println("Click label");
             MemoryCard clickedLabel = (MemoryCard) e.getSource();
             if(this.playerTurn && this.clickedCards.size() < 2 && !clickedLabel.isFaceUp()){
                 // si es su turno y tiene moviminetos y la carta esta boca a abajo 
-                
-                clickedLabel.setFaceUp(true);
-                this.clickedCards.add(clickedLabel);
+                // make move
+                makeMove(clickedLabel, true);
+                this.clickedCards.add(clickedLabel); // agrega a la lista de labels jugados
                 
                 if(clickedCards.size() == 2){
-                    // hace check si las que coloco boca arriba son iguales
+                    // retrasar la verificacion para dar tiempo a ver la carta
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MemoryController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if(checkMoves()){
+                        // suma al puntaje
+                        score++;
+                        if(score == 5){
+                            // el primero en llegar a 5 parejas gana
+                            finishGame();
+                        }
+                    }else{
+                        // oculta los dos
+                        for(int i = 0; i < clickedCards.size(); i++){
+                            makeMove(clickedCards.get(i), false); // oculta las que descubrio
+                        }
+                    }
                     // para quedarse asi y contar el puntaje
                     // si no se colocan otra vez boca abajo
-                    // se remueven todas las cartas seleccionadas
-                    System.out.println("Check");
+                    this.clickedCards.removeAll(clickedCards);
                 }
             }
         }
@@ -131,6 +153,39 @@ public class MemoryController implements MouseListener, ActionListener{
         this.playerTurn = newTurn; // cambia de turno
     }
     
+    // realiza una jugada en mi tablero y envia el mismo movimiento al enemigo
+    private void makeMove(MemoryCard labelMove, boolean faceUp){
+        labelMove.setFaceUp(faceUp);
+        // envia al enemigo el movimiento hecho
+            try {
+                outputStream.writeInt(6); // opc del juego
+                outputStream.writeInt(1); // subopcion para enviar una jugada
+                outputStream.writeInt(this.enemyId); // a mi enemigo
+                outputStream.writeInt(labelMove.getI()); // se envia la fila
+                outputStream.writeInt(labelMove.getJ()); // se envia la columna
+                outputStream.writeBoolean(faceUp); // se envia si se cambia a boca arriba o boca abajo
+                
+            } catch (IOException ex) {
+                Logger.getLogger(CatGameController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+    
+    // valida si las cartas descubiertas son iguales (su valor)
+    private boolean checkMoves(){
+        return this.clickedCards.get(0).getCardIcon().getCardValue().equals(this.clickedCards.get(1).getCardIcon().getCardValue());
+    }
+    
+    // recibe un movimiento del contrincante
+    public void recieveMove(int i, int j, boolean faceUp){
+        // se setea en la carta que jugo el valor correspondiente
+        memoryView.getMemoryCardMatrix()[i][j].setFaceUp(faceUp);
+    }
     
     // ------------------------------------------- GETTERS AND SETTERS --------------------------------------------------------------
+    public void setEnemyId(int enemyId) {
+        this.enemyId = enemyId;
+    }
+    
+    
+    
 }
