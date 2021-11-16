@@ -48,8 +48,10 @@ public class OpponentSelectionController implements ActionListener{
         opponentWindow.getBtnContinue().addActionListener(this);
         if (option == 1){
             opponentWindow.getNameLbl().setText("Fire Flower");
+            opponentWindow.setTitle("Jugador " + game.getPlayer().getPlayerId() + "| Fire Flower");
         } else{
             opponentWindow.getNameLbl().setText("Ice Flower");
+            opponentWindow.setTitle("Jugador " + game.getPlayer().getPlayerId() + " | Ice Flower");
         }
         
         
@@ -63,7 +65,7 @@ public class OpponentSelectionController implements ActionListener{
         
         this.x += Selection.CHARWIDTH + 10;
         opponentWindow.getSelectionPanel().add(btn);
-        btn.setVisible(true);
+        
         System.out.println("Se agrega el botón " + btn.getCharacterName() + " en " + x + "," + 100);
         btn.addActionListener(this);
     }
@@ -72,6 +74,7 @@ public class OpponentSelectionController implements ActionListener{
         JLabel  background = new JLabel(MainController.resizeIcon(game.getBackgrounds().get(3), opponentWindow.getWidth(),opponentWindow.getHeight())); 
         background.setBounds(0, 0,opponentWindow.getWidth(),opponentWindow.getHeight());
         opponentWindow.getSelectionPanel().add(background);
+        
     }
     
     @Override

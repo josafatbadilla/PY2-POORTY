@@ -21,6 +21,7 @@ public class MainController {
     private CatGameWindow catGameView;
     private SoupWindow soupGameView;
     private OpponentSelectionWindow opponentView;
+    private SelectBox selectBoxView;
     
     // modelo principal
     private Game game;
@@ -34,6 +35,7 @@ public class MainController {
     private BoardController boardController;
     private CatGameController catGameController;
     private SoupController soupGameController;
+    private SelectBoxController selectBoxController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -137,6 +139,17 @@ public class MainController {
         this.opponentController.initBackground();
     }
     
+    public void startSelectBox(){
+        this.selectBoxView = new SelectBox();
+        this.selectBoxController = new SelectBoxController(selectBoxView, game, this);
+        this.selectBoxController._init_();
+    }
+    
+    public void changeSelectBoxW(){
+        changeWindow(this.boardView, this.selectBoxView);
+        this.selectBoxController.initBackground();
+    }
+    
     
     // se cierra las ventanas de los minijuegos
     public void closeMiniGame(int miniGame){
@@ -151,6 +164,10 @@ public class MainController {
             case 6:
                 changeWindow(this.opponentView, this.boardView);
                 break;
+            case 7:
+                changeWindow(this.selectBoxView, this.boardView);
+                break;
+                
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");
                 break;
@@ -210,6 +227,14 @@ public class MainController {
     public OpponentSelectionController getOpponentController() {
         return opponentController;
     }
+    
+    public SelectBoxController getSelectBoxController(){
+        return selectBoxController;
+    }
+    
+    
+    
+    
     
     
 

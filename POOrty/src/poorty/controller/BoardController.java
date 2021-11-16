@@ -65,7 +65,6 @@ public class BoardController implements ActionListener{
     // se inicializan los compponentes de la pantalla
     public void _init_(){
         
-        boardView.getNameLbl().setText(game.getPlayer().getCharacterName());
         boardView.getPlayMiniGame().addActionListener(this);
         boardView.getBtnThrowDices().addActionListener(this);
         boardView.getBtnCarcel().addActionListener(this);
@@ -97,17 +96,26 @@ public class BoardController implements ActionListener{
         
         if(e.getSource().equals(boardView.getPlayMiniGame())){
             // se presiona el btn de jugar el minijuego
-            mainController.startSelectOpponent(2);
+            mainController.startSelectBox();
+                int casillaActual = 0;
                 for (int j = 0; j < playerIcon.size() ; j++){
                     if(playerIcon.get(j).getCharacterName().equals(game.getPlayer().getCharacterName())){
-                    
-                    }
-                    else{
-                        
-                        mainController.getOpponentController().addCharacter(playerIcon.get(j).getPlayerCharacter());
-                    }    
+                        casillaActual = playerIcon.get(j).getCasillaActual();
+                        break;
+                    }  
                 }
-            mainController.changeSelectOpponentW(); }
+                
+                int casillaInicial = casillaActual - 3;
+                
+                if (casillaInicial < 1)
+                    casillaInicial = 1;
+                
+                for (int j = casillaInicial; j <= casillaActual + 3; j++) {
+                    if(j != casillaActual)
+                        mainController.getSelectBoxController().addBox(boxArray[j]);
+                }
+                
+            mainController.changeSelectBoxW(); }
             
         if(e.getSource().equals(boardView.getBtnThrowDices())){
             // se lanzan los dados
@@ -166,7 +174,7 @@ public class BoardController implements ActionListener{
     private void initBoard(){
         
         for (int i = 0; i < boxArray.length; i++) {
-            boxArray[i] = new BoxBtn("Juego",i + "");
+            boxArray[i] = new BoxBtn("Juego",i + "", i);
             boardView.setSize(920, 750);
             boardView.getBoardPanel().setSize(920, 750);
             boardView.getBoardPanel().add(boxArray[i].getBoxButton());
@@ -379,7 +387,7 @@ public class BoardController implements ActionListener{
                 } catch (InterruptedException ex) {
                     Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
                 }*/
-                executeBoxOption(i);
+                //executeBoxOption(i);
                 continuarTurno();
                 break;
             }
@@ -468,6 +476,28 @@ public class BoardController implements ActionListener{
                 }
                 mainController.changeSelectOpponentW();
                 break;
+            case "Tail":
+                mainController.startSelectBox();
+                int casillaActual = 0;
+                for (int j = 0; j < playerIcon.size() ; j++){
+                    if(playerIcon.get(j).getCharacterName().equals(game.getPlayer().getCharacterName())){
+                        casillaActual = playerIcon.get(j).getCasillaActual();
+                        break;
+                    }  
+                }
+                
+                int casillaInicial = casillaActual - 3;
+                
+                if (casillaInicial < 1)
+                    casillaInicial = 1;
+                
+                for (int j = casillaInicial; j <= casillaActual + 3; j++) {
+                    if(j != casillaActual)
+                        mainController.getSelectBoxController().addBox(boxArray[j]);
+                }
+                
+                mainController.changeSelectBoxW();
+                break;
                 
                 
         }
@@ -489,6 +519,17 @@ public class BoardController implements ActionListener{
         turnWait += 2;
         JOptionPane.showMessageDialog(boardView, "Un jugador te ha enviado una Flor congelante, no podrás tirar los dados por 2 turnos", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
         
+    }
+    
+    public void tail(int casilla){
+        for (int i = 0; i < playerIcon.size() ; i++){
+                if(playerIcon.get(i).getCharacterName().equals(game.getPlayer().getCharacterName())){
+                    playerIcon.get(i).setCasillaActual(casilla);
+                    movePlayer(i,playerIcon.get(i).getCasillaActual());
+                    break;
+                }
+        }
+    
     }
     
     public void updateCharacters(){
@@ -580,7 +621,7 @@ public class BoardController implements ActionListener{
             }
     }
     
-    }
+}
     
 
     
