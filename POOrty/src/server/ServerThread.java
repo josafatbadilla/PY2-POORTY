@@ -25,6 +25,7 @@ public class ServerThread  extends Thread{
     ArrayList<ServerThread> players; // saber cuales son los jugadores
     // identificar el numero de jugador
     int playerId;
+    String characterName = "";
     boolean host;
     //int turn;
      
@@ -73,6 +74,7 @@ public class ServerThread  extends Thread{
                 case 5: // movimiento tablero
                     boardMoves(inputStream.readInt());
                     break;
+                
                 }
                 
             }
@@ -171,7 +173,7 @@ public class ServerThread  extends Thread{
             case 1: // se selecciona un personaje
                 String unselectedCharacter = inputStream.readUTF();
                 String selectedCharacter = inputStream.readUTF();
-
+                
                 for(int i = 0; i < players.size(); i++){
                     players.get(i).outputStream.writeInt(2); // opcion para la seleccion de personaje
                     players.get(i).outputStream.writeInt(1); // seleccion de personaje
@@ -186,6 +188,15 @@ public class ServerThread  extends Thread{
                     players.get(i).outputStream.writeInt(2);
                     players.get(i).outputStream.writeInt(2);
                     players.get(i).outputStream.writeInt(turnWindow);
+                }
+                break;
+            case 3: //recibe nombre para el servidor
+                int playerIDr = inputStream.readInt();
+                for(int i = 0; i < players.size(); i++){
+                    if(players.get(i).playerId == playerIDr){
+                        players.get(i).characterName = inputStream.readUTF();
+                    }
+                    System.out.println(players.get(i).playerId + "  " + players.get(i).characterName);
                 }
                 break;
             default:
@@ -331,9 +342,39 @@ public class ServerThread  extends Thread{
                     players.get(i).outputStream.writeInt(box);
                     players.get(i).outputStream.writeUTF(boxName);
                 }
+                break;
+            case 5: //fireFlower
+                String character = inputStream.readUTF();
+                System.out.println("Si llega al servidor");
+                for(int i = 0; i < players.size(); i++){
+                    if (character.equals(players.get(i).characterName)){
+                        
+                        players.get(i).outputStream.writeInt(5);
+                        players.get(i).outputStream.writeInt(5); //fire flower
+                        players.get(i).outputStream.writeUTF(character);
+                        break;
+                    }
+                }
+                break;
+            case 6: //IceFlower
+                String charactername = inputStream.readUTF();
+                System.out.println("Si llega al servidor");
+                for(int i = 0; i < players.size(); i++){
+                    if (charactername.equals(players.get(i).characterName)){
+                        
+                        players.get(i).outputStream.writeInt(5);
+                        players.get(i).outputStream.writeInt(6); //Iceflower
+                        players.get(i).outputStream.writeUTF(charactername);
+                        break;
+                    }
+                }
+                break;
+                
         }
          
-    }
+    } 
+    
+    
     
     
 }

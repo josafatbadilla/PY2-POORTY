@@ -20,11 +20,14 @@ public class MainController {
     private BoardWindow boardView; // ventana del tablero
     private CatGameWindow catGameView;
     private SoupWindow soupGameView;
+    private OpponentSelectionWindow opponentView;
+    private SelectBox selectBoxView;
     
     // modelo principal
     private Game game;
     
     // subcontroladores
+    private OpponentSelectionController opponentController;
     private LobbyController lobbyController;
     private SelectionController selectionController;
     private RandomTurnController randomTurnController;
@@ -32,6 +35,7 @@ public class MainController {
     private BoardController boardController;
     private CatGameController catGameController;
     private SoupController soupGameController;
+    private SelectBoxController selectBoxController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -124,6 +128,28 @@ public class MainController {
         changeWindow(this.boardView, this.soupGameView); // muestra la pantalla del juego del gato
     }
     
+    public void startSelectOpponent(int option){
+        this.opponentView = new OpponentSelectionWindow();
+        this.opponentController = new OpponentSelectionController(opponentView, game, this, option);
+        this.opponentController._init_();
+    }
+    
+    public void changeSelectOpponentW(){
+        this.opponentView.visibility(true);
+        this.opponentController.initBackground();
+    }
+    
+    public void startSelectBox(){
+        this.selectBoxView = new SelectBox();
+        this.selectBoxController = new SelectBoxController(selectBoxView, game, this);
+        this.selectBoxController._init_();
+    }
+    
+    public void changeSelectBoxW(){
+        this.selectBoxView.visibility(true);
+        this.selectBoxController.initBackground();
+    }
+    
     
     // se cierra las ventanas de los minijuegos
     public void closeMiniGame(int miniGame){
@@ -135,6 +161,13 @@ public class MainController {
             case 5: // se cierra la sopa de letras
                 changeWindow(this.soupGameView, this.boardView);
                 break;
+            case 6:// se cierra ice flower o fire flower
+                this.opponentView.visibility(false);
+                break;
+            case 7:
+                this.selectBoxView.visibility(false);
+                break;
+                
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");
                 break;
@@ -190,6 +223,20 @@ public class MainController {
     public BoardController getBoardController() {
         return boardController;
     }
+
+    public OpponentSelectionController getOpponentController() {
+        return opponentController;
+    }
+    
+    public SelectBoxController getSelectBoxController(){
+        return selectBoxController;
+    }
+    
+    
+    
+    
+    
+    
 
     
     
