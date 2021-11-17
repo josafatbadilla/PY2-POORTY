@@ -4,6 +4,8 @@ package poorty.model;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +20,11 @@ public class Player {
     
     DataInputStream inputStream = null;//leer comunicacion
     DataOutputStream outputStream = null;//escribir comunicacion
+
+    ObjectInputStream objInputStream = null;
+    ObjectOutputStream objOutputStream = null;
+    
+    
     Socket player = null;//para la comunicacion
     
     private int playerId;
@@ -33,18 +40,23 @@ public class Player {
       try {
             player = new Socket(IP_SERVER, SERVER_PORT);
             
-            // inicializa las entradas-lectura y salidas-escritura
-            inputStream = new DataInputStream(player.getInputStream());
             outputStream = new DataOutputStream(player.getOutputStream());
+            inputStream = new DataInputStream(player.getInputStream());
             
+            objOutputStream = new ObjectOutputStream(player.getOutputStream());
+            objInputStream = new ObjectInputStream(player.getInputStream());
+            
+
         } catch (IOException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error");
         }
         
         // inicializacion de variables
         this.characterName = "";
         this.throwDices = true;
         
+
         new PlayerThread(inputStream, this, mainController).start();
    }
    
@@ -67,9 +79,13 @@ public class Player {
     public void setHost(boolean host) {
         this.host = host;
     }
-
+    
     public DataOutputStream getOutputStream() {
         return outputStream;
+    }
+    
+    public ObjectOutputStream getObjOutputStream() {
+        return objOutputStream;
     }
 
     public String getCharacterName() {

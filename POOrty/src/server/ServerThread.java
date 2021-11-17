@@ -10,16 +10,24 @@ package server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import poorty.model.IconMemoryCard;
+import static poorty.view.MemoryWindow.MATRIX_COL;
+import static poorty.view.MemoryWindow.MATRIX_ROW;
 
 
 public class ServerThread  extends Thread{
     Socket socketPlayer = null;//referencia a socket de comunicacion de cliente
     DataInputStream inputStream = null;//Para leer comunicacion
-    DataOutputStream outputStream = null;//Para enviar comunicacion	
+    DataOutputStream outputStream = null;//Para enviar comunicacion
+    
+    ObjectOutputStream objOutputStream = null;
+    ObjectInputStream objInputStream = null;
     Server server;// referencia al servidor
 
     ArrayList<ServerThread> players; // saber cuales son los jugadores
@@ -43,8 +51,11 @@ public class ServerThread  extends Thread{
     @Override
     public void run(){
         try {
-            inputStream = new DataInputStream(socketPlayer.getInputStream());
             outputStream = new DataOutputStream(socketPlayer.getOutputStream());
+            inputStream = new DataInputStream(socketPlayer.getInputStream());
+            
+            objOutputStream = new ObjectOutputStream(socketPlayer.getOutputStream());
+            objInputStream = new ObjectInputStream(socketPlayer.getInputStream());
         
             //configuracion inicial del jugador
             outputStream.writeInt(playerId);
@@ -74,7 +85,10 @@ public class ServerThread  extends Thread{
                 case 5: // movimiento tablero
                     boardMoves(inputStream.readInt());
                     break;
-                
+                    
+                case 6: // juego de memoria y realizar parejas
+                    miniGameMemory(inputStream.readInt());
+                    break;
                 }
                 
             }
@@ -82,6 +96,8 @@ public class ServerThread  extends Thread{
         } catch (IOException e) {
             System.out.println("Se termino la conexion");
             
+        } catch(ClassNotFoundException ex){
+            System.out.println("No se encontro la clase");
         }
         
         System.out.println("Se removio al cliente");
@@ -375,6 +391,65 @@ public class ServerThread  extends Thread{
     } 
     
     
-    
+    private void miniGameMemory(int option) throws IOException, ClassNotFoundException{
+        int enemyId = -1;
+        switch(option){
+        case 0: //
+
+            break;
+        case 1: // enviar un movimiento a mi enemigo
+            enemyId = inputStream.readInt(); // el id del contrincante a enviar la jugada
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).playerId == enemyId){
+                    players.get(i).outputStream.writeInt(6); // opc del juego de memoria
+                    players.get(i).outputStream.writeInt(3); // opc de recibir jugada
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // se envia la fila
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // se envia la columna
+                    players.get(i).outputStream.writeBoolean(inputStream.readBoolean()); // se envia si queda boca arriba (faceUp)
+                }
+
+            } 
+            break;
+        case 2: // recibe y envia al enemigo las cartas generadas
+            enemyId = inputStream.readInt();
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).playerId == enemyId){
+                    players.get(i).outputStream.writeInt(6); // opc del juego de memoria
+                    players.get(i).outputStream.writeInt(5); // opc de recibir las cartas
+                    
+                    for (int iMatrix = 0; iMatrix < MATRIX_ROW; iMatrix++) {
+                        for (int jMatrix = 0; jMatrix < MATRIX_COL; jMatrix++) {
+                            // se envia cada uno de los campos de la matrix
+                            IconMemoryCard icon = (IconMemoryCard) objInputStream.readObject();
+                             players.get(i).objOutputStream.writeObject(icon);
+                        }
+                    }
+                }
+
+            }   
+            break;
+        case 3: // cambiar de turno
+            enemyId = inputStream.readInt();
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).playerId == enemyId){
+                    
+                    players.get(i).outputStream.writeInt(6); // opc del juego de memoria
+                    players.get(i).outputStream.writeInt(6); // opc de cambiar el turno
+                }
+            } 
+            
+            break;
+        case 4: // cerrar el juego
+            enemyId = inputStream.readInt();
+            for(int i = 0; i < players.size(); i++){
+                if(players.get(i).playerId == enemyId){
+                    
+                    players.get(i).outputStream.writeInt(6); // opc del juego de memoria
+                    players.get(i).outputStream.writeInt(4); // opc de cerrar el juego
+                }
+            } 
+            break;
+        }
+    }
     
 }

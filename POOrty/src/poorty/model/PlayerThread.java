@@ -3,21 +3,26 @@ package poorty.model;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import poorty.controller.MainController;
+import static poorty.view.MemoryWindow.MATRIX_COL;
+import static poorty.view.MemoryWindow.MATRIX_ROW;
 
 
 
 
 public class PlayerThread extends Thread{
-    
+
+    ObjectInputStream objInputStream;
     DataInputStream inputStream;
     Player player;
     MainController mainController;
     
     public PlayerThread(DataInputStream inputStream, Player player, MainController mainController){
         this.inputStream = inputStream;
+        this.objInputStream = player.objInputStream;
         this.player = player;
         this.mainController = mainController;
     }
@@ -34,6 +39,7 @@ public class PlayerThread extends Thread{
             while(true){
                     // espera ordenes del servidor
                     option = inputStream.readInt();
+
                     switch(option){
                         case 1: // lobby
                             lobby(inputStream.readInt());
@@ -50,6 +56,9 @@ public class PlayerThread extends Thread{
                         case 5: // movimiento tablero
                             boardMoves(inputStream.readInt());
                             break;
+                        case 6: // juego de memoria de cartas
+                            miniGameMemory(inputStream.readInt());
+                            break;
                     }
 
 
@@ -58,6 +67,10 @@ public class PlayerThread extends Thread{
         
         }catch(IOException e){
             System.out.println("Error en la comunicaci�n "+"Informaci�n para el usuario");
+            
+        } catch(ClassNotFoundException ex){
+            System.out.println("No se encontro la clase");
+            // catch para errores en el object input/output stream
         }
         
         // se desconecta del servidor
@@ -197,5 +210,38 @@ public class PlayerThread extends Thread{
     }
     
     
+    private void miniGameMemory(int option) throws IOException, ClassNotFoundException{
+        switch(option){
+            case 1: // se setea el enemigo del host del mini juego
+                mainController.getMemoryGameController().setEnemyId(inputStream.readInt());
+                break;
+            case 2: // me avisan que soy su enemigo para el juego del memory
+                mainController.startMemoryMiniGame(inputStream.readInt());
+                break;
+            case 3: // se recibe una jugada de mi enemigo 
+                int playedI = inputStream.readInt();
+                int playedJ = inputStream.readInt();
+                boolean faceUp = inputStream.readBoolean();
+                mainController.getMemoryGameController().recieveMove(playedI, playedJ, faceUp);
+                break;
+            case 4:
+                // cerrar el juego y volver al tablero
+                mainController.closeMiniGame(8); // cerrar el juego de memory
+                break;
+            case 5: // recibir la matriz de iconMemoryCard
+                for (int iMatrix = 0; iMatrix < MATRIX_ROW; iMatrix++) {
+                        for (int jMatrix = 0; jMatrix < MATRIX_COL; jMatrix++) {
+                            // se envia cada uno de los campos de la matrix
+                            IconMemoryCard iconMemoryCard = (IconMemoryCard) objInputStream.readObject();
+                            mainController.getMemoryGameController().setIconMemoryCard(iMatrix, jMatrix, iconMemoryCard);
+                        }
+                    }
+                break;
+            case 6:
+                mainController.getMemoryGameController().updatePlayerTurn(true);
+                break;
+                
+        }
+    }
     
 }

@@ -22,6 +22,7 @@ public class MainController {
     private SoupWindow soupGameView;
     private OpponentSelectionWindow opponentView;
     private SelectBox selectBoxView;
+    private MemoryWindow memoryView;
     
     // modelo principal
     private Game game;
@@ -36,6 +37,7 @@ public class MainController {
     private CatGameController catGameController;
     private SoupController soupGameController;
     private SelectBoxController selectBoxController;
+    private MemoryController memoryGameController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -134,6 +136,13 @@ public class MainController {
         this.opponentController._init_();
     }
     
+    public void startMemoryMiniGame(int enemyId){
+       this.memoryView = new MemoryWindow();
+       this.memoryGameController = new MemoryController(memoryView, game, this, enemyId);
+       this.memoryGameController._init_();
+       changeWindow(this.boardView, this.memoryView);
+    }
+    
     public void changeSelectOpponentW(){
         this.opponentView.visibility(true);
         this.opponentController.initBackground();
@@ -156,7 +165,6 @@ public class MainController {
         switch(miniGame){
             case 4: // se cierra el juego del gato
                 changeWindow(this.catGameView, this.boardView);
-                System.out.println("Se cambia al tablero");
                 break;
             case 5: // se cierra la sopa de letras
                 changeWindow(this.soupGameView, this.boardView);
@@ -168,6 +176,9 @@ public class MainController {
                 this.selectBoxView.visibility(false);
                 break;
                 
+            case 8: // se cierra el juego de memory
+                changeWindow(this.memoryView, this.boardView);
+                break;
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");
                 break;
@@ -227,17 +238,14 @@ public class MainController {
     public OpponentSelectionController getOpponentController() {
         return opponentController;
     }
+    public MemoryController getMemoryGameController() {
+        return memoryGameController;
+    }
     
     public SelectBoxController getSelectBoxController(){
         return selectBoxController;
     }
     
-    
-    
-    
-    
-    
-
     
     
     
