@@ -226,7 +226,7 @@ public class PlayerThread extends Thread{
                 break;
             case 4:
                 // cerrar el juego y volver al tablero
-                mainController.closeMiniGame(6); // cerrar el juego de memory
+                mainController.closeMiniGame(8); // cerrar el juego de memory
                 break;
             case 5: // recibir la matriz de iconMemoryCard
                 for (int iMatrix = 0; iMatrix < MATRIX_ROW; iMatrix++) {

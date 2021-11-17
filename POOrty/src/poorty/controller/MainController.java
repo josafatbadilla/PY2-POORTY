@@ -176,7 +176,7 @@ public class MainController {
                 this.selectBoxView.visibility(false);
                 break;
                 
-            case 6: // se cierra el juego de memory
+            case 8: // se cierra el juego de memory
                 changeWindow(this.memoryView, this.boardView);
                 break;
             default:

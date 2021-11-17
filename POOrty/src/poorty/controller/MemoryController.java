@@ -253,7 +253,7 @@ public class MemoryController implements MouseListener, ActionListener{
             this.game.getPlayer().setThrowDices(this.score == 5);
         }
         
-        mainController.closeMiniGame(6);
+        mainController.closeMiniGame(8);
         
     }
     
