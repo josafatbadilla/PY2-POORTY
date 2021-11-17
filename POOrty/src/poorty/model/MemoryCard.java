@@ -6,6 +6,7 @@ package poorty.model;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 
 public class MemoryCard extends JLabel{

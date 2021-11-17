@@ -19,12 +19,16 @@ public class Memory {
     private MemoryCard[][] memoryCardsMatrix;
     private ArrayList<IconMemoryCard> cardIcons;
 
-    public Memory(MemoryCard[][] memoryCardsMatrix) {
+    // solo se setean las cartas para el game host
+    public Memory(MemoryCard[][] memoryCardsMatrix, boolean gameHost) {
         this.memoryCardsMatrix = memoryCardsMatrix;
         
         this.cardIcons = new ArrayList<>();
         
-        loadCardImages();
+        if(gameHost){
+            loadCardImages();
+        }
+        
     }
     
     public void loadCardImages(){

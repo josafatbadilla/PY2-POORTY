@@ -1,13 +1,14 @@
 
 package poorty.model;
 
+import java.io.Serializable;
 import javax.swing.ImageIcon;
 import poorty.controller.MainController;
 import static poorty.view.MemoryWindow.LABEL_HEIGHT;
 import static poorty.view.MemoryWindow.LABEL_WIDTH;
 
 
-public class IconMemoryCard {
+public class IconMemoryCard implements Serializable{
     private String cardValue;
     private ImageIcon icon;
 
