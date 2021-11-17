@@ -20,12 +20,15 @@ public class MainController {
     private BoardWindow boardView; // ventana del tablero
     private CatGameWindow catGameView;
     private SoupWindow soupGameView;
+    private OpponentSelectionWindow opponentView;
+    private SelectBox selectBoxView;
     private MemoryWindow memoryView;
     
     // modelo principal
     private Game game;
     
     // subcontroladores
+    private OpponentSelectionController opponentController;
     private LobbyController lobbyController;
     private SelectionController selectionController;
     private RandomTurnController randomTurnController;
@@ -33,6 +36,7 @@ public class MainController {
     private BoardController boardController;
     private CatGameController catGameController;
     private SoupController soupGameController;
+    private SelectBoxController selectBoxController;
     private MemoryController memoryGameController;
     
     // constructor
@@ -126,6 +130,11 @@ public class MainController {
         changeWindow(this.boardView, this.soupGameView); // muestra la pantalla del juego del gato
     }
     
+    public void startSelectOpponent(int option){
+        this.opponentView = new OpponentSelectionWindow();
+        this.opponentController = new OpponentSelectionController(opponentView, game, this, option);
+        this.opponentController._init_();
+    }
     
     public void startMemoryMiniGame(int enemyId){
        this.memoryView = new MemoryWindow();
@@ -133,6 +142,23 @@ public class MainController {
        this.memoryGameController._init_();
        changeWindow(this.boardView, this.memoryView);
     }
+    
+    public void changeSelectOpponentW(){
+        this.opponentView.visibility(true);
+        this.opponentController.initBackground();
+    }
+    
+    public void startSelectBox(){
+        this.selectBoxView = new SelectBox();
+        this.selectBoxController = new SelectBoxController(selectBoxView, game, this);
+        this.selectBoxController._init_();
+    }
+    
+    public void changeSelectBoxW(){
+        this.selectBoxView.visibility(true);
+        this.selectBoxController.initBackground();
+    }
+    
     
     // se cierra las ventanas de los minijuegos
     public void closeMiniGame(int miniGame){
@@ -143,6 +169,13 @@ public class MainController {
             case 5: // se cierra la sopa de letras
                 changeWindow(this.soupGameView, this.boardView);
                 break;
+            case 6:// se cierra ice flower o fire flower
+                this.opponentView.visibility(false);
+                break;
+            case 7:
+                this.selectBoxView.visibility(false);
+                break;
+                
             case 6: // se cierra el juego de memory
                 changeWindow(this.memoryView, this.boardView);
                 break;
@@ -202,10 +235,16 @@ public class MainController {
         return boardController;
     }
 
+    public OpponentSelectionController getOpponentController() {
+        return opponentController;
+    }
     public MemoryController getMemoryGameController() {
         return memoryGameController;
     }
     
+    public SelectBoxController getSelectBoxController(){
+        return selectBoxController;
+    }
     
     
     

@@ -91,6 +91,12 @@ public class PlayerCharacter extends JLabel {
     public ImageIcon getIcon() {
         return icon;
     }
+
+    public Character getPlayerCharacter() {
+        return playerCharacter;
+    }
+    
+    
     
     
     

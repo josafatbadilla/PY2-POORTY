@@ -19,11 +19,12 @@ public class BoxBtn {
     private int[] bounds;
     private JLabel boxButton;
     private String boxName;
+    private int boxNumber;
 
-    public BoxBtn(String tipo_casilla, String boxName) {
+    public BoxBtn(String tipo_casilla, String boxName, int boxNumber) {
         this.tipo_casilla = tipo_casilla;
         this.bounds = new int[4];
-        
+        this.boxNumber = boxNumber;
         this.boxButton = new JLabel(boxName);
     }
 
@@ -55,6 +56,12 @@ public class BoxBtn {
     public String getBoxName() {
         return boxName;
     }
+
+    public int getBoxNumber() {
+        return boxNumber;
+    }
+    
+    
     
     
 

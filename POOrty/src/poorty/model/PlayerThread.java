@@ -182,17 +182,26 @@ public class PlayerThread extends Thread{
                     System.out.println("i : " + i + " x: " + x + " y: " + y);
                     mainController.getBoardController().getPlayerIcon().get(i).updateBounds(x, y);
                     
-                break;
+                    break;
                 case 2: // decirle que es el turno
                     mainController.getBoardController().playerTurn(inputStream.readInt());
                     System.out.println("Es mi turno");
-                break;
+                    break;
                 
                 case 3:
                     mainController.getBoardController().setTextTurn(inputStream.readUTF());
                     break;
                 case 4:
                     mainController.getBoardController().updateBox(inputStream.readInt(), inputStream.readUTF() );
+                    break;
+                    
+                case 5:
+                    System.out.println("si llega Fire flower");
+                    mainController.getBoardController().fireFlower(inputStream.readUTF());
+                    break;
+                case 6:
+                    System.out.println("si llega Ice flower");
+                    mainController.getBoardController().iceFlower(inputStream.readUTF());
                     break;
             }
         } catch (IOException ex) {
