@@ -23,6 +23,11 @@ public class SelectBoxBtn extends JButton{
         this.box = box;
         this.selected = false;
     }
+    
+    public SelectBoxBtn(){
+        
+        this.selected = false;
+    }
 
     public String getBoxName() {
         return box.getBoxName();

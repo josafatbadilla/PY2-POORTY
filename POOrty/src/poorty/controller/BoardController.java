@@ -149,8 +149,16 @@ public class BoardController implements ActionListener{
     public void playerTurn(int turn){
         actualTurn = turn;
         if (turnWait == 0){
-            boardView.getBtnThrowDices().setEnabled(true);
-            continuar = false;
+            if (game.getPlayer().isThrowDices()){
+                boardView.getBtnThrowDices().setEnabled(true);
+                continuar = false;}
+            else{
+                for (int i = 0; i < playerIcon.size(); i++) {
+                    if(game.getPlayer().getCharacterName().equals(playerIcon.get(i).getCharacterName())){
+                        executeBoxOption(i);}
+                }    
+            } 
+            
         }
         else{
             System.out.println("Espero" + turnWait);
