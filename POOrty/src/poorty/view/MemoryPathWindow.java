@@ -5,6 +5,9 @@
  */
 package poorty.view;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+
 /**
  *
  * @author josa
@@ -27,17 +30,61 @@ public class MemoryPathWindow extends javax.swing.JFrame implements iWindow{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnBack = new javax.swing.JButton();
+        lblGameSatus = new javax.swing.JLabel();
+        starLbl = new javax.swing.JLabel();
+        lblIntentos = new javax.swing.JLabel();
+        playerLbl = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnBack.setText("Continuar");
+
+        lblGameSatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblGameSatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblGameSatus.setText("Jugando...");
+
+        lblIntentos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblIntentos.setText("Intentos: 3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 392, Short.MAX_VALUE)
+            .addComponent(lblGameSatus, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(109, 109, 109)
+                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(playerLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblIntentos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(starLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(130, 130, 130))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 452, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(starLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(lblIntentos)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 285, Short.MAX_VALUE)
+                .addComponent(playerLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
+                .addComponent(lblGameSatus)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnBack)
+                .addContainerGap())
         );
 
         pack();
@@ -45,7 +92,7 @@ public class MemoryPathWindow extends javax.swing.JFrame implements iWindow{
 
     @Override
     public void visibility(boolean setVisible) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.setVisible(setVisible);
     }
 
     /**
@@ -54,5 +101,34 @@ public class MemoryPathWindow extends javax.swing.JFrame implements iWindow{
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JLabel lblGameSatus;
+    private javax.swing.JLabel lblIntentos;
+    private javax.swing.JLabel playerLbl;
+    private javax.swing.JLabel starLbl;
     // End of variables declaration//GEN-END:variables
+
+    public JButton getBtnBack() {
+        return btnBack;
+    }
+
+    public JLabel getLblGameSatus() {
+        return lblGameSatus;
+    }
+
+    public JLabel getStarLbl() {
+        return starLbl;
+    }
+
+    public JLabel getLblIntentos() {
+        return lblIntentos;
+    }
+
+    public JLabel getPlayerLbl() {
+        return playerLbl;
+    }
+    
+
+
 }
+

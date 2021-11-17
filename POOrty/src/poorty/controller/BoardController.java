@@ -36,6 +36,7 @@ public class BoardController implements ActionListener{
     private MainController mainController;
     private DataOutputStream outputStream;
     private ArrayList<PlayerCharacter> playerIcon; 
+    private PlayerCharacter thisPlayer;
     private ArrayList<Box> gameBoxes;
     private ArrayList<Box> specialBoxes;
     private ArrayList<Box> initialBoxes;
@@ -86,6 +87,12 @@ public class BoardController implements ActionListener{
         }
         initBackground();
         initialTurn();
+        for (int j = 0; j < playerIcon.size() ; j++){
+            if(playerIcon.get(j).getCharacterName().equals(game.getPlayer().getCharacterName())){
+                thisPlayer = playerIcon.get(j);
+                break;
+            }  
+        }
         
         //boardView.getBackgroundlbl().setIcon(MainController.resizeIcon(game.getBackgrounds().get(0), boardView.getBoardPanel().getWidth(),boardView.getBoardPanel().getHeight()));
     }
@@ -127,16 +134,7 @@ public class BoardController implements ActionListener{
         
         if(e.getSource().equals(boardView.getPlaySopa())){
             // se presiona el btn de jugar el minijuego
-            mainController.startSelectOpponent(1);
-                for (int j = 0; j < playerIcon.size() ; j++){
-                    if(playerIcon.get(j).getCharacterName().equals(game.getPlayer().getCharacterName())){
-                    
-                    }
-                    else{
-                        mainController.getOpponentController().addCharacter(playerIcon.get(j).getPlayerCharacter());
-                    }    
-                }
-            mainController.changeSelectOpponentW();
+            mainController.startMemoryPath(thisPlayer.getIcon());
         }
         
         if(e.getSource().equals(boardView.getBtnCarcel())){
@@ -505,6 +503,9 @@ public class BoardController implements ActionListener{
                 }
                 
                 mainController.changeSelectBoxW();
+                break;
+            case "MemoryPath":
+                mainController.startMemoryPath(playerIcon.get(i).getIcon());
                 break;
                 
                 
