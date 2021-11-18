@@ -23,6 +23,7 @@ public class MainController {
     private OpponentSelectionWindow opponentView;
     private SelectBox selectBoxView;
     private MemoryWindow memoryView;
+    private MemoryPathWindow memoryPathView;
     
     // modelo principal
     private Game game;
@@ -38,6 +39,7 @@ public class MainController {
     private SoupController soupGameController;
     private SelectBoxController selectBoxController;
     private MemoryController memoryGameController;
+    private MemoryPathController memoryPathController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -159,6 +161,13 @@ public class MainController {
         this.selectBoxController.initBackground();
     }
     
+    public void startMemoryPath(ImageIcon image){
+        this.memoryPathView = new MemoryPathWindow();
+        this.memoryPathController = new MemoryPathController(memoryPathView, game, this, image);
+        this.memoryPathController._init_();
+        changeWindow(this.boardView, this.memoryPathView);
+    }
+    
     
     // se cierra las ventanas de los minijuegos
     public void closeMiniGame(int miniGame){
@@ -175,14 +184,20 @@ public class MainController {
             case 7:
                 this.selectBoxView.visibility(false);
                 break;
-                
+            
             case 8: // se cierra el juego de memory
                 changeWindow(this.memoryView, this.boardView);
                 break;
+            case 10:
+                changeWindow(this.memoryPathView, this.boardView);
+                System.out.println("Se cambia al tablero");
+                break;
+                
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");
                 break;
         }
+        this.boardController.continuarTurno();
     }
     
     // metodos varios

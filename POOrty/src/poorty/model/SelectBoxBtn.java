@@ -5,6 +5,7 @@
  */
 package poorty.model;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import poorty.controller.MainController;
 import poorty.view.Selection;
@@ -17,13 +18,28 @@ public class SelectBoxBtn extends JButton{
     
     BoxBtn box;
     private boolean selected;
+    private int boxValue;
 
     public SelectBoxBtn(BoxBtn box) {
         super(MainController.resizeIcon(box.getBoxIcon(), Selection.CHARHEIGH - 5, Selection.CHARHEIGH - 5));
         this.box = box;
         this.selected = false;
     }
+    
+    public SelectBoxBtn(ImageIcon image, int boxValue){
+        super(image);
+        this.boxValue = boxValue;
+        this.selected = false;
+    }
 
+    public int getBoxValue() {
+        return boxValue;
+    }
+
+    public void setBoxValue(int boxValue) {
+        this.boxValue = boxValue;
+    }
+    
     public String getBoxName() {
         return box.getBoxName();
     }

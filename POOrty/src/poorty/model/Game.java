@@ -100,10 +100,12 @@ public class Game {
         
         // animacion para lanzar los dados
         throwDices = new ThreadThrowDices(lblDice1, dice1Num, lblDice2, dice2Num);
-        
+        System.out.println("ThrowDices = " +throwDices.getDicesResult());
         // retorna el resultado de los dados
         return dice1Num + dice2Num;
     }
+    
+    
     
     // getters and setters
 

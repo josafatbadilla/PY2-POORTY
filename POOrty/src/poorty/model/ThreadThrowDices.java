@@ -48,7 +48,7 @@ public class ThreadThrowDices extends Thread{
             timeSleep = counter == 4 || counter == 9 ? timeSleep + 500 : timeSleep;
             
             counter++;
-            if(counter >= 10){
+            if(counter >= 8){
                 stopRunning();
                 // cuando termina se quedan los que salieron de primero
                 lblDice1.setText(dice1Num + "");
