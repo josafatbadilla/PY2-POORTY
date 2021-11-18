@@ -174,9 +174,11 @@ public class MainController {
         switch(miniGame){
             case 4: // se cierra el juego del gato
                 changeWindow(this.catGameView, this.boardView);
+                this.boardController.continuarTurno();
                 break;
             case 5: // se cierra la sopa de letras
                 changeWindow(this.soupGameView, this.boardView);
+                this.boardController.continuarTurno();
                 break;
             case 6:// se cierra ice flower o fire flower
                 this.opponentView.visibility(false);
@@ -187,17 +189,19 @@ public class MainController {
             
             case 8: // se cierra el juego de memory
                 changeWindow(this.memoryView, this.boardView);
+                this.boardController.continuarTurno();
                 break;
             case 10:
                 changeWindow(this.memoryPathView, this.boardView);
                 System.out.println("Se cambia al tablero");
+                this.boardController.continuarTurno();
                 break;
                 
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");
                 break;
         }
-        this.boardController.continuarTurno();
+        
     }
     
     // metodos varios

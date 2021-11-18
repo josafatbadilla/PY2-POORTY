@@ -49,7 +49,7 @@ public class CatGameController implements ActionListener {
         // agregar los listeners
         catGameView.getBtnBack().setEnabled(false);
         catGameView.getBtnBack().addActionListener(this);
-        
+        catGameView.setTitle("Jugador " + game.getPlayer().getPlayerId());
         // se asigna un enemigo aleatorio
         if(this.miniGameHost){
             // 4 representa el juego del gato
@@ -161,7 +161,7 @@ public class CatGameController implements ActionListener {
             if(isWinner(1)){
                 // verifica si la juegada que realizo es la ganadora
                 finishGame(true);
-                this.game.getPlayer().setThrowDices(true);
+                
             }
         }
     }
@@ -183,7 +183,7 @@ public class CatGameController implements ActionListener {
         if(isWinner(2)){
                 // pierdo yo
                 finishGame(false);
-                this.game.getPlayer().setThrowDices(false);
+                
         }
     }
     
@@ -237,7 +237,7 @@ public class CatGameController implements ActionListener {
         
         if(this.miniGameHost){
             catGameView.getBtnBack().setEnabled(true); // se activa el boton para salir
-             // puede tirar los dados en su proximo turno o no siendo este el retador del juego
+            game.getPlayer().setThrowDices(playerWin); // puede tirar los dados en su proximo turno o no siendo este el retador del juego
         }
 
     }

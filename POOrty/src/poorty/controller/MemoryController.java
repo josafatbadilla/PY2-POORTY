@@ -68,7 +68,7 @@ public class MemoryController implements MouseListener, ActionListener{
         
         this.memoryView.getBtnCheckMoves().addActionListener(this);
         this.memoryView.getBtnCheckMoves().setEnabled(false);
-        
+        this.memoryView.setTitle("Jugador " + game.getPlayer().getPlayerId());
         // agregar los listener de los labels
         addMemoryCardListeners();
     }
@@ -250,7 +250,7 @@ public class MemoryController implements MouseListener, ActionListener{
     public void closeGame(){
         if(this.miniGameHost){
             // si ejecuta esto quiere decir que gano
-            this.game.getPlayer().setThrowDices(this.score == 5);
+            game.getPlayer().setThrowDices(this.score == 5);
         }
         
         mainController.closeMiniGame(8);

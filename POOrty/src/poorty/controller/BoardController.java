@@ -106,8 +106,7 @@ public class BoardController implements ActionListener{
             mainController.startCatMiniGame(-1);}
             
         if(e.getSource().equals(boardView.getBtnThrowDices())){
-            // se lanzan los dados
-            continuar = true;
+            // se lanzan los dados 
             boardView.getBtnThrowDices().setEnabled(false);
             sendDicesResult();
                 
@@ -115,7 +114,10 @@ public class BoardController implements ActionListener{
         
         if(e.getSource().equals(boardView.getPlaySopa())){
             // se presiona el btn de jugar el minijuego
-            mainController.startMemoryPath(thisPlayer.getIcon());
+            JOptionPane.showMessageDialog(boardView, "Obtuviste una estrella, puedes volver a tirar los dados!", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
+            actualTurn = actualTurn-1;
+            if(actualTurn == -1)
+                actualTurn = playerIcon.size() - 1;
         }
         
         if(e.getSource().equals(boardView.getBtnCarcel())){
@@ -130,7 +132,7 @@ public class BoardController implements ActionListener{
         if (turnWait == 0){
             if (game.getPlayer().isThrowDices()){
                 boardView.getBtnThrowDices().setEnabled(true);
-                continuar = false;}
+                }
             else{
                 for (int i = 0; i < playerIcon.size(); i++) {
                     if(game.getPlayer().getCharacterName().equals(playerIcon.get(i).getCharacterName())){
@@ -146,8 +148,9 @@ public class BoardController implements ActionListener{
             continuar = true;
             //actualTurn = turn + 1; // se salta el turno
             turnWait--;
+            continuarTurno();
         }
-        continuarTurno();
+       
     }
     
     public void setTextTurn(String text){
@@ -155,8 +158,7 @@ public class BoardController implements ActionListener{
     }
     
     public void continuarTurno(){
-        if (continuar)
-            nextTurn(actualTurn);
+        nextTurn(actualTurn);
     }
     
     private void initBoard(){
@@ -365,7 +367,7 @@ public class BoardController implements ActionListener{
                 if (casilla == BOARD_SIZE)
                     continue;
                 else if (casilla > BOARD_SIZE)
-                    casilla = (BOARD_SIZE -1) - (casilla%(BOARD_SIZE -1));
+                    casilla = BOARD_SIZE - (casilla - BOARD_SIZE - 1);
                 
                 playerIcon.get(i).setCasillaActual(casilla);
                 System.out.println("Casilla: " + casilla );
@@ -440,10 +442,14 @@ public class BoardController implements ActionListener{
                         break;
                     }
                 }
+                continuarTurno();
                 break;
             case "Star": // puede volver a tirar
                 JOptionPane.showMessageDialog(boardView, "Obtuviste una estrella, puedes volver a tirar los dados!", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
-                actualTurn = (actualTurn-1) % playerIcon.size();
+                actualTurn = actualTurn-1;
+                if(actualTurn == -1)
+                    actualTurn = playerIcon.size() - 1;
+                System.out.println(actualTurn);
                 continuarTurno();
                 break;
             case "FireFlower":
