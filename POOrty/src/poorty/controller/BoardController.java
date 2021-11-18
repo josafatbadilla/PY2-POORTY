@@ -103,26 +103,7 @@ public class BoardController implements ActionListener{
         
         if(e.getSource().equals(boardView.getPlayMiniGame())){
             // se presiona el btn de jugar el minijuego
-            mainController.startSelectBox();
-                int casillaActual = 0;
-                for (int j = 0; j < playerIcon.size() ; j++){
-                    if(playerIcon.get(j).getCharacterName().equals(game.getPlayer().getCharacterName())){
-                        casillaActual = playerIcon.get(j).getCasillaActual();
-                        break;
-                    }  
-                }
-                
-                int casillaInicial = casillaActual - 3;
-                
-                if (casillaInicial < 1)
-                    casillaInicial = 1;
-                
-                for (int j = casillaInicial; j <= casillaActual + 3; j++) {
-                    if(j != casillaActual)
-                        mainController.getSelectBoxController().addBox(boxArray[j]);
-                }
-                
-            mainController.changeSelectBoxW(); }
+            mainController.startMemoryMiniGame(-1);}
             
         if(e.getSource().equals(boardView.getBtnThrowDices())){
             // se lanzan los dados
@@ -385,6 +366,8 @@ public class BoardController implements ActionListener{
                 else if (casilla > BOARD_SIZE)
                     casilla = (BOARD_SIZE -1) - (casilla%(BOARD_SIZE -1));
                 
+                playerIcon.get(i).setCasillaActual(casilla);
+                System.out.println("Casilla: " + casilla );
                 movePlayer(i,casilla);
                 /*try {
                     sleep(4000);
@@ -393,8 +376,8 @@ public class BoardController implements ActionListener{
                 } catch (InterruptedException ex) {
                     Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
                 }*/
+                
                 executeBoxOption(i);
-                continuarTurno();
                 break;
             }
             
@@ -407,7 +390,7 @@ public class BoardController implements ActionListener{
         }
         boxArray[casilla].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.BLUE, 4));
 
-        playerIcon.get(i).setCasillaActual(casilla);
+        
 
         int x = playerIcon.get(i).getX();
         int y = playerIcon.get(i).getY();
@@ -428,6 +411,7 @@ public class BoardController implements ActionListener{
             playerIcon.get(i).updateBounds(x % BUTTON_SIZE , y - (BUTTON_SIZE*(casilla - 22)));
         }
         characterMoved(i);
+        
     }
     
     public void executeBoxOption(int i){
@@ -436,6 +420,7 @@ public class BoardController implements ActionListener{
             case "Jail":
                 JOptionPane.showMessageDialog(boardView, "Caíste en la carcel, pierdes 2 turnos", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
                 turnWait += 2;
+                continuarTurno();
                 break;
             case "Gato":
                 mainController.startCatMiniGame(-1);
@@ -447,11 +432,11 @@ public class BoardController implements ActionListener{
                 while(true){
                     casilla = (casilla+1) % BOARD_SIZE;
                     if(boxArray[casilla].getBoxName().equals("Tube")){
+                        JOptionPane.showMessageDialog(boardView, "Caíste en tubo avanzas hasta la casilla " + casilla , "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
                         movePlayer(i,casilla);
                         break;
                     }
                 }
-                JOptionPane.showMessageDialog(boardView, "Caíste en tubo avanzas hasta la casilla " + casilla , "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
                 break;
             case "Star": // puede volver a tirar
                 JOptionPane.showMessageDialog(boardView, "Obtuviste una estrella, puedes volver a tirar los dados!", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
@@ -491,7 +476,6 @@ public class BoardController implements ActionListener{
                         break;
                     }  
                 }
-                
                 int casillaInicial = casillaActual - 3;
                 
                 if (casillaInicial < 1)
@@ -503,14 +487,23 @@ public class BoardController implements ActionListener{
                 }
                 
                 mainController.changeSelectBoxW();
+                
                 break;
+                
+            case "MemoryMario":
+                mainController.startMemoryMiniGame(-1);
+                break;
+                
             case "MemoryPath":
                 mainController.startMemoryPath(playerIcon.get(i).getIcon());
                 break;
                 
+            default:
+                continuarTurno();
+                break;
                 
         }
-        //continuarTurno();//continúa al siguiente turno
+        //continúa al siguiente turno
     }
     
     public void fireFlower(String characterName){
@@ -535,10 +528,10 @@ public class BoardController implements ActionListener{
                 if(playerIcon.get(i).getCharacterName().equals(game.getPlayer().getCharacterName())){
                     playerIcon.get(i).setCasillaActual(casilla);
                     movePlayer(i,playerIcon.get(i).getCasillaActual());
+                    executeBoxOption(i);
                     break;
                 }
         }
-    
     }
     
     public void updateCharacters(){
@@ -550,8 +543,24 @@ public class BoardController implements ActionListener{
     }
     
     private void sendDicesResult(){
+        int contador = 0;
+        while(contador <= 10){
+            boardView.getLblDice1().setText((int)(Math.random()*5+1) + "");
+            boardView.getLblDice2().setText((int)(Math.random()*5+1) + "");
+            contador++;
+        }
         
-        try {
+        int Dice1 = (int) (Math.random() * 6 + 1);
+        int Dice2 = (int) (Math.random() * 6 + 1);
+        
+        
+        boardView.getLblDice1().setText(Dice1 + "");
+        boardView.getLblDice2().setText(Dice2 + "");
+        movePlayerCharacter(Dice1 + Dice2);
+        
+       
+        
+        /*try {
             int dices = game.throwDices(boardView.getLblDice1(), boardView.getLblDice2());
             System.out.println("Dices :" + dices);
             //sleep(4000); // espera a que salga el resultado
@@ -560,11 +569,11 @@ public class BoardController implements ActionListener{
                 if (!game.getThrowDices().isRunning()){
                     
                     break; }
-            }*/
+            }
             
         } catch (InterruptedException ex) {
             Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
                 
            
     }

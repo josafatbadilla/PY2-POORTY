@@ -188,7 +188,6 @@ public class MainController {
             case 8: // se cierra el juego de memory
                 changeWindow(this.memoryView, this.boardView);
                 break;
-                break;
             case 10:
                 changeWindow(this.memoryPathView, this.boardView);
                 System.out.println("Se cambia al tablero");
@@ -198,6 +197,7 @@ public class MainController {
                 System.out.println("Opcion inexistente para cerrar el minijuego");
                 break;
         }
+        this.boardController.continuarTurno();
     }
     
     // metodos varios
