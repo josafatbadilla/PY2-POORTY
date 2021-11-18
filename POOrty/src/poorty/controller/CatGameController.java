@@ -138,8 +138,11 @@ public class CatGameController implements ActionListener {
         // solo si es el turno de mi se realiza la accion
         if(this.playerTurn && clickedButton.getValue() == 0){
             
-            clickedButton.setValue(1); // marcar con x donde yo juegue
-            
+            if(this.miniGameHost)
+                clickedButton.setValue(1); // marcar con x donde yo juegue
+            else{
+                clickedButton.setValue(2);
+            }
             // se envia la jugada al adversario
             try {
                 outputStream.writeInt(4); // opc del juego
@@ -158,6 +161,7 @@ public class CatGameController implements ActionListener {
             if(isWinner(1)){
                 // verifica si la juegada que realizo es la ganadora
                 finishGame(true);
+                this.game.getPlayer().setThrowDices(true);
             }
         }
     }
@@ -165,7 +169,13 @@ public class CatGameController implements ActionListener {
     // cuando mi enemigo juega yo recibo la jugada
     public void recievePlay(int row, int column){
         
-        catGameView.getBoard()[row][column].setValue(2); // marca con un ciculo donde jugo mi contrincante
+        if(this.miniGameHost)
+                catGameView.getBoard()[row][column].setValue(2); // marcar con x donde yo juegue
+            else{
+                catGameView.getBoard()[row][column].setValue(1);
+            }
+        
+        //catGameView.getBoard()[row][column].setValue(2); // marca con un ciculo donde jugo mi contrincante
         updatePlayerTurn(true); // despues de recibir una jugada es mi turno
         repaintBoard();
         
@@ -173,6 +183,7 @@ public class CatGameController implements ActionListener {
         if(isWinner(2)){
                 // pierdo yo
                 finishGame(false);
+                this.game.getPlayer().setThrowDices(false);
         }
     }
     
@@ -226,7 +237,7 @@ public class CatGameController implements ActionListener {
         
         if(this.miniGameHost){
             catGameView.getBtnBack().setEnabled(true); // se activa el boton para salir
-            this.game.getPlayer().setThrowDices(playerWin); // puede tirar los dados en su proximo turno o no siendo este el retador del juego
+             // puede tirar los dados en su proximo turno o no siendo este el retador del juego
         }
 
     }
