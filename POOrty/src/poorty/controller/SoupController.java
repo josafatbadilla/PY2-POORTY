@@ -120,6 +120,7 @@ public class SoupController implements MouseListener, ActionListener {
     // metodos
     public void finishGame(boolean win){
         // se termina el juego
+        this.game.getPlayer().setThrowDices(win);
         mainController.closeMiniGame(5);
     }
 }

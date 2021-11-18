@@ -83,6 +83,7 @@ public class SelectBoxController implements ActionListener{
         for(SelectBoxBtn btn : boxBtns){
             if (btn.getBoxName().equals(name)){
                 btn.setSelected(true);
+                break;
             }
             else{
                 btn.setSelected(false);
