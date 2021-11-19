@@ -24,6 +24,8 @@ public class MainController {
     private SelectBox selectBoxView;
     private MemoryWindow memoryView;
     private MemoryPathWindow memoryPathView;
+    private GuessWhoWindow guessWhoView;
+    private CoinsWindow collectCoinsView;
     
     private MarioCardsWindow marioCardsView; 
     
@@ -42,6 +44,8 @@ public class MainController {
     private SelectBoxController selectBoxController;
     private MemoryController memoryGameController;
     private MemoryPathController memoryPathController;
+    private GuessWhoController guessWhoController;
+    private CoinsController coinsController;
     
     private MarioCardsController marioCardsController;
     
@@ -133,7 +137,7 @@ public class MainController {
         this.soupGameView = new SoupWindow();
         this.soupGameController = new SoupController(soupGameView, game, this);
         this.soupGameController._init_();
-        changeWindow(this.boardView, this.soupGameView); // muestra la pantalla del juego del gato
+        changeWindow(this.boardView, this.soupGameView); // muestra la pantalla del juego de la sopa de letras
     }
     
     public void startSelectOpponent(int option){
@@ -172,11 +176,26 @@ public class MainController {
         changeWindow(this.boardView, this.memoryPathView);
     }
     
+    }
+    
     public void starMarioCards(int playerID){
         this.marioCardsView = new MarioCardsWindow();
         this.marioCardsController = new MarioCardsController(marioCardsView, game , this, playerID);
         this.marioCardsController._init_();
         changeWindow(this.boardView, this.marioCardsView);
+    }
+    public void startGuessWhoMiniGame(){
+        this.guessWhoView = new GuessWhoWindow();
+        this.guessWhoController = new GuessWhoController(this.guessWhoView, game, this);
+        this.guessWhoController._init_();
+        changeWindow(this.boardView, this.guessWhoView);
+    }
+    
+    public void startCollectCoinsMiniGame(){
+        this.collectCoinsView = new CoinsWindow();
+        this.coinsController = new CoinsController(this.collectCoinsView, game, this);
+        this.coinsController._init_();
+        changeWindow(this.boardView, this.collectCoinsView);
     }
     
     
@@ -213,7 +232,15 @@ public class MainController {
                 System.out.println("Se cambia al tablero");
                 this.boardController.continuarTurno();
                 break;
+            case 11: // se cierra el juego de guess who
+                changeWindow(this.guessWhoView, this.boardView);
+                this.boardController.continuarTurno();
+                break;
                 
+            case 12: // se cierra el collect the coins
+                changeWindow(this.collectCoinsView, this.boardView);
+                this.boardController.continuarTurno();
+                break;
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");
                 break;
