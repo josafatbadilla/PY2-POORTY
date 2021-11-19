@@ -41,6 +41,7 @@ public class MarioCardsController implements  ActionListener{
     private ArrayList<MarioCard> cards;
     private MarioCard carta;
     private boolean playerPlaying;
+    private int playerIdwinner;
     
     public MarioCardsController(MarioCardsWindow marioCardview, Game game, MainController mainController, int ID) {
         this.marioCardview = marioCardview;
@@ -57,11 +58,13 @@ public class MarioCardsController implements  ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(marioCardview.getBtnCard())){
-            selectCard();
             mostrarCarta();
+            choiceMax();
+            finishGame();
+               
         }
         else if(e.getSource().equals(marioCardview.getChoiceMax())){
-            choiceMax();
+            
             
         }
         else if(e.getSource().equals(marioCardview.getBtnContinue())){
@@ -86,6 +89,7 @@ public class MarioCardsController implements  ActionListener{
         
         loadCardsIcons();
         initCarta();
+        selectCard();
         
         
         
@@ -150,7 +154,7 @@ public class MarioCardsController implements  ActionListener{
         int max = Collections.max(selectedCardsValues); // obtiene el valor mayor
         System.out.println("Valor mayor = " + max);
         int i = selectedCardsValues.indexOf(max);
-        int playerIdwinner = playersID.get(i);
+        playerIdwinner = playersID.get(i);
         
         if(this.playerPlaying){
             game.getPlayer().setThrowDices(playerIdwinner == game.getPlayer().getPlayerId());
@@ -159,6 +163,14 @@ public class MarioCardsController implements  ActionListener{
         
         
         
+    }
+    
+    public void finishGame(){
+        if (playerIdwinner == game.getPlayer().getPlayerId())
+            marioCardview.getLblWinner().setText("Has ganado...");
+        else{
+            marioCardview.getLblWinner().setText("Has Perdido...");
+            }
     }
     
     
@@ -172,6 +184,8 @@ public class MarioCardsController implements  ActionListener{
             outputStream.writeInt(i); // envía el número de casilla
             outputStream.writeInt(value); // envía el valor de la carta
             outputStream.writeInt(game.getPlayer().getPlayerId()); // envía el id del jugador
+            
+            
         }
         catch (IOException ex) {
             Logger.getLogger(MarioCardsController.class.getName()).log(Level.SEVERE, null, ex);

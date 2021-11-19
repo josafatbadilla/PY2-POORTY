@@ -457,9 +457,11 @@ public class ServerThread  extends Thread{
     }
     
     private void marioCardsGame(int option) throws IOException{
+        System.out.print("Se recibe: " + option);
         switch(option){
             case 1: // envía a los demás jugadores la opción de abrir el juego 
                 int playerID = inputStream.readInt();
+                System.out.print(", " + playerID);
                 for (int i = 0; i < players.size(); i++) {
                     if(players.get(i).playerId != playerID){
                         players.get(i).outputStream.writeInt(7); // opción del memorycard
@@ -469,12 +471,15 @@ public class ServerThread  extends Thread{
                 }
                 break;
             case 2:
+                int j = inputStream.readInt();
+                int value = inputStream.readInt();
+                int id = inputStream.readInt();
                 for (int i = 0; i < players.size(); i++) {
                     players.get(i).outputStream.writeInt(7); // opción del memorycard
                     players.get(i).outputStream.writeInt(2); // enviar carta seleccionada
-                    players.get(i).outputStream.writeInt(inputStream.readInt()); // el número de casilla
-                    players.get(i).outputStream.writeInt(inputStream.readInt()); // envía el valor de la carta
-                    players.get(i).outputStream.writeInt(inputStream.readInt()); // envía el id del jugador
+                    players.get(i).outputStream.writeInt(j); // el número de casilla
+                    players.get(i).outputStream.writeInt(value); // envía el valor de la carta
+                    players.get(i).outputStream.writeInt(id); // envía el id del jugador
                 }
                 break;
             case 3:
