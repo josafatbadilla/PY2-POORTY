@@ -152,6 +152,7 @@ public class PlayerThread extends Thread{
     
     // acciones para el minijuego del gato
     public void miniGameCat(int option) throws IOException{
+        try{
         switch(option){
             case 1: // se le asigna el enemigo a este jugador en el minijuego del gato
                 mainController.getCatGameController().setEnemyId(inputStream.readInt());
@@ -171,6 +172,9 @@ public class PlayerThread extends Thread{
                 // cerrar el juego y volver al tablero
                 mainController.closeMiniGame(4); // cerrar el juego del gato
                 break;
+        }
+        } catch (IOException ex) {
+            Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -214,6 +218,7 @@ public class PlayerThread extends Thread{
     
     
     private void miniGameMemory(int option) throws IOException, ClassNotFoundException{
+        try{
         switch(option){
             case 1: // se setea el enemigo del host del mini juego
                 mainController.getMemoryGameController().setEnemyId(inputStream.readInt());
@@ -245,9 +250,13 @@ public class PlayerThread extends Thread{
                 break;
                 
         }
+        } catch (IOException ex) {
+            Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void marioCardsGame(int option) throws IOException{
+        try{
         switch(option){
             case 1: //cambia a todos de pantalla
                 mainController.starMarioCards(inputStream.readInt());
@@ -260,6 +269,8 @@ public class PlayerThread extends Thread{
             case 3: //cerrar el minijuego
                 mainController.closeMiniGame(9);
                 break;
+        }} catch (IOException ex) {
+            Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     
     }
