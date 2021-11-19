@@ -71,6 +71,7 @@ public class BoardController implements ActionListener{
         boardView.getBtnCarcel().addActionListener(this);
         boardView.getPlaySopa().addActionListener(this);
         boardView.getBtnThrowDices().setEnabled(false);
+        boardView.getBtnContinueTurn().addActionListener(this);
         boardView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
         //mainController.showWindow(boardView);
         //movePlayerCharacter();
@@ -103,14 +104,17 @@ public class BoardController implements ActionListener{
         
         if(e.getSource().equals(boardView.getPlayMiniGame())){
             // se presiona el btn de jugar el minijuego
-            mainController.startCollectCoinsMiniGame();
-        }
+            mainController.starMarioCards(-1);}
             
         if(e.getSource().equals(boardView.getBtnThrowDices())){
             // se lanzan los dados 
             boardView.getBtnThrowDices().setEnabled(false);
             sendDicesResult();
                 
+        }
+        
+        if(e.getSource().equals(boardView.getBtnContinueTurn())){
+            continuarTurno();
         }
         
         if(e.getSource().equals(boardView.getPlaySopa())){
@@ -205,6 +209,10 @@ public class BoardController implements ActionListener{
  
             }
         }
+        gameBoxes.get(6).setFrequency(3);
+        gameBoxes.get(2).setFrequency(3);
+        gameBoxes.get(0).setFrequency(3);
+        gameBoxes.get(1).setFrequency(3);
     }
     
     private void loadSpecialBoxes(){
@@ -365,10 +373,11 @@ public class BoardController implements ActionListener{
                 boxArray[playerIcon.get(i).getCasillaActual()].getBoxButton().setBorder(BorderFactory.createLineBorder(Color.RED, 4));
                 int casilla = playerIcon.get(i).getCasillaActual() + value;
                         
-                if (casilla == BOARD_SIZE)
-                    continue;
-                else if (casilla > BOARD_SIZE)
-                    casilla = BOARD_SIZE - (casilla - BOARD_SIZE - 1);
+                
+                if (casilla >= BOARD_SIZE)
+                    casilla = (BOARD_SIZE - 2) - (casilla - BOARD_SIZE - 1);
+                
+                
                 
                 playerIcon.get(i).setCasillaActual(casilla);
                 System.out.println("Casilla: " + casilla );
@@ -415,6 +424,8 @@ public class BoardController implements ActionListener{
             playerIcon.get(i).updateBounds(x % BUTTON_SIZE , y - (BUTTON_SIZE*(casilla - 22)));
         }
         characterMoved(i);
+        if (casilla == BOARD_SIZE -1)
+            winner();
         
     }
     
@@ -512,6 +523,21 @@ public class BoardController implements ActionListener{
                 JOptionPane.showMessageDialog(boardView, "Jugarás a MemoryPath", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
                 mainController.startMemoryPath(playerIcon.get(i).getIcon());
                 break;
+            
+            case "MarioCards":
+                JOptionPane.showMessageDialog(boardView, "Jugarás a MarioCards", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
+                mainController.starMarioCards(-1);
+                break;
+            
+            case "GuesWho":
+                JOptionPane.showMessageDialog(boardView, "Jugarás a GuesWho?", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
+                mainController.startGuessWhoMiniGame();
+                break;
+                
+            case "CollectTheCoins":
+                JOptionPane.showMessageDialog(boardView, "Jugarás a Collect the coins", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
+                mainController.startCollectCoinsMiniGame();
+                break;
                 
             default:
                 continuarTurno();
@@ -530,6 +556,11 @@ public class BoardController implements ActionListener{
                     break;
                 }
         }
+    }
+    
+    public void winner(){
+        JOptionPane.showMessageDialog(boardView, "Has ganado el juego, Felicidades", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
+        sendWinner();
     }
     
     public void iceFlower(String characterName){
@@ -622,6 +653,17 @@ public class BoardController implements ActionListener{
     }
     
     // funciones para la conexion con el servidor
+    
+    public void sendWinner(){
+        try {
+            outputStream.writeInt(0); // abre el server help
+            outputStream.writeInt(2); // le indica que cierre el juego
+            
+        } catch (IOException ex) {
+            Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     
     
     public void characterMoved(int i){

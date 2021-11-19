@@ -27,6 +27,8 @@ public class MainController {
     private GuessWhoWindow guessWhoView;
     private CoinsWindow collectCoinsView;
     
+    private MarioCardsWindow marioCardsView; 
+    
     // modelo principal
     private Game game;
     
@@ -44,6 +46,8 @@ public class MainController {
     private MemoryPathController memoryPathController;
     private GuessWhoController guessWhoController;
     private CoinsController coinsController;
+    
+    private MarioCardsController marioCardsController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -172,6 +176,13 @@ public class MainController {
         changeWindow(this.boardView, this.memoryPathView);
     }
     
+    
+    public void starMarioCards(int playerID){
+        this.marioCardsView = new MarioCardsWindow();
+        this.marioCardsController = new MarioCardsController(marioCardsView, game , this, playerID);
+        this.marioCardsController._init_();
+        changeWindow(this.boardView, this.marioCardsView);
+    }
     public void startGuessWhoMiniGame(){
         this.guessWhoView = new GuessWhoWindow();
         this.guessWhoController = new GuessWhoController(this.guessWhoView, game, this);
@@ -192,7 +203,7 @@ public class MainController {
         switch(miniGame){
             case 4: // se cierra el juego del gato
                 changeWindow(this.catGameView, this.boardView);
-                this.boardController.continuarTurno();
+                
                 break;
             case 5: // se cierra la sopa de letras
                 changeWindow(this.soupGameView, this.boardView);
@@ -200,6 +211,7 @@ public class MainController {
                 break;
             case 6:// se cierra ice flower o fire flower
                 this.opponentView.visibility(false);
+                this.boardController.continuarTurno();
                 break;
             case 7:
                 this.selectBoxView.visibility(false);
@@ -207,8 +219,14 @@ public class MainController {
             
             case 8: // se cierra el juego de memory
                 changeWindow(this.memoryView, this.boardView);
-                this.boardController.continuarTurno();
+                
                 break;
+                
+            case 9:
+                changeWindow(this.marioCardsView, this.boardView);
+                
+                break;
+            
             case 10:
                 changeWindow(this.memoryPathView, this.boardView);
                 System.out.println("Se cambia al tablero");
@@ -222,6 +240,9 @@ public class MainController {
             case 12: // se cierra el collect the coins
                 changeWindow(this.collectCoinsView, this.boardView);
                 this.boardController.continuarTurno();
+                break;
+            case 13: // cierra el boardController de todos
+                System.exit(0);
                 break;
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");
@@ -247,6 +268,16 @@ public class MainController {
             game.getPlayer().getOutputStream().writeInt(gameThreadOpc);
             game.getPlayer().getOutputStream().writeInt(gameOpc); // subopcion del minijuego
             
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void getOtherPlayers(int playerID){ //abre la opción de cambiar de pantalla a los demás jugadores
+        try {
+            game.getPlayer().getOutputStream().writeInt(7);
+            game.getPlayer().getOutputStream().writeInt(1);
+            game.getPlayer().getOutputStream().writeInt(playerID);
         } catch (IOException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -289,6 +320,10 @@ public class MainController {
     
     public SelectBoxController getSelectBoxController(){
         return selectBoxController;
+    }
+
+    public MarioCardsController getMarioCardsController() {
+        return marioCardsController;
     }
     
     

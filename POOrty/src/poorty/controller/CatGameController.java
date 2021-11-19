@@ -237,13 +237,17 @@ public class CatGameController implements ActionListener {
         
         if(this.miniGameHost){
             catGameView.getBtnBack().setEnabled(true); // se activa el boton para salir
-            game.getPlayer().setThrowDices(playerWin); // puede tirar los dados en su proximo turno o no siendo este el retador del juego
+            game.getPlayer().setThrowDices(playerWin);
+            // puede tirar los dados en su proximo turno o no siendo este el retador del juego
         }
 
     }
     
     // ---------------------- funciones para la conexion con el servidor-------------------------
     private void closeMiniGame(){
+        if (this.miniGameHost)
+            mainController.getBoardController().continuarTurno();
+        
         try {
             outputStream.writeInt(4); // opc del juego
             outputStream.writeInt(2); // subopcion para enviar una jugada
