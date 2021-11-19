@@ -59,6 +59,9 @@ public class PlayerThread extends Thread{
                         case 6: // juego de memoria de cartas
                             miniGameMemory(inputStream.readInt());
                             break;
+                        case 7:
+                            marioCardsGame(inputStream.readInt());
+                            break;
                     }
 
 
@@ -149,6 +152,7 @@ public class PlayerThread extends Thread{
     
     // acciones para el minijuego del gato
     public void miniGameCat(int option) throws IOException{
+        try{
         switch(option){
             case 1: // se le asigna el enemigo a este jugador en el minijuego del gato
                 mainController.getCatGameController().setEnemyId(inputStream.readInt());
@@ -168,6 +172,9 @@ public class PlayerThread extends Thread{
                 // cerrar el juego y volver al tablero
                 mainController.closeMiniGame(4); // cerrar el juego del gato
                 break;
+        }
+        } catch (IOException ex) {
+            Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -203,6 +210,9 @@ public class PlayerThread extends Thread{
                     System.out.println("si llega Ice flower");
                     mainController.getBoardController().iceFlower(inputStream.readUTF());
                     break;
+                case 7:
+                    mainController.closeMiniGame(13);
+                    break;
             }
         } catch (IOException ex) {
             Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,6 +221,7 @@ public class PlayerThread extends Thread{
     
     
     private void miniGameMemory(int option) throws IOException, ClassNotFoundException{
+        try{
         switch(option){
             case 1: // se setea el enemigo del host del mini juego
                 mainController.getMemoryGameController().setEnemyId(inputStream.readInt());
@@ -242,6 +253,29 @@ public class PlayerThread extends Thread{
                 break;
                 
         }
+        } catch (IOException ex) {
+            Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void marioCardsGame(int option) throws IOException{
+        try{
+        switch(option){
+            case 1: //cambia a todos de pantalla
+                mainController.starMarioCards(inputStream.readInt());
+                break;
+            case 2: // envía las cartas seleccionadas
+                mainController.getMarioCardsController().getCards().get(inputStream.readInt()).setIsSelected(true);
+                mainController.getMarioCardsController().getSelectedCardsValues().add(inputStream.readInt());
+                mainController.getMarioCardsController().getPlayersID().add(inputStream.readInt());
+                break;
+            case 3: //cerrar el minijuego
+                mainController.closeMiniGame(9);
+                break;
+        }} catch (IOException ex) {
+            Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
     }
     
 }

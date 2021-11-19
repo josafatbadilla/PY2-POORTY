@@ -244,6 +244,9 @@ public class MemoryController implements MouseListener, ActionListener{
         }
         
         closeGame();
+        if (this.miniGameHost){
+            mainController.getBoardController().continuarTurno();
+        }
     }
     
     // se cierra el juego
@@ -251,6 +254,7 @@ public class MemoryController implements MouseListener, ActionListener{
         if(this.miniGameHost){
             // si ejecuta esto quiere decir que gano
             game.getPlayer().setThrowDices(this.score == 5);
+            
         }
         
         mainController.closeMiniGame(8);
