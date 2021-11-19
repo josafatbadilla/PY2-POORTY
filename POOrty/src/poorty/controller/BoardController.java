@@ -103,7 +103,7 @@ public class BoardController implements ActionListener{
         
         if(e.getSource().equals(boardView.getPlayMiniGame())){
             // se presiona el btn de jugar el minijuego
-            mainController.startCatMiniGame(-1);}
+            mainController.starMarioCards(-1);}
             
         if(e.getSource().equals(boardView.getBtnThrowDices())){
             // se lanzan los dados 
@@ -367,7 +367,7 @@ public class BoardController implements ActionListener{
                 if (casilla == BOARD_SIZE)
                     continue;
                 else if (casilla > BOARD_SIZE)
-                    casilla = BOARD_SIZE - (casilla - BOARD_SIZE - 1);
+                    casilla = (BOARD_SIZE-1) - (casilla - BOARD_SIZE - 1);
                 
                 playerIcon.get(i).setCasillaActual(casilla);
                 System.out.println("Casilla: " + casilla );

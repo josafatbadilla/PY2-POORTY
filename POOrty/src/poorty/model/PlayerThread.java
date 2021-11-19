@@ -59,6 +59,9 @@ public class PlayerThread extends Thread{
                         case 6: // juego de memoria de cartas
                             miniGameMemory(inputStream.readInt());
                             break;
+                        case 7:
+                            marioCardsGame(inputStream.readInt());
+                            break;
                     }
 
 
@@ -242,6 +245,23 @@ public class PlayerThread extends Thread{
                 break;
                 
         }
+    }
+    
+    private void marioCardsGame(int option) throws IOException{
+        switch(option){
+            case 1: //cambia a todos de pantalla
+                mainController.starMarioCards(inputStream.readInt());
+                break;
+            case 2: // envía las cartas seleccionadas
+                mainController.getMarioCardsController().getCards().get(inputStream.readInt()).setIsSelected(true);
+                mainController.getMarioCardsController().getSelectedCardsValues().add(inputStream.readInt());
+                mainController.getMarioCardsController().getPlayersID().add(inputStream.readInt());
+                break;
+            case 3: //cerrar el minijuego
+                mainController.closeMiniGame(9);
+                break;
+        }
+    
     }
     
 }

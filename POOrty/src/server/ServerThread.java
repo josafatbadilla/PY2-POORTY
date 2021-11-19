@@ -89,6 +89,10 @@ public class ServerThread  extends Thread{
                 case 6: // juego de memoria y realizar parejas
                     miniGameMemory(inputStream.readInt());
                     break;
+                    
+                case 7:
+                    marioCardsGame(inputStream.readInt());
+                    break;
                 }
                 
             }
@@ -253,7 +257,7 @@ public class ServerThread  extends Thread{
                 }
                 break;
             default:
-                System.out.println("Opcion inexistente");
+                System.out.println("Opcion inexistente 111");
         }
     }
 
@@ -449,6 +453,37 @@ public class ServerThread  extends Thread{
                 }
             } 
             break;
+        }
+    }
+    
+    private void marioCardsGame(int option) throws IOException{
+        switch(option){
+            case 1: // envía a los demás jugadores la opción de abrir el juego 
+                int playerID = inputStream.readInt();
+                for (int i = 0; i < players.size(); i++) {
+                    if(players.get(i).playerId != playerID){
+                        players.get(i).outputStream.writeInt(7); // opción del memorycard
+                        players.get(i).outputStream.writeInt(1); // opción de inciar el juego
+                        players.get(i).outputStream.writeInt(players.get(i).playerId); // envia el enemy id
+                    }
+                }
+                break;
+            case 2:
+                for (int i = 0; i < players.size(); i++) {
+                    players.get(i).outputStream.writeInt(7); // opción del memorycard
+                    players.get(i).outputStream.writeInt(2); // enviar carta seleccionada
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // el número de casilla
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // envía el valor de la carta
+                    players.get(i).outputStream.writeInt(inputStream.readInt()); // envía el id del jugador
+                }
+                break;
+            case 3:
+                for (int i = 0; i < players.size(); i++) {
+                    players.get(i).outputStream.writeInt(7); // opción del memorycard
+                    players.get(i).outputStream.writeInt(3); // opcion de cerrar el minijuego
+                }
+                break;
+        
         }
     }
     

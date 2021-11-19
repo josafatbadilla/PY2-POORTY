@@ -25,6 +25,8 @@ public class MainController {
     private MemoryWindow memoryView;
     private MemoryPathWindow memoryPathView;
     
+    private MarioCardsWindow marioCardsView; 
+    
     // modelo principal
     private Game game;
     
@@ -40,6 +42,8 @@ public class MainController {
     private SelectBoxController selectBoxController;
     private MemoryController memoryGameController;
     private MemoryPathController memoryPathController;
+    
+    private MarioCardsController marioCardsController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -168,6 +172,13 @@ public class MainController {
         changeWindow(this.boardView, this.memoryPathView);
     }
     
+    public void starMarioCards(int playerID){
+        this.marioCardsView = new MarioCardsWindow();
+        this.marioCardsController = new MarioCardsController(marioCardsView, game , this, playerID);
+        this.marioCardsController._init_();
+        changeWindow(this.boardView, this.marioCardsView);
+    }
+    
     
     // se cierra las ventanas de los minijuegos
     public void closeMiniGame(int miniGame){
@@ -191,6 +202,12 @@ public class MainController {
                 changeWindow(this.memoryView, this.boardView);
                 this.boardController.continuarTurno();
                 break;
+                
+            case 9:
+                changeWindow(this.marioCardsView, this.boardView);
+                this.boardController.continuarTurno();
+                break;
+            
             case 10:
                 changeWindow(this.memoryPathView, this.boardView);
                 System.out.println("Se cambia al tablero");
@@ -221,6 +238,16 @@ public class MainController {
             game.getPlayer().getOutputStream().writeInt(gameThreadOpc);
             game.getPlayer().getOutputStream().writeInt(gameOpc); // subopcion del minijuego
             
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void getOtherPlayers(int playerID){ //abre la opción de cambiar de pantalla a los demás jugadores
+        try {
+            game.getPlayer().getOutputStream().writeInt(7);
+            game.getPlayer().getOutputStream().writeInt(1);
+            game.getPlayer().getOutputStream().writeInt(playerID);
         } catch (IOException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -263,6 +290,10 @@ public class MainController {
     
     public SelectBoxController getSelectBoxController(){
         return selectBoxController;
+    }
+
+    public MarioCardsController getMarioCardsController() {
+        return marioCardsController;
     }
     
     
