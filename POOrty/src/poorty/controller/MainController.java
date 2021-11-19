@@ -25,6 +25,7 @@ public class MainController {
     private MemoryWindow memoryView;
     private MemoryPathWindow memoryPathView;
     private GuessWhoWindow guessWhoView;
+    private CoinsWindow collectCoinsView;
     
     // modelo principal
     private Game game;
@@ -42,6 +43,7 @@ public class MainController {
     private MemoryController memoryGameController;
     private MemoryPathController memoryPathController;
     private GuessWhoController guessWhoController;
+    private CoinsController coinsController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -177,6 +179,13 @@ public class MainController {
         changeWindow(this.boardView, this.guessWhoView);
     }
     
+    public void startCollectCoinsMiniGame(){
+        this.collectCoinsView = new CoinsWindow();
+        this.coinsController = new CoinsController(this.collectCoinsView, game, this);
+        this.coinsController._init_();
+        changeWindow(this.boardView, this.collectCoinsView);
+    }
+    
     
     // se cierra las ventanas de los minijuegos
     public void closeMiniGame(int miniGame){
@@ -205,8 +214,13 @@ public class MainController {
                 System.out.println("Se cambia al tablero");
                 this.boardController.continuarTurno();
                 break;
-            case 11:
+            case 11: // se cierra el juego de guess who
                 changeWindow(this.guessWhoView, this.boardView);
+                this.boardController.continuarTurno();
+                break;
+                
+            case 12: // se cierra el collect the coins
+                changeWindow(this.collectCoinsView, this.boardView);
                 this.boardController.continuarTurno();
                 break;
             default:

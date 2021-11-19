@@ -103,7 +103,7 @@ public class BoardController implements ActionListener{
         
         if(e.getSource().equals(boardView.getPlayMiniGame())){
             // se presiona el btn de jugar el minijuego
-            mainController.startGuessWhoMiniGame();
+            mainController.startCollectCoinsMiniGame();
         }
             
         if(e.getSource().equals(boardView.getBtnThrowDices())){
