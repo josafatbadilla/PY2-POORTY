@@ -25,6 +25,7 @@ public class Game {
     // minijuegos
     private AlphSoup alphSoup; // sopa de letras
     private Memory memoryGame; // super bros memorys
+    private CollectCoins collectCoins;
     
     
     public Game(MainController mainController){
@@ -144,6 +145,15 @@ public class Game {
     public void setMemoryGame(Memory memoryGame) {
         this.memoryGame = memoryGame;
     }
+
+    public CollectCoins getCollectCoins() {
+        return collectCoins;
+    }
+
+    public void setCollectCoins(CollectCoins collectCoins) {
+        this.collectCoins = collectCoins;
+    }
+    
     
     
     
