@@ -19,19 +19,14 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
     private void initComponents() {
 
         BoardPanel = new javax.swing.JPanel();
-        playMiniGame = new javax.swing.JButton();
         pnlThrowDices = new javax.swing.JPanel();
         lblDice2 = new javax.swing.JLabel();
         btnThrowDices = new javax.swing.JButton();
         lblDice1 = new javax.swing.JLabel();
         turnoLbl = new javax.swing.JLabel();
-        btnCarcel = new javax.swing.JButton();
-        playSopa = new javax.swing.JButton();
         btnContinueTurn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        playMiniGame.setText("Probar Tail");
 
         pnlThrowDices.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -78,10 +73,6 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
         turnoLbl.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         turnoLbl.setText("jLabel1");
 
-        btnCarcel.setText("Carcel");
-
-        playSopa.setText("Jugar Sopa");
-
         btnContinueTurn.setText("Continuar Turno");
 
         javax.swing.GroupLayout BoardPanelLayout = new javax.swing.GroupLayout(BoardPanel);
@@ -91,41 +82,25 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
             .addGroup(BoardPanelLayout.createSequentialGroup()
                 .addGroup(BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BoardPanelLayout.createSequentialGroup()
-                        .addGap(224, 224, 224)
-                        .addGroup(BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pnlThrowDices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(BoardPanelLayout.createSequentialGroup()
-                                .addComponent(btnContinueTurn)
-                                .addGap(169, 169, 169)
-                                .addGroup(BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(playSopa)
-                                    .addComponent(playMiniGame))))
-                        .addGap(145, 145, 145)
-                        .addComponent(btnCarcel))
+                        .addGap(342, 342, 342)
+                        .addComponent(btnContinueTurn))
                     .addGroup(BoardPanelLayout.createSequentialGroup()
-                        .addGap(303, 303, 303)
-                        .addComponent(turnoLbl)))
-                .addContainerGap(887, Short.MAX_VALUE))
+                        .addGap(261, 261, 261)
+                        .addGroup(BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(turnoLbl)
+                            .addComponent(pnlThrowDices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(1160, Short.MAX_VALUE))
         );
         BoardPanelLayout.setVerticalGroup(
             BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BoardPanelLayout.createSequentialGroup()
-                .addGroup(BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(BoardPanelLayout.createSequentialGroup()
-                        .addGap(163, 163, 163)
-                        .addComponent(playMiniGame)
-                        .addGap(70, 70, 70)
-                        .addComponent(btnCarcel))
-                    .addGroup(BoardPanelLayout.createSequentialGroup()
-                        .addGap(171, 171, 171)
-                        .addComponent(btnContinueTurn)
-                        .addGap(10, 10, 10)
-                        .addComponent(playSopa)
-                        .addGap(17, 17, 17)
-                        .addComponent(pnlThrowDices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(33, 33, 33)
+                .addGap(186, 186, 186)
+                .addComponent(btnContinueTurn)
+                .addGap(35, 35, 35)
+                .addComponent(pnlThrowDices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addComponent(turnoLbl)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -146,13 +121,10 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BoardPanel;
-    private javax.swing.JButton btnCarcel;
     private javax.swing.JButton btnContinueTurn;
     private javax.swing.JButton btnThrowDices;
     private javax.swing.JLabel lblDice1;
     private javax.swing.JLabel lblDice2;
-    private javax.swing.JButton playMiniGame;
-    private javax.swing.JButton playSopa;
     private javax.swing.JPanel pnlThrowDices;
     private javax.swing.JLabel turnoLbl;
     // End of variables declaration//GEN-END:variables
@@ -192,17 +164,7 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
         return turnoLbl;
     }
 
-    public JButton getBtnCarcel() {
-        return btnCarcel;
-    }
-
-    public JButton getPlayMiniGame() {
-        return playMiniGame;
-    }
-
-    public JButton getPlaySopa() {
-        return playSopa;
-    }
+    
     
     
 

@@ -66,10 +66,8 @@ public class BoardController implements ActionListener{
     // se inicializan los compponentes de la pantalla
     public void _init_(){
         
-        boardView.getPlayMiniGame().addActionListener(this);
+        
         boardView.getBtnThrowDices().addActionListener(this);
-        boardView.getBtnCarcel().addActionListener(this);
-        boardView.getPlaySopa().addActionListener(this);
         boardView.getBtnThrowDices().setEnabled(false);
         boardView.getBtnContinueTurn().addActionListener(this);
         boardView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
@@ -101,11 +99,7 @@ public class BoardController implements ActionListener{
     // funcion para el listener de los botones y demas
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-        if(e.getSource().equals(boardView.getPlayMiniGame())){
-            // se presiona el btn de jugar el minijuego
-            mainController.starMarioCards(-1);}
-            
+         
         if(e.getSource().equals(boardView.getBtnThrowDices())){
             // se lanzan los dados 
             boardView.getBtnThrowDices().setEnabled(false);
@@ -117,20 +111,8 @@ public class BoardController implements ActionListener{
             continuarTurno();
         }
         
-        if(e.getSource().equals(boardView.getPlaySopa())){
-            // se presiona el btn de jugar el minijuego
-            JOptionPane.showMessageDialog(boardView, "Obtuviste una estrella, puedes volver a tirar los dados!", "Jugador " + game.getPlayer().getPlayerId(), JOptionPane.INFORMATION_MESSAGE);
-            actualTurn = actualTurn-1;
-            if(actualTurn == -1)
-                actualTurn = playerIcon.size() - 1;
-        }
         
-        if(e.getSource().equals(boardView.getBtnCarcel())){
-            System.out.println("Estoy en la carcel");
-            turnWait = 2;
-            
-        
-    } }
+     }
     
     public void playerTurn(int turn){
         actualTurn = turn;
@@ -212,7 +194,7 @@ public class BoardController implements ActionListener{
         gameBoxes.get(6).setFrequency(3);
         gameBoxes.get(2).setFrequency(3);
         gameBoxes.get(0).setFrequency(3);
-        gameBoxes.get(1).setFrequency(3);
+        gameBoxes.get(3).setFrequency(3);
     }
     
     private void loadSpecialBoxes(){

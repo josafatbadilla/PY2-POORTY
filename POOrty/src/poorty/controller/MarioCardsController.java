@@ -63,10 +63,7 @@ public class MarioCardsController implements  ActionListener{
             finishGame();
                
         }
-        else if(e.getSource().equals(marioCardview.getChoiceMax())){
-            
-            
-        }
+        
         else if(e.getSource().equals(marioCardview.getBtnContinue())){
             closeMiniGame();
         }
@@ -76,15 +73,15 @@ public class MarioCardsController implements  ActionListener{
         marioCardview.visibility(true);
         marioCardview.getBtnCard().addActionListener(this);
         marioCardview.getBtnContinue().addActionListener(this);
-        marioCardview.getChoiceMax().addActionListener(this);
+        
         marioCardview.setTitle("Jugador " + game.getPlayer().getPlayerId());
         
         marioCardview.getBtnContinue().setEnabled(false);
-        marioCardview.getChoiceMax().setEnabled(false);
+        
         
         if(this.playerPlaying){
             mainController.getOtherPlayers(game.getPlayer().getPlayerId());
-            marioCardview.getChoiceMax().setEnabled(true);
+            
         }
         
         loadCardsIcons();

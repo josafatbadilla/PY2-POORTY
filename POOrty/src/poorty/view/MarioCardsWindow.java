@@ -32,16 +32,12 @@ public class MarioCardsWindow extends javax.swing.JFrame implements  iWindow{
 
         BtnCard = new javax.swing.JButton();
         lblWinner = new javax.swing.JLabel();
-        ChoiceMax = new javax.swing.JButton();
         BtnContinue = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblWinner.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblWinner.setText("Jugando...");
-
-        ChoiceMax.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        ChoiceMax.setText("VerificarMayor");
 
         BtnContinue.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         BtnContinue.setText("Continuar");
@@ -52,16 +48,13 @@ public class MarioCardsWindow extends javax.swing.JFrame implements  iWindow{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblWinner, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ChoiceMax, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblWinner, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(41, 41, 41)
-                        .addComponent(BtnCard, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 30, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(BtnCard, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(40, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(115, 115, 115)
                 .addComponent(BtnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -73,9 +66,7 @@ public class MarioCardsWindow extends javax.swing.JFrame implements  iWindow{
                 .addGap(24, 24, 24)
                 .addComponent(BtnCard, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ChoiceMax)
-                    .addComponent(lblWinner, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lblWinner, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -107,16 +98,12 @@ public class MarioCardsWindow extends javax.swing.JFrame implements  iWindow{
         return BtnContinue;
     }
 
-    public JButton getChoiceMax() {
-        return ChoiceMax;
-    }
     
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnCard;
     private javax.swing.JButton BtnContinue;
-    private javax.swing.JButton ChoiceMax;
     private javax.swing.JLabel lblWinner;
     // End of variables declaration//GEN-END:variables
 }
