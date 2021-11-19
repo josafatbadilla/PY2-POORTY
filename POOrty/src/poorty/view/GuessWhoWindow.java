@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 import poorty.controller.MainController;
 
 
-public class GuessWhoWindow extends javax.swing.JFrame {
+public class GuessWhoWindow extends javax.swing.JFrame  implements iWindow{
     
     private ArrayList<JButton> gameOptions; // opciones para el juego
     private ArrayList<ImageIcon> images; // las posibles imagenes para colocar en el panel
@@ -104,13 +104,13 @@ public class GuessWhoWindow extends javax.swing.JFrame {
     
     private void setFinalOptionSection(int lastBtnPos){
         this.labelResult = new JLabel("");
-        this.labelResult.setBounds(0, lastBtnPos * BUTTON_HEIGH, pnlOptions.getWidth(), BUTTON_HEIGH);
+        this.labelResult.setBounds(0, lastBtnPos * BUTTON_HEIGH - 5, pnlOptions.getWidth(), BUTTON_HEIGH);
         this.labelResult.setFont(new Font("Verdana", Font.PLAIN, 12));
         this.labelResult.setHorizontalAlignment(SwingConstants.CENTER);
         pnlOptions.add(labelResult);
         this.btnCloseGame = new JButton("Salir");
         this.btnCloseGame.setEnabled(false);
-        this.btnCloseGame.setBounds(0, (lastBtnPos + 1) * BUTTON_HEIGH, pnlOptions.getWidth(), BUTTON_HEIGH);
+        this.btnCloseGame.setBounds(0, ((lastBtnPos + 1) * BUTTON_HEIGH) - 10, pnlOptions.getWidth(), BUTTON_HEIGH);
         this.btnCloseGame.setFont(new Font("Verdana", Font.PLAIN, 12));
         this.btnCloseGame.setHorizontalAlignment(SwingConstants.CENTER);
         pnlOptions.add(btnCloseGame);
@@ -181,7 +181,7 @@ public class GuessWhoWindow extends javax.swing.JFrame {
         );
         pnlWhoLayout.setVerticalGroup(
             pnlWhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 506, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
 
         pnlOptions.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -194,7 +194,7 @@ public class GuessWhoWindow extends javax.swing.JFrame {
         );
         pnlOptionsLayout.setVerticalGroup(
             pnlOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
+            .addGap(0, 498, Short.MAX_VALUE)
         );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -218,53 +218,44 @@ public class GuessWhoWindow extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlOptions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlWho, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE))
+                    .addComponent(pnlWho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(21, 21, 21))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GuessWhoWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GuessWhoWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GuessWhoWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GuessWhoWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GuessWhoWindow().setVisible(true);
-            }
-        });
+    
+    public ArrayList<JButton> getGameOptions() {
+        return gameOptions;
     }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public JLabel getLabelResult() {
+        return labelResult;
+    }
+
+    public JButton getBtnCloseGame() {
+        return btnCloseGame;
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel pnlOptions;
     private javax.swing.JPanel pnlWho;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void visibility(boolean setVisible) {
+        this.setVisible(setVisible);
+    }
 }
