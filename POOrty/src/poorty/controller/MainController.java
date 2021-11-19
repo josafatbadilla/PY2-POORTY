@@ -24,6 +24,7 @@ public class MainController {
     private SelectBox selectBoxView;
     private MemoryWindow memoryView;
     private MemoryPathWindow memoryPathView;
+    private GuessWhoWindow guessWhoView;
     
     // modelo principal
     private Game game;
@@ -40,6 +41,7 @@ public class MainController {
     private SelectBoxController selectBoxController;
     private MemoryController memoryGameController;
     private MemoryPathController memoryPathController;
+    private GuessWhoController guessWhoController;
     
     // constructor
     // realiza una construccion de todos los subcontroladores y pantallas y su respectiva asignacion
@@ -129,7 +131,7 @@ public class MainController {
         this.soupGameView = new SoupWindow();
         this.soupGameController = new SoupController(soupGameView, game, this);
         this.soupGameController._init_();
-        changeWindow(this.boardView, this.soupGameView); // muestra la pantalla del juego del gato
+        changeWindow(this.boardView, this.soupGameView); // muestra la pantalla del juego de la sopa de letras
     }
     
     public void startSelectOpponent(int option){
@@ -168,6 +170,13 @@ public class MainController {
         changeWindow(this.boardView, this.memoryPathView);
     }
     
+    public void startGuessWhoMiniGame(){
+        this.guessWhoView = new GuessWhoWindow();
+        this.guessWhoController = new GuessWhoController(this.guessWhoView, game, this);
+        this.guessWhoController._init_();
+        changeWindow(this.boardView, this.guessWhoView);
+    }
+    
     
     // se cierra las ventanas de los minijuegos
     public void closeMiniGame(int miniGame){
@@ -196,7 +205,10 @@ public class MainController {
                 System.out.println("Se cambia al tablero");
                 this.boardController.continuarTurno();
                 break;
-                
+            case 11:
+                changeWindow(this.guessWhoView, this.boardView);
+                this.boardController.continuarTurno();
+                break;
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");
                 break;
