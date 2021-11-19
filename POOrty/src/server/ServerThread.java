@@ -150,8 +150,12 @@ public class ServerThread  extends Thread{
                 }
 
                 break;
-            case 2:
-
+            case 2: // cerrar el juego de todos
+                for(int i = 0; i < players.size(); i++){
+                        players.get(i).outputStream.writeInt(5); // 
+                        players.get(i).outputStream.writeInt(7); // 
+                        
+                    }
                 break;
             case 3:
 

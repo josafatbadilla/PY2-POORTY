@@ -210,6 +210,9 @@ public class PlayerThread extends Thread{
                     System.out.println("si llega Ice flower");
                     mainController.getBoardController().iceFlower(inputStream.readUTF());
                     break;
+                case 7:
+                    mainController.closeMiniGame(13);
+                    break;
             }
         } catch (IOException ex) {
             Logger.getLogger(PlayerThread.class.getName()).log(Level.SEVERE, null, ex);

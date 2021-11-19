@@ -176,7 +176,6 @@ public class MainController {
         changeWindow(this.boardView, this.memoryPathView);
     }
     
-    }
     
     public void starMarioCards(int playerID){
         this.marioCardsView = new MarioCardsWindow();
@@ -204,7 +203,7 @@ public class MainController {
         switch(miniGame){
             case 4: // se cierra el juego del gato
                 changeWindow(this.catGameView, this.boardView);
-                this.boardController.continuarTurno();
+                
                 break;
             case 5: // se cierra la sopa de letras
                 changeWindow(this.soupGameView, this.boardView);
@@ -212,6 +211,7 @@ public class MainController {
                 break;
             case 6:// se cierra ice flower o fire flower
                 this.opponentView.visibility(false);
+                this.boardController.continuarTurno();
                 break;
             case 7:
                 this.selectBoxView.visibility(false);
@@ -219,12 +219,12 @@ public class MainController {
             
             case 8: // se cierra el juego de memory
                 changeWindow(this.memoryView, this.boardView);
-                this.boardController.continuarTurno();
+                
                 break;
                 
             case 9:
                 changeWindow(this.marioCardsView, this.boardView);
-                this.boardController.continuarTurno();
+                
                 break;
             
             case 10:
@@ -240,6 +240,9 @@ public class MainController {
             case 12: // se cierra el collect the coins
                 changeWindow(this.collectCoinsView, this.boardView);
                 this.boardController.continuarTurno();
+                break;
+            case 13: // cierra el boardController de todos
+                System.exit(0);
                 break;
             default:
                 System.out.println("Opcion inexistente para cerrar el minijuego");

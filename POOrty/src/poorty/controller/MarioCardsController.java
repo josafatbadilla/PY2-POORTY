@@ -194,6 +194,11 @@ public class MarioCardsController implements  ActionListener{
     }
     
     private void closeMiniGame(){
+        if (playerPlaying){
+            mainController.getBoardController().continuarTurno();
+        }
+        
+        
         try {
             outputStream.writeInt(7); // opcion de MarioCards
             outputStream.writeInt(3); // opcion de cerrar el juego
