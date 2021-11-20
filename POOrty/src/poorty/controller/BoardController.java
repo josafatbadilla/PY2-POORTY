@@ -69,7 +69,7 @@ public class BoardController implements ActionListener{
         
         boardView.getBtnThrowDices().addActionListener(this);
         boardView.getBtnThrowDices().setEnabled(false);
-        boardView.getBtnContinueTurn().addActionListener(this);
+        
         boardView.setTitle("Jugador " + game.getPlayer().getPlayerId() + " : " + game.getPlayer().getCharacterName());
         //mainController.showWindow(boardView);
         //movePlayerCharacter();
@@ -105,10 +105,6 @@ public class BoardController implements ActionListener{
             boardView.getBtnThrowDices().setEnabled(false);
             sendDicesResult();
                 
-        }
-        
-        if(e.getSource().equals(boardView.getBtnContinueTurn())){
-            continuarTurno();
         }
         
         

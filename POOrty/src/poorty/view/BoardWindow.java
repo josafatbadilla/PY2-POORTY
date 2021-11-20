@@ -24,7 +24,6 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
         btnThrowDices = new javax.swing.JButton();
         lblDice1 = new javax.swing.JLabel();
         turnoLbl = new javax.swing.JLabel();
-        btnContinueTurn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,30 +72,21 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
         turnoLbl.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         turnoLbl.setText("jLabel1");
 
-        btnContinueTurn.setText("Continuar Turno");
-
         javax.swing.GroupLayout BoardPanelLayout = new javax.swing.GroupLayout(BoardPanel);
         BoardPanel.setLayout(BoardPanelLayout);
         BoardPanelLayout.setHorizontalGroup(
             BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BoardPanelLayout.createSequentialGroup()
+                .addGap(261, 261, 261)
                 .addGroup(BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(BoardPanelLayout.createSequentialGroup()
-                        .addGap(342, 342, 342)
-                        .addComponent(btnContinueTurn))
-                    .addGroup(BoardPanelLayout.createSequentialGroup()
-                        .addGap(261, 261, 261)
-                        .addGroup(BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(turnoLbl)
-                            .addComponent(pnlThrowDices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(1160, Short.MAX_VALUE))
+                    .addComponent(turnoLbl)
+                    .addComponent(pnlThrowDices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(1168, Short.MAX_VALUE))
         );
         BoardPanelLayout.setVerticalGroup(
             BoardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BoardPanelLayout.createSequentialGroup()
-                .addGap(186, 186, 186)
-                .addComponent(btnContinueTurn)
-                .addGap(35, 35, 35)
+                .addGap(244, 244, 244)
                 .addComponent(pnlThrowDices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(turnoLbl)
@@ -121,7 +111,6 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BoardPanel;
-    private javax.swing.JButton btnContinueTurn;
     private javax.swing.JButton btnThrowDices;
     private javax.swing.JLabel lblDice1;
     private javax.swing.JLabel lblDice2;
@@ -154,9 +143,7 @@ public class BoardWindow extends javax.swing.JFrame implements iWindow{
         return pnlThrowDices;
     }
 
-    public JButton getBtnContinueTurn() {
-        return btnContinueTurn;
-    }
+    
 
     
 
